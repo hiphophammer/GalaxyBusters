@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4a7932686cb0b4596d6d4c9520b15f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoFireCooldownBar: {fileID: 4635942688103339634}
+  weaponCooldown: {fileID: 4635942688103339634}
   basicAbilityCooldownBar: {fileID: 3830948454554809759}
   ultimateAbilityChargeBar: {fileID: 682285250998861672}
   healthBar: {fileID: 2471256511331787466}
@@ -375,7 +375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3333428934338344400, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
       propertyPath: m_Name
-      value: UltimateAbilityRechargeBar
+      value: UltimateAbilityChargeBar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
@@ -392,7 +392,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49cc6e57d664891448b0e77b89e4b6c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 37db408ce1dae5441bd9bf04bf0b54e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8728635611994976824
@@ -464,7 +464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855585839569760589, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
       propertyPath: m_Name
-      value: AutoFireCooldown
+      value: WeaponCooldown
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}

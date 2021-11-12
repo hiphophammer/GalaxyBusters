@@ -60,22 +60,47 @@ public class GameManager : MonoBehaviour
                 // Set up the behavior component.
                 PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
                 playerBehavior.playerOne = playerOne;
-                playerBehavior.SetWeaponDamage(0.5f);
 
-                // Set the sprite.
+                // Set the sprite and add appropriate components.
                 SpriteRenderer renderer = player.GetComponent<SpriteRenderer>();
                 if (ship == "Lancer")
                 {
                     renderer.sprite = playerOne ? player1LancerSprite : player2LancerSprite;
+
+                    // Set stats.
+                    playerBehavior.SetWeaponDamage(0.01f);
+                    playerBehavior.SetSpeed(5.0f);
+
+                    // Add appropriate components.
+                    player.AddComponent<BaseMovement>();
+                    player.GetComponent<BaseMovement>().SetParent(playerBehavior);
+
+                    player.AddComponent<BaseCollider>();
+                    player.GetComponent<BaseCollider>().SetParent(playerBehavior);
+
+                    player.AddComponent<BaseWeapon>();
+                    player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
+
+                    player.AddComponent<LancerBasicAbility>();
+                    player.GetComponent<LancerBasicAbility>().SetParent(playerBehavior);
+
+                    player.AddComponent<LancerUltimateAbility>();
+                    player.GetComponent<LancerUltimateAbility>().SetParent(playerBehavior);
                 }
                 else if (ship == "Vanguard")
                 {
                     renderer.sprite = playerOne ? player1VanguardSprite : player2VanguardSprite;
+
+                    playerBehavior.SetWeaponDamage(0.3f);
+                    playerBehavior.SetSpeed(3.0f);
                 }
                 else
                 {
                     // Otherwise, given the string is not null, it must be the trailblazer.
                     renderer.sprite = playerOne ? player1TrailblazerSprite : player2TrailblazerSprite;
+
+                    playerBehavior.SetWeaponDamage(0.1f);
+                    playerBehavior.SetSpeed(7.0f);
                 }
             }
         }
