@@ -30,6 +30,8 @@ public class PlayerBehavior : MonoBehaviour
     // Private member variables.
     private CameraSupport cameraSupport;
 
+    private float damage;
+
     private string verticalAxis;
     private string horizontalAxis;
     private string basicAbilityAxis;
@@ -59,6 +61,11 @@ public class PlayerBehavior : MonoBehaviour
         UseBasicAbility();
 
         UseUltimateAbility();
+    }
+
+    public void SetWeaponDamage(float damage)
+    {
+        this.damage = damage;
     }
 
     public bool IsPlayerOne()
@@ -146,6 +153,7 @@ public class PlayerBehavior : MonoBehaviour
                             transform.rotation);
             ProjectileBehavior projectileBehavior = projectile.GetComponent<ProjectileBehavior>();
             projectileBehavior.SetParent(this);
+            projectileBehavior.SetDamage(damage);
 
             // Trigger the reload.
             autoFireCooldownBar.TriggerCooldown();

@@ -56,14 +56,18 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    public void RemoveHealth(float delta)
+    public float RemoveHealth(float delta)
     {
+        float retVal = delta;
         curHealth -= delta;
         
         if (curHealth < 0.0f)
         {
+            retVal += curHealth;
             curHealth = 0.0f;
         }
+
+        return retVal;
     }
 
     /// <summary>

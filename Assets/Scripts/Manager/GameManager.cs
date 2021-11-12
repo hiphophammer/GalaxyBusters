@@ -65,6 +65,9 @@ public class GameManager : MonoBehaviour
             {
                 renderer.sprite = player1TrailblazerSprite;
             }
+
+            PlayerBehavior playerBehavior = player1.GetComponent<PlayerBehavior>();
+            playerBehavior.SetWeaponDamage(0.5f);
         }
     }
 
@@ -94,6 +97,9 @@ public class GameManager : MonoBehaviour
             {
                 renderer.sprite = player2TrailblazerSprite;
             }
+
+            PlayerBehavior playerBehavior = player2.GetComponent<PlayerBehavior>();
+            playerBehavior.SetWeaponDamage(0.25f);
         }
     }
 

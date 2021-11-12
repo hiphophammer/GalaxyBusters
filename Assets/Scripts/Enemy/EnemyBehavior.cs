@@ -6,7 +6,6 @@ public class EnemyBehavior : MonoBehaviour
 {
     // Constants.
     private const float PROJECTILE_Y_OFFSET = -0.4f;
-    private const float PROJECTILE_DAMAGE = 0.25f;
 
     // Public member variables.
     public CooldownBarBehavior cooldownBar;
@@ -121,15 +120,15 @@ public class EnemyBehavior : MonoBehaviour
         GameObject other = collision.gameObject;
         if (other.CompareTag("HeroProjectile") && alive)
         {
-            // Update our health bar.
-            healthBar.RemoveHealth(PROJECTILE_DAMAGE);
-
-            // Store the amount of damage done by the player that dealt this damage.
             ProjectileBehavior projectileBehavior = other.GetComponent<ProjectileBehavior>();
             PlayerBehavior playerBehavior = projectileBehavior.GetParent();
 
+            // Update our health bar.
+            float damage = healthBar.RemoveHealth(projectileBehavior.GetDamage());
+
+            // Store the amount of damage done by the player that dealt this damage.
             int player = playerBehavior.IsPlayerOne() ? 0 : 1;
-            damageDealt[player] += PROJECTILE_DAMAGE;
+            damageDealt[player] += damage;
 
             if (healthBar.Health() == 0.0f)
             {
