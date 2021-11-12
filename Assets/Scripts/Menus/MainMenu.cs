@@ -18,6 +18,9 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Assert(player1Dropdown != null);
         Debug.Assert(player2Dropdown != null);
+
+        player1Ship = null;
+        player2Ship = null;
     }
 
     public void StartGame()

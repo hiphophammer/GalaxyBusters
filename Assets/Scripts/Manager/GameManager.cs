@@ -30,8 +30,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player 1 ship: " + MainMenu.player1Ship);
         Debug.Log("Player 2 ship: " + MainMenu.player2Ship);
 
-        CreatePlayerOne();
-        CreatePlayerTwo();
+        BuildPlayers();
     }
 
     // Update is called once per frame
@@ -40,66 +39,45 @@ public class GameManager : MonoBehaviour
         UpdateStatus();
     }
 
-    private void CreatePlayerOne()
+    private void BuildPlayers()
     {
-        if (MainMenu.player1Ship != "None")
+        Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+
+        for (int i = 0; i < 2; i++)
         {
-            Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-            GameObject player1 = Instantiate(Resources.Load("Prefabs/Player") as GameObject,
-                                                player1StartPos,
-                                                rotation);
-            player1.tag = "Player";
+            bool playerOne = i == 0;
+            string ship = playerOne ? MainMenu.player1Ship : MainMenu.player2Ship;
 
-            // Set the sprite.
-            SpriteRenderer renderer = player1.GetComponent<SpriteRenderer>();
-
-            if (MainMenu.player1Ship == "Lancer")
+            if (ship != null && ship != "None")
             {
-                renderer.sprite = player1LancerSprite;
-            }
-            else if (MainMenu.player1Ship == "Vanguard")
-            {
-                renderer.sprite = player1VanguardSprite;
-            }
-            else
-            {
-                renderer.sprite = player1TrailblazerSprite;
-            }
+                // Instantiate the game object.
+                Vector3 startPos = playerOne ? player1StartPos : player2StartPos;
+                GameObject player = Instantiate(Resources.Load("Prefabs/Player") as GameObject,
+                                                    startPos,
+                                                    rotation);
+                player.tag = "Player";
 
-            PlayerBehavior playerBehavior = player1.GetComponent<PlayerBehavior>();
-            playerBehavior.SetWeaponDamage(0.5f);
-        }
-    }
+                // Set up the behavior component.
+                PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
+                playerBehavior.playerOne = playerOne;
+                playerBehavior.SetWeaponDamage(0.5f);
 
-    private void CreatePlayerTwo()
-    {
-        if (MainMenu.player2Ship != "None")
-        {
-            Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-            GameObject player2 = Instantiate(Resources.Load("Prefabs/Player") as GameObject,
-                                                player2StartPos,
-                                                rotation);
-            player2.tag = "Player";
-            player2.GetComponent<PlayerBehavior>().playerOne = false;
-
-            // Set the sprite.
-            SpriteRenderer renderer = player2.GetComponent<SpriteRenderer>();
-
-            if (MainMenu.player2Ship == "Lancer")
-            {
-                renderer.sprite = player2LancerSprite;
+                // Set the sprite.
+                SpriteRenderer renderer = player.GetComponent<SpriteRenderer>();
+                if (ship == "Lancer")
+                {
+                    renderer.sprite = playerOne ? player1LancerSprite : player2LancerSprite;
+                }
+                else if (ship == "Vanguard")
+                {
+                    renderer.sprite = playerOne ? player1VanguardSprite : player2VanguardSprite;
+                }
+                else
+                {
+                    // Otherwise, given the string is not null, it must be the trailblazer.
+                    renderer.sprite = playerOne ? player1TrailblazerSprite : player2TrailblazerSprite;
+                }
             }
-            else if (MainMenu.player2Ship == "Vanguard")
-            {
-                renderer.sprite = player2VanguardSprite;
-            }
-            else
-            {
-                renderer.sprite = player2TrailblazerSprite;
-            }
-
-            PlayerBehavior playerBehavior = player2.GetComponent<PlayerBehavior>();
-            playerBehavior.SetWeaponDamage(0.25f);
         }
     }
 
