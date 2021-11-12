@@ -6,33 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject mainMenu;
+    public GameObject singlePlayerMenu;
+    public GameObject cooperativePlayMenu;
+
     public static string player1Ship;
     public static string player2Ship;
 
-    public TMPro.TMP_Dropdown player1Dropdown;
-    public TMPro.TMP_Dropdown player2Dropdown;
-
-    private bool sceneLoaded = false;
-
-    private void Start()
+    void Start()
     {
-        Debug.Assert(player1Dropdown != null);
-        Debug.Assert(player2Dropdown != null);
-    }
+        Debug.Assert(singlePlayerMenu != null);
+        Debug.Assert(cooperativePlayMenu != null);
 
-    public void StartGame()
-    {
-        if (!sceneLoaded)
-        {
-            GetShipTypes();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            sceneLoaded = true;
-        }
-    }
-
-    private void GetShipTypes()
-    {
-        player1Ship = player1Dropdown.options[player1Dropdown.value].text;
-        player2Ship = player2Dropdown.options[player2Dropdown.value].text;
+        singlePlayerMenu.SetActive(false);
+        cooperativePlayMenu.SetActive(false);
+        mainMenu.SetActive(true);
     }
 }
