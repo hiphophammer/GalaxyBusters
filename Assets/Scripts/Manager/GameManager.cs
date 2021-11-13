@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
                     renderer.sprite = playerOne ? player1LancerSprite : player2LancerSprite;
 
                     // Set stats.
-                    playerBehavior.SetWeaponDamage(0.01f);
+                    playerBehavior.SetWeaponDamage(0.5f);
                     playerBehavior.SetSpeed(5.0f);
 
                     // Add appropriate components.

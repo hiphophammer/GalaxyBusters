@@ -75,6 +75,11 @@ public class BaseWeapon : MonoBehaviour
         bulletType = BULLET_TYPE_PREFIX + bullet;
     }
 
+    public string GetBullet()
+    {
+        return bulletType;
+    }
+
     public void StartFiring()
     {
         shouldFire = true;
