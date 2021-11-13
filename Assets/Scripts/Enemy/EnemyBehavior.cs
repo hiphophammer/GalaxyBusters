@@ -76,6 +76,29 @@ public class EnemyBehavior : MonoBehaviour
         return alive;
     }
 
+    public void TakeDamage(float totalDamage, PlayerBehavior playerBehavior)
+    {
+        // Update our health bar.
+        float damageTaken = healthBar.RemoveHealth(totalDamage);
+
+        // Store the amount of damage done by the player that dealt this damage.
+        int player = playerBehavior.IsPlayerOne() ? 0 : 1;
+        damageDealt[player] += damageTaken;
+
+        if (healthBar.Health() == 0.0f)
+        {
+            // Tell the player that dealt this damage that they destroyed the enemy.
+            // This is solely for them to charge their ultimate ability further.
+            playerBehavior.DestroyedEnemy();
+
+            // Report to the score manager the amount of damage dealt, and who
+            // destroyed us.
+            scoreManager.DestroyedEnemy(damageDealt, player);
+
+            alive = false;
+        }
+    }
+
     /// <summary>
     /// This sets the starting position of the enemy such that it's within 90% of the
     /// camera bounds.

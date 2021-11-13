@@ -31,14 +31,12 @@ public class LancerBasicAbility : MonoBehaviour
                 // Launch missile.
                 Vector3 startPos = transform.position;
                 startPos.y += PROJECTILE_Y_OFFSET;
-                GameObject projectile = Instantiate(Resources.Load("Prefabs/Projectile") as GameObject,
+                GameObject projectile = Instantiate(Resources.Load("Prefabs/LancerMissile") as GameObject,
                                                     startPos,
                                                     transform.rotation);
-                projectile.GetComponent<SpriteRenderer>().color = Color.red;
 
-                ProjectileBehavior projectileBehavior = projectile.GetComponent<ProjectileBehavior>();
-                projectileBehavior.SetParent(parent);
-                projectileBehavior.SetDamage(DAMAGE);
+                LancerMissileBehavior missileBehavior = projectile.GetComponent<LancerMissileBehavior>();
+                missileBehavior.SetParent(parent);
 
                 // Trigger the reload.
                 cooldownBar.TriggerCooldown();

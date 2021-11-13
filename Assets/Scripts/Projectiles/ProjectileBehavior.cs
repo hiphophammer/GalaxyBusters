@@ -14,7 +14,7 @@ using UnityEngine;
 public class ProjectileBehavior : MonoBehaviour
 {
     // Constants.
-    private const float SPEED = 5.0f;          // This is the speed of the projectile.
+    private const float SPEED = 10.0f;          // This is the speed of the projectile.
 
     // Private member variables.
     private PlayerBehavior parent;              // A reference to the behavior of our
