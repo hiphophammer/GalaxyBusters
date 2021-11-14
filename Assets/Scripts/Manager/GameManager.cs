@@ -31,6 +31,35 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player 2 ship: " + MainMenu.player2Ship);
 
         BuildPlayers();
+
+        // Put in some power-ups.
+        //GameObject item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(125.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/CommonTest") as Item;
+
+        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(272.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/RareTest") as Item;
+
+        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(458.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/EpicTest") as Item;
+
+        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(610.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/SpecialTest") as Item;
     }
 
     // Update is called once per frame

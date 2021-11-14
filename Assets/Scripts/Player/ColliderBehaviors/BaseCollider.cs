@@ -33,5 +33,19 @@ public class BaseCollider : MonoBehaviour
                 healthBar.AddHealth(1.0f);
             }
         }
+        else if (other.CompareTag("PowerUp"))
+        {
+            PowerUpBehavior powerUpBehavior = other.GetComponent<PowerUpBehavior>();
+
+            // Check our reference is valid and the item hasn't been picked up.
+            if ((powerUpBehavior != null) && (!powerUpBehavior.HasBeenPickedUp()))
+            {
+                Item item = powerUpBehavior.item;
+                powerUpBehavior.SetPickedUp();
+
+                // DEBUG TODO: Add this to inventory.
+                Debug.Log(item.type);
+            }
+        }
     }
 }
