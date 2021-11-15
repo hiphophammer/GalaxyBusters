@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2325279257668092910}
   - component: {fileID: 2325279257668092909}
-  - component: {fileID: 2325279257668092911}
+  - component: {fileID: 8029665347693426788}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2325279257668092911
+--- !u!114 &8029665347693426788
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,3 +98,5 @@ MonoBehaviour:
   parent: {fileID: 0}
   xOffset: 0
   yOffset: 0
+  circleBar: {fileID: 0}
+  horizontalBar: {fileID: 0}

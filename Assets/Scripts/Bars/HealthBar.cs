@@ -37,8 +37,11 @@ public class HealthBar : MonoBehaviour
     void Update()
     {
         UpdateBar();
+        if (parent.tag != "Player")
+        {
+            UpdatePosition();
+        }
 
-        UpdatePosition();
     }
 
     public void SetHitPoints(float hitPoints)
@@ -106,8 +109,12 @@ public class HealthBar : MonoBehaviour
     /// </summary>
     private void UpdateBar()
     {
-        // Update the bar width.
         float percentage = curHealth / hitPoints;
+        if (percentage > 1.0f)
+        {
+            percentage = 1.0f;
+        }
+        // Update the bar width.
         float newWidth = percentage * maxWidth;    // The new width of the bar.
 
         Vector3 curScale = transform.localScale;
@@ -117,5 +124,6 @@ public class HealthBar : MonoBehaviour
         // Update the color of the bar.
         Color newColor = Color.Lerp(Color.red, Color.green, percentage);
         GetComponent<SpriteRenderer>().color = newColor;
+
     }
 }
