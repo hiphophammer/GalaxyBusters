@@ -8,8 +8,11 @@ public class GameManager : MonoBehaviour
     private Vector3 player2StartPos = new Vector3(1.5f, -2.5f, 0.0f);
 
     private ScoreManager scoreManager;
+    private PlayerBehavior player1;
+    private PlayerBehavior player2;
 
     public TMPro.TextMeshProUGUI playerScore;
+    public TMPro.TextMeshProUGUI playerStatus;
 
     public Sprite player1LancerSprite;
     public Sprite player1VanguardSprite;
@@ -26,6 +29,7 @@ public class GameManager : MonoBehaviour
         Debug.Assert(scoreManager != null);
 
         Debug.Assert(playerScore != null);
+        Debug.Assert(playerStatus != null);
 
         Debug.Log("Player 1 ship: " + MainMenu.player1Ship);
         Debug.Log("Player 2 ship: " + MainMenu.player2Ship);
@@ -68,6 +72,11 @@ public class GameManager : MonoBehaviour
         UpdateStatus();
     }
 
+    public PlayerBehavior GetPlayer1()
+    {
+        return player1;
+    }
+
     private void BuildPlayers()
     {
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
@@ -89,6 +98,16 @@ public class GameManager : MonoBehaviour
                 // Set up the behavior component.
                 PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
                 playerBehavior.playerOne = playerOne;
+                playerBehavior.SetShipName(ship);
+
+                if (playerOne)
+                {
+                    player1 = playerBehavior;
+                }
+                else
+                {
+                    player2 = playerBehavior;
+                }
 
                 // Set the sprite and add appropriate components.
                 SpriteRenderer renderer = player.GetComponent<SpriteRenderer>();
@@ -97,7 +116,8 @@ public class GameManager : MonoBehaviour
                     renderer.sprite = playerOne ? player1LancerSprite : player2LancerSprite;
 
                     // Set stats.
-                    playerBehavior.SetWeaponDamage(0.5f);
+                    playerBehavior.GetHealthBar().SetHitPoints(50.0f);
+                    playerBehavior.SetWeaponDamage(25.0f);
                     playerBehavior.SetSpeed(5.0f);
 
                     // Add appropriate components.
@@ -120,7 +140,8 @@ public class GameManager : MonoBehaviour
                 {
                     renderer.sprite = playerOne ? player1VanguardSprite : player2VanguardSprite;
 
-                    playerBehavior.SetWeaponDamage(0.3f);
+                    playerBehavior.GetHealthBar().SetHitPoints(100.0f);
+                    playerBehavior.SetWeaponDamage(15.0f);
                     playerBehavior.SetSpeed(3.0f);
                 }
                 else
@@ -128,7 +149,8 @@ public class GameManager : MonoBehaviour
                     // Otherwise, given the string is not null, it must be the trailblazer.
                     renderer.sprite = playerOne ? player1TrailblazerSprite : player2TrailblazerSprite;
 
-                    playerBehavior.SetWeaponDamage(0.1f);
+                    playerBehavior.GetHealthBar().SetHitPoints(75.0f);
+                    playerBehavior.SetWeaponDamage(5.0f);
                     playerBehavior.SetSpeed(7.0f);
                 }
             }
@@ -138,6 +160,6 @@ public class GameManager : MonoBehaviour
     private void UpdateStatus()
     {
         playerScore.text = scoreManager.GetStatus();
-        Debug.Log(scoreManager.GetStatus());
+        playerStatus.text = player1.GetStatus();
     }
 }

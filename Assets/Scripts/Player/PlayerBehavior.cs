@@ -28,6 +28,13 @@ public class PlayerBehavior : MonoBehaviour
     // Private member variables.
     private CameraSupport cameraSupport;
 
+    private BaseWeapon weapon;
+
+    private InventoryBehavior inventory;
+
+    private string shipName;
+    private bool specialItemEnabled;
+
     private float weaponDamage;
 
     private string verticalAxis;
@@ -46,6 +53,11 @@ public class PlayerBehavior : MonoBehaviour
         cameraSupport = Camera.main.GetComponent<CameraSupport>();
         Debug.Assert(cameraSupport != null);
 
+        weapon = GetComponent<BaseWeapon>();
+        Debug.Assert(weapon != null);
+
+        inventory = GameObject.FindGameObjectWithTag("Player1Inventory").GetComponent<InventoryBehavior>();
+
         SetupPlayer();
     }
 
@@ -55,6 +67,35 @@ public class PlayerBehavior : MonoBehaviour
         
     }
 
+    // Ship name accessors/modifiers.
+    public void SetShipName(string shipName)
+    {
+        this.shipName = shipName;
+    }
+
+    public string GetShipName()
+    {
+        return shipName;
+    }
+
+    // Inevtory accessor.
+    public InventoryBehavior GetInventory()
+    {
+        return inventory;
+    }
+
+    // Special item accessors/modifiers.
+    public void EnableSpecialItem()
+    {
+        specialItemEnabled = true;
+    }
+
+    public void DisablSpecialItem()
+    {
+        specialItemEnabled = false;
+    }
+
+    // Weapon damage accessors/modifiers.
     public void SetWeaponDamage(float damage)
     {
         this.weaponDamage = damage;
@@ -65,6 +106,12 @@ public class PlayerBehavior : MonoBehaviour
         return weaponDamage;
     }
 
+    public BaseWeapon GetWeapon()
+    {
+        return weapon;
+    }
+
+    // Speed accessors/modifiers.
     public void SetSpeed(float speed)
     {
         this.speed = speed;
@@ -75,9 +122,7 @@ public class PlayerBehavior : MonoBehaviour
         return speed;
     }
 
-    // The only other thing is hitpoints...not sure how to do that with the current implementation of
-    // the health bar.
-
+    // Accessors for cooldown/charge/health bars.
     public CooldownBarBehavior GetWeaponCooldownBar()
     {
         return weaponCooldown;
@@ -88,14 +133,20 @@ public class PlayerBehavior : MonoBehaviour
         return basicAbilityCooldownBar;
     }
 
-    public string GetBasicAbilityAxis()
-    {
-        return basicAbilityAxis;
-    }
-
     public ChargeBarBehavior GetUltimateAbilityChargeBar()
     {
         return ultimateAbilityChargeBar;
+    }
+
+    public HealthBar GetHealthBar()
+    {
+        return healthBar;
+    }
+
+    // Axes accessors/modifiers.
+    public string GetBasicAbilityAxis()
+    {
+        return basicAbilityAxis;
     }
 
     public string GetUltimateAbilityAxis()
@@ -108,11 +159,7 @@ public class PlayerBehavior : MonoBehaviour
         return new string[] { verticalAxis, horizontalAxis };
     }
 
-    public HealthBar GetHealthBar()
-    {
-        return healthBar;
-    }
-
+    // Misc. accessors/functions.
     public bool IsPlayerOne()
     {
         return playerOne;
@@ -129,6 +176,19 @@ public class PlayerBehavior : MonoBehaviour
         ultimateAbilityChargeBar.AddCharge(25.0f / 2.0f);
     }
 
+    public string GetStatus()
+    {
+        float curHealth = healthBar.Health();
+        float hp = healthBar.GetHitPoints();
+
+        string healthMsg = "Health: " + curHealth + "/" + hp + "\n";
+        string speedMsg = "Speed: " + speed + "\n";
+        string damageMsg = "Damage: " + weaponDamage;
+
+        return healthMsg + speedMsg + damageMsg;
+    }
+
+    // Private helper methods.
     private void SetupPlayer()
     {
         // Make sure the player is facing upright.
@@ -141,5 +201,7 @@ public class PlayerBehavior : MonoBehaviour
         // Determine which axes to use for our abilities.
         basicAbilityAxis = playerOne ? PLAYER_1_BASIC_ABILITY_AXIS : PLAYER_2_BASIC_ABILITY_AXIS;
         ultimateAbilityAxis = playerOne ? PLAYER_1_SPECIAL_ABILITY_AXIS : PLAYER_2_SPECIAL_ABILITY_AXIS;
+
+        specialItemEnabled = false;
     }
 }

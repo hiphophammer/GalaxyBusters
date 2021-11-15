@@ -11,8 +11,8 @@ public class HealthBar : MonoBehaviour
 
     // Private member variables.
     private float maxWidth;                     // The maximum width of the reload bar.
-    private float curHealth;                    // The current health.
-    private bool charged;                       // Whether we're fully charged.
+    private float hitPoints;                    // The maximum number of hitpoints.
+    private float curHealth;                    // The current number of hitpoints.
 
     /// <summary>
     /// This is called before the first frame update. We setup the reload bar and make it
@@ -23,7 +23,7 @@ public class HealthBar : MonoBehaviour
         Debug.Assert(parent != null);
 
         // We start off with full health.
-        curHealth = 1.0f;
+        curHealth = hitPoints;
 
         // Set the width of the reload bar.
         Vector3 curScale = transform.localScale;
@@ -41,6 +41,26 @@ public class HealthBar : MonoBehaviour
         UpdatePosition();
     }
 
+    public void SetHitPoints(float hitPoints)
+    {
+        this.hitPoints = hitPoints;
+    }
+
+    public void IncreaseHitPoints(float delta)
+    {
+        hitPoints += delta;
+    }
+
+    public void DecreaseHitPoints(float delta)
+    {
+        hitPoints -= delta;
+    }
+
+    public float GetHitPoints()
+    {
+        return hitPoints;
+    }
+
     public float Health()
     {
         return curHealth;
@@ -50,24 +70,24 @@ public class HealthBar : MonoBehaviour
     {
         curHealth += delta;
 
-        if (curHealth > 1.0f)
+        if (curHealth > hitPoints)
         {
-            curHealth = 1.0f;
+            curHealth = hitPoints;
         }
     }
 
     public float RemoveHealth(float delta)
     {
-        float retVal = delta;
+        float damageDealt = delta;
         curHealth -= delta;
         
         if (curHealth < 0.0f)
         {
-            retVal += curHealth;
+            damageDealt += curHealth;
             curHealth = 0.0f;
         }
 
-        return retVal;
+        return damageDealt;
     }
 
     /// <summary>
@@ -87,11 +107,7 @@ public class HealthBar : MonoBehaviour
     private void UpdateBar()
     {
         // Update the bar width.
-        float percentage = curHealth / 1.0f;
-        if (percentage > 1.0f)
-        {
-            percentage = 1.0f;
-        }
+        float percentage = curHealth / hitPoints;
         float newWidth = percentage * maxWidth;    // The new width of the bar.
 
         Vector3 curScale = transform.localScale;

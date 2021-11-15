@@ -29,6 +29,7 @@ public class EnemyBehavior : MonoBehaviour
     void Start()
     {
         Debug.Assert(healthBar != null);
+        healthBar.SetHitPoints(50.0f);
 
         // Set our reference to the EnemyManager.
         enemyManager = Camera.main.GetComponent<EnemyManager>();
