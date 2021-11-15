@@ -33,6 +33,16 @@ public class BaseCollider : MonoBehaviour
                 healthBar.AddHealth(healthBar.GetHitPoints());
             }
         }
+        else if (other.CompareTag("Enemy") && parent.IsAlive())
+        {
+            // Update our health bar.
+            healthBar.RemoveHealth(10.0f);
+
+            if (healthBar.Health() == 0.0f)
+            {
+                healthBar.AddHealth(healthBar.GetHitPoints());
+            }
+        }
         else if (other.CompareTag("PowerUp"))
         {
             PowerUpBehavior powerUpBehavior = other.GetComponent<PowerUpBehavior>();

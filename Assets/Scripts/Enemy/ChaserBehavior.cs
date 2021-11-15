@@ -27,7 +27,7 @@ public class ChaserBehavior : MonoBehaviour
         health = GetComponent<EnemyHealth>();
         health.setHealth(1, 1);
         
-        speed = new Vector3(0, 35f, 0);
+        speed = new Vector3(0, 3f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
@@ -97,6 +97,16 @@ public class ChaserBehavior : MonoBehaviour
         {
             nextFire = Time.time + fireRate;
             Instantiate(Resources.Load("Prefabs/Bullet"), transform.position + Vector3.up, transform.rotation);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject other = collision.gameObject;
+
+        if (other.CompareTag("HeroProjectile"))
+        {
+            health.decreaseHealth();
         }
     }
 }

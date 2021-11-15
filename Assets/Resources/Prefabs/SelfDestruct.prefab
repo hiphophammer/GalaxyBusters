@@ -60,6 +60,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4095169397292923872, guid: f4d0788ff87f114469d1d9fadc6ca9fc, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095169397292923872, guid: f4d0788ff87f114469d1d9fadc6ca9fc, type: 3}
       propertyPath: CollisionModule.collisionMessages
       value: 1
       objectReference: {fileID: 0}
@@ -98,6 +102,18 @@ PrefabInstance:
     - target: {fileID: 4095169397292923879, guid: f4d0788ff87f114469d1d9fadc6ca9fc, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095169397292923879, guid: f4d0788ff87f114469d1d9fadc6ca9fc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095169397292923879, guid: f4d0788ff87f114469d1d9fadc6ca9fc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095169397292923879, guid: f4d0788ff87f114469d1d9fadc6ca9fc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4095169397292923879, guid: f4d0788ff87f114469d1d9fadc6ca9fc, type: 3}
       propertyPath: m_LocalPosition.x

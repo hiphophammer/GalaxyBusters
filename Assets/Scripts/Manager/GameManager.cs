@@ -11,8 +11,12 @@ public class GameManager : MonoBehaviour
     private PlayerBehavior player1;
     private PlayerBehavior player2;
 
+    public GameObject levelAttach;
+    
     public TMPro.TextMeshProUGUI playerScore;
     public TMPro.TextMeshProUGUI playerStatus;
+    public TMPro.TextMeshProUGUI levelNum;
+    public TMPro.TextMeshProUGUI levelName;
 
     public Sprite player1LancerSprite;
     public Sprite player1VanguardSprite;
@@ -22,19 +26,28 @@ public class GameManager : MonoBehaviour
     public Sprite player2VanguardSprite;
     public Sprite player2TrailblazerSprite;
 
+    public string ship1;
+    public string ship2;
+
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("GameManager: Waking up!");
         scoreManager = Camera.main.GetComponent<ScoreManager>();
         Debug.Assert(scoreManager != null);
 
         Debug.Assert(playerScore != null);
         Debug.Assert(playerStatus != null);
 
-        Debug.Log("Player 1 ship: " + MainMenu.player1Ship);
-        Debug.Log("Player 2 ship: " + MainMenu.player2Ship);
+        ship1 = MainMenu.player1Ship;
+        ship2 = MainMenu.player2Ship;
 
+        Debug.Log("Player 1 ship: " + ship1);
+        Debug.Log("Player 2 ship: " + ship2);
+        
+        Debug.Assert(ship2 == null);
         BuildPlayers();
+        StartCoroutine(StartLevels());
 
         // Put in some power-ups.
         //GameObject item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
@@ -80,11 +93,15 @@ public class GameManager : MonoBehaviour
     private void BuildPlayers()
     {
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+        if((ship1 != null && ship1 != "None") && (ship2 == null || ship2 == "None")){
+            Debug.Log("GameManager: Singleplayer detected");
+            player1StartPos = new Vector3(0.0f, -2.5f, 0.0f);
+        }
 
         for (int i = 0; i < 2; i++)
         {
             bool playerOne = i == 0;
-            string ship = playerOne ? MainMenu.player1Ship : MainMenu.player2Ship;
+            string ship = playerOne ? ship1 : ship2;
 
             if (ship != null && ship != "None")
             {
@@ -118,7 +135,7 @@ public class GameManager : MonoBehaviour
                     // Set stats.
                     playerBehavior.GetHealthBar().SetHitPoints(50.0f);
                     playerBehavior.SetWeaponDamage(25.0f);
-                    playerBehavior.SetSpeed(5.0f);
+                    playerBehavior.SetSpeed(10.0f);
 
                     // Add appropriate components.
                     player.AddComponent<BaseMovement>();
@@ -144,14 +161,14 @@ public class GameManager : MonoBehaviour
                     playerBehavior.SetWeaponDamage(15.0f);
                     playerBehavior.SetSpeed(3.0f);
                 }
-                else
+                else if (ship == "Trailblazer")
                 {
                     // Otherwise, given the string is not null, it must be the trailblazer.
                     renderer.sprite = playerOne ? player1TrailblazerSprite : player2TrailblazerSprite;
 
                     playerBehavior.GetHealthBar().SetHitPoints(75.0f);
                     playerBehavior.SetWeaponDamage(5.0f);
-                    playerBehavior.SetSpeed(7.0f);
+                    playerBehavior.SetSpeed(5.0f);
                 }
             }
         }
@@ -161,5 +178,19 @@ public class GameManager : MonoBehaviour
     {
         playerScore.text = scoreManager.GetStatus();
         playerStatus.text = player1.GetStatus();
+    }
+
+    private IEnumerator StartLevels()
+    {
+        yield return new WaitForSeconds(3.0f);
+        Debug.Log("GameManager: Disabling text now");
+        levelNum.enabled = false;
+        levelName.enabled = false;
+
+        // Level 1
+        Debug.Log("GameManager: Running Level 1");
+        levelAttach.AddComponent<LevelOne>();
+        float time = levelAttach.GetComponent<LevelOne>().levelTime;
+        //yield return new WaitForSeconds(time);
     }
 }

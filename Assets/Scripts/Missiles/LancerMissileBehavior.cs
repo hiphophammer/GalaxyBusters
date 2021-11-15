@@ -5,7 +5,7 @@ using UnityEngine;
 public class LancerMissileBehavior : MonoBehaviour
 {
     // Constants.
-    private const float ACCELERATION = 0.025f; // This is the amount by which the speed
+    private const float ACCELERATION = 1.5f; // This is the amount by which the speed
                                                // increases by each update.
     private const float MAX_SPEED = 20.0f;     // The max speed of the missile.
 
@@ -27,7 +27,7 @@ public class LancerMissileBehavior : MonoBehaviour
     void Start()
     {
         alive = true;
-        curSpeed = 0.0f;
+        curSpeed = 1.0f;
     }
 
     // Update is called once per frame
@@ -105,7 +105,7 @@ public class LancerMissileBehavior : MonoBehaviour
         // Update our speed.
         if (curSpeed < MAX_SPEED)
         {
-            curSpeed += ACCELERATION;
+            curSpeed *= ACCELERATION;
         }
         else
         {
