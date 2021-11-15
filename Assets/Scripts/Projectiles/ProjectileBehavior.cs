@@ -14,11 +14,13 @@ using UnityEngine;
 public class ProjectileBehavior : MonoBehaviour
 {
     // Constants.
-    private const float SPEED = 5.0f;          // This is the speed of the projectile.
+    private const float SPEED = 10.0f;          // This is the speed of the projectile.
 
     // Private member variables.
     private PlayerBehavior parent;              // A reference to the behavior of our
                                                 // parent.
+    private float damage;                       // How much damage this projectile does
+                                                // to the enemy.
     private bool alive;                         // This tells us whether the projectile
                                                 // is set to be terminated.
 
@@ -50,6 +52,16 @@ public class ProjectileBehavior : MonoBehaviour
             // Destroy ourselves.
             Destroy(transform.gameObject);
         }
+    }
+
+    public void SetDamage(float damage)
+    {
+        this.damage = damage;
+    }
+
+    public float GetDamage()
+    {
+        return damage;
     }
 
     public void SetParent(PlayerBehavior parent)

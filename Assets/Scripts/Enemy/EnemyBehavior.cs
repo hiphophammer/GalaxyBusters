@@ -6,7 +6,6 @@ public class EnemyBehavior : MonoBehaviour
 {
     // Constants.
     private const float PROJECTILE_Y_OFFSET = -0.4f;
-    private const float PROJECTILE_DAMAGE = 0.25f;
 
     // Public member variables.
     public CooldownBarBehavior cooldownBar;
@@ -30,6 +29,7 @@ public class EnemyBehavior : MonoBehaviour
     void Start()
     {
         Debug.Assert(healthBar != null);
+        healthBar.SetHitPoints(50.0f);
 
         // Set our reference to the EnemyManager.
         enemyManager = Camera.main.GetComponent<EnemyManager>();
@@ -77,6 +77,29 @@ public class EnemyBehavior : MonoBehaviour
         return alive;
     }
 
+    public void TakeDamage(float totalDamage, PlayerBehavior playerBehavior)
+    {
+        // Update our health bar.
+        float damageTaken = healthBar.RemoveHealth(totalDamage);
+
+        // Store the amount of damage done by the player that dealt this damage.
+        int player = playerBehavior.IsPlayerOne() ? 0 : 1;
+        damageDealt[player] += damageTaken;
+
+        if (healthBar.Health() == 0.0f)
+        {
+            // Tell the player that dealt this damage that they destroyed the enemy.
+            // This is solely for them to charge their ultimate ability further.
+            playerBehavior.DestroyedEnemy();
+
+            // Report to the score manager the amount of damage dealt, and who
+            // destroyed us.
+            scoreManager.DestroyedEnemy(damageDealt, player);
+
+            alive = false;
+        }
+    }
+
     /// <summary>
     /// This sets the starting position of the enemy such that it's within 90% of the
     /// camera bounds.
@@ -121,15 +144,15 @@ public class EnemyBehavior : MonoBehaviour
         GameObject other = collision.gameObject;
         if (other.CompareTag("HeroProjectile") && alive)
         {
-            // Update our health bar.
-            healthBar.RemoveHealth(PROJECTILE_DAMAGE);
-
-            // Store the amount of damage done by the player that dealt this damage.
             ProjectileBehavior projectileBehavior = other.GetComponent<ProjectileBehavior>();
             PlayerBehavior playerBehavior = projectileBehavior.GetParent();
 
+            // Update our health bar.
+            float damage = healthBar.RemoveHealth(projectileBehavior.GetDamage());
+
+            // Store the amount of damage done by the player that dealt this damage.
             int player = playerBehavior.IsPlayerOne() ? 0 : 1;
-            damageDealt[player] += PROJECTILE_DAMAGE;
+            damageDealt[player] += damage;
 
             if (healthBar.Health() == 0.0f)
             {

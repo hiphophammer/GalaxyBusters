@@ -7,6 +7,11 @@ TagManager:
   - HeroProjectile
   - Enemy
   - EnemyProjectile
+  - Canvas
+  - Item
+  - GameCanvas
+  - PowerUp
+  - Player1Inventory
   layers:
   - Default
   - TransparentFX

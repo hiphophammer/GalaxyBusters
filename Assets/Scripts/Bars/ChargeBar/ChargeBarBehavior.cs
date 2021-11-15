@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RechargeBarBehavior : MonoBehaviour
+public class ChargeBarBehavior : MonoBehaviour
 {
     // Public member variables.
     public GameObject parent;                   // The object we must stick to.

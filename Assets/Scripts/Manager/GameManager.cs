@@ -8,8 +8,11 @@ public class GameManager : MonoBehaviour
     private Vector3 player2StartPos = new Vector3(1.5f, -2.5f, 0.0f);
 
     private ScoreManager scoreManager;
+    private PlayerBehavior player1;
+    private PlayerBehavior player2;
 
     public TMPro.TextMeshProUGUI playerScore;
+    public TMPro.TextMeshProUGUI playerStatus;
 
     public Sprite player1LancerSprite;
     public Sprite player1VanguardSprite;
@@ -26,12 +29,41 @@ public class GameManager : MonoBehaviour
         Debug.Assert(scoreManager != null);
 
         Debug.Assert(playerScore != null);
+        Debug.Assert(playerStatus != null);
 
         Debug.Log("Player 1 ship: " + MainMenu.player1Ship);
         Debug.Log("Player 2 ship: " + MainMenu.player2Ship);
 
-        CreatePlayerOne();
-        CreatePlayerTwo();
+        BuildPlayers();
+
+        // Put in some power-ups.
+        //GameObject item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(125.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/CommonTest") as Item;
+
+        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(272.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/RareTest") as Item;
+
+        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(458.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/EpicTest") as Item;
+
+        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
+        //                        new Vector3(610.0f, 560.0f, 0.0f),
+        //                        Quaternion.identity,
+        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
+        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
+        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/SpecialTest") as Item;
     }
 
     // Update is called once per frame
@@ -40,59 +72,87 @@ public class GameManager : MonoBehaviour
         UpdateStatus();
     }
 
-    private void CreatePlayerOne()
+    public PlayerBehavior GetPlayer1()
     {
-        if (MainMenu.player1Ship != "None")
-        {
-            Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-            GameObject player1 = Instantiate(Resources.Load("Prefabs/Player") as GameObject,
-                                                player1StartPos,
-                                                rotation);
-            player1.tag = "Player";
-
-            // Set the sprite.
-            SpriteRenderer renderer = player1.GetComponent<SpriteRenderer>();
-
-            if (MainMenu.player1Ship == "Lancer")
-            {
-                renderer.sprite = player1LancerSprite;
-            }
-            else if (MainMenu.player1Ship == "Vanguard")
-            {
-                renderer.sprite = player1VanguardSprite;
-            }
-            else
-            {
-                renderer.sprite = player1TrailblazerSprite;
-            }
-        }
+        return player1;
     }
 
-    private void CreatePlayerTwo()
+    private void BuildPlayers()
     {
-        if (MainMenu.player2Ship != "None")
+        Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+
+        for (int i = 0; i < 2; i++)
         {
-            Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-            GameObject player2 = Instantiate(Resources.Load("Prefabs/Player") as GameObject,
-                                                player2StartPos,
-                                                rotation);
-            player2.tag = "Player";
-            player2.GetComponent<PlayerBehavior>().playerOne = false;
+            bool playerOne = i == 0;
+            string ship = playerOne ? MainMenu.player1Ship : MainMenu.player2Ship;
 
-            // Set the sprite.
-            SpriteRenderer renderer = player2.GetComponent<SpriteRenderer>();
+            if (ship != null && ship != "None")
+            {
+                // Instantiate the game object.
+                Vector3 startPos = playerOne ? player1StartPos : player2StartPos;
+                GameObject player = Instantiate(Resources.Load("Prefabs/Player") as GameObject,
+                                                    startPos,
+                                                    rotation);
+                player.tag = "Player";
 
-            if (MainMenu.player2Ship == "Lancer")
-            {
-                renderer.sprite = player2LancerSprite;
-            }
-            else if (MainMenu.player2Ship == "Vanguard")
-            {
-                renderer.sprite = player2VanguardSprite;
-            }
-            else
-            {
-                renderer.sprite = player2TrailblazerSprite;
+                // Set up the behavior component.
+                PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
+                playerBehavior.playerOne = playerOne;
+                playerBehavior.SetShipName(ship);
+
+                if (playerOne)
+                {
+                    player1 = playerBehavior;
+                }
+                else
+                {
+                    player2 = playerBehavior;
+                }
+
+                // Set the sprite and add appropriate components.
+                SpriteRenderer renderer = player.GetComponent<SpriteRenderer>();
+                if (ship == "Lancer")
+                {
+                    renderer.sprite = playerOne ? player1LancerSprite : player2LancerSprite;
+
+                    // Set stats.
+                    playerBehavior.GetHealthBar().SetHitPoints(50.0f);
+                    playerBehavior.SetWeaponDamage(25.0f);
+                    playerBehavior.SetSpeed(5.0f);
+
+                    // Add appropriate components.
+                    player.AddComponent<BaseMovement>();
+                    player.GetComponent<BaseMovement>().SetParent(playerBehavior);
+
+                    player.AddComponent<BaseCollider>();
+                    player.GetComponent<BaseCollider>().SetParent(playerBehavior);
+
+                    player.AddComponent<BaseWeapon>();
+                    player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
+
+                    player.AddComponent<LancerBasicAbility>();
+                    player.GetComponent<LancerBasicAbility>().SetParent(playerBehavior);
+
+                    player.AddComponent<LancerUltimateAbility>();
+                    player.GetComponent<LancerUltimateAbility>().SetParent(playerBehavior);
+                }
+                else if (ship == "Vanguard")
+                {
+                    renderer.sprite = playerOne ? player1VanguardSprite : player2VanguardSprite;
+
+                    playerBehavior.GetHealthBar().SetHitPoints(100.0f);
+                    playerBehavior.SetWeaponDamage(15.0f);
+                    playerBehavior.SetSpeed(3.0f);
+                }
+                else
+                {
+                    // Otherwise, given the string is not null, it must be the trailblazer.
+                    renderer.sprite = playerOne ? player1TrailblazerSprite : player2TrailblazerSprite;
+
+                    playerBehavior.GetHealthBar().SetHitPoints(75.0f);
+                    playerBehavior.SetWeaponDamage(5.0f);
+                    playerBehavior.SetSpeed(7.0f);
+                }
             }
         }
     }
@@ -100,6 +160,6 @@ public class GameManager : MonoBehaviour
     private void UpdateStatus()
     {
         playerScore.text = scoreManager.GetStatus();
-        Debug.Log(scoreManager.GetStatus());
+        playerStatus.text = player1.GetStatus();
     }
 }
