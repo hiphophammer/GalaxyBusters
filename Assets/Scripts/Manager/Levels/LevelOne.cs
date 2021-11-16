@@ -15,13 +15,13 @@ public class LevelOne : MonoBehaviour
         timeSinceStart = 0f;
         timeAtStart = Time.time;
 
-        timeBetweenSpawns = 4f;
+        timeBetweenSpawns = 2f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("LevelOne: Wave incoming!");
+        //Debug.Log("LevelOne: Wave incoming!");
         elapsedTime += Time.deltaTime;
         if(timeSinceStart >= levelTime)
         {
@@ -32,14 +32,18 @@ public class LevelOne : MonoBehaviour
             if (elapsedTime > timeBetweenSpawns)
             {
                 elapsedTime = 0;
-                int rand = Random.Range(1,3);
-                if (rand == 1)
+                int rand = Random.Range(1,5);
+                if (rand == 1 || rand == 2)
                 {
                     Spawn3Fighters();
                 }
-                else
+                else if (rand == 3)
                 {
                     SpawnChaser();
+                }
+                else
+                {
+                    SpawnFighter();
                 }
             }
         }
@@ -69,7 +73,7 @@ public class LevelOne : MonoBehaviour
 
     public void SpawnFighter()
     {
-        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(0, 150, 0), Quaternion.Euler(new Vector3(0,0,0))); 
+        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(Random.Range(-3f, 3f), 5.5f, 0), Quaternion.Euler(new Vector3(0,180,0))); 
     }
 
     public void SpawnChaser()

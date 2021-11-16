@@ -11,6 +11,7 @@ public class BaseCollider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Player Collision Detection Starting!");
         healthBar = parent.GetHealthBar();
     }
 
@@ -22,25 +23,26 @@ public class BaseCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject other = collision.gameObject;
+        Debug.Log("Detected Player Collision");
 
         if (other.CompareTag("EnemyProjectile") && parent.IsAlive())
         {
             // Update our health bar.
             healthBar.RemoveHealth(10.0f);
-
-            if (healthBar.Health() == 0.0f)
+            Debug.Log("Losing Health");
+            if(healthBar.Health() <= 0.0f)
             {
-                healthBar.AddHealth(healthBar.GetHitPoints());
+                parent.alive = false;
             }
         }
         else if (other.CompareTag("Enemy") && parent.IsAlive())
         {
             // Update our health bar.
             healthBar.RemoveHealth(10.0f);
-
-            if (healthBar.Health() == 0.0f)
+            Debug.Log("Losing Health");
+            if(healthBar.Health() <= 0.0f)
             {
-                healthBar.AddHealth(healthBar.GetHitPoints());
+                parent.alive = false;
             }
         }
         else if (other.CompareTag("PowerUp"))

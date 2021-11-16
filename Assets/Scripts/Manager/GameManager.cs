@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +31,8 @@ public class GameManager : MonoBehaviour
     public string ship1;
     public string ship2;
 
+    public static bool winLoss;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +51,7 @@ public class GameManager : MonoBehaviour
         
         Debug.Assert(ship2 == null);
         BuildPlayers();
-        StartCoroutine(StartLevels());
+        StartCoroutine(StartGame());
 
         // Put in some power-ups.
         //GameObject item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
@@ -83,6 +87,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateStatus();
+        DetectCondition();
     }
 
     public PlayerBehavior GetPlayer1()
@@ -180,7 +185,7 @@ public class GameManager : MonoBehaviour
         playerStatus.text = player1.GetStatus();
     }
 
-    private IEnumerator StartLevels()
+    private IEnumerator StartGame()
     {
         yield return new WaitForSeconds(3.0f);
         Debug.Log("GameManager: Disabling text now");
@@ -191,6 +196,24 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager: Running Level 1");
         levelAttach.AddComponent<LevelOne>();
         float time = levelAttach.GetComponent<LevelOne>().levelTime;
-        //yield return new WaitForSeconds(time);
+        Debug.Log("Waiting for " + time + " seconds");
+        yield return new WaitForSeconds(180f);
+
+        // Victory!
+        if(player1.IsAlive() || player2.IsAlive())
+        {
+            winLoss = true;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
+
+    private void DetectCondition()
+    {
+        if(!player1.IsAlive())
+        {
+            Debug.Log("PLAYER DIED");
+            winLoss = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 }

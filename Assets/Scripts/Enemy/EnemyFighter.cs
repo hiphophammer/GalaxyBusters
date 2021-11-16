@@ -56,7 +56,7 @@ public class EnemyFighter : MonoBehaviour
     {
         if (Time.time > nextFire)
         {
-            Debug.Log("Firing at " + Time.time);
+            //Debug.Log("Firing at " + Time.time);
             nextFire = Time.time + fireRate;
             Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
         }
