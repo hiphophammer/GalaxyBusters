@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownBar: {fileID: 5021562368491909030}
-  healthBar: {fileID: 8899581596499867810}
+  healthBar: {fileID: 3795335409833722665}
 --- !u!70 &6587880084583498695
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -179,6 +179,14 @@ PrefabInstance:
       propertyPath: yOffset
       value: 0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 8029665347693426788, guid: 1fa73ca1aa1c7874dba32bea89060da1, type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 7117744791381488422}
+    - target: {fileID: 8029665347693426788, guid: 1fa73ca1aa1c7874dba32bea89060da1, type: 3}
+      propertyPath: yOffset
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fa73ca1aa1c7874dba32bea89060da1, type: 3}
 --- !u!4 &8899581596499867811 stripped
@@ -186,9 +194,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2325279257668092910, guid: 1fa73ca1aa1c7874dba32bea89060da1, type: 3}
   m_PrefabInstance: {fileID: 6612594206732876621}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8899581596499867810 stripped
+--- !u!114 &3795335409833722665 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2325279257668092911, guid: 1fa73ca1aa1c7874dba32bea89060da1, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8029665347693426788, guid: 1fa73ca1aa1c7874dba32bea89060da1, type: 3}
   m_PrefabInstance: {fileID: 6612594206732876621}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

@@ -3,7 +3,15 @@ guid: ed8d6331a2253ad4ea7e1081de723913
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - playerScore: {instanceID: 0}
+  - playerStatus: {instanceID: 0}
+  - player1LancerSprite: {fileID: 21300000, guid: 72f5724e87a941c42af5e565c1c560e9, type: 3}
+  - player1VanguardSprite: {instanceID: 0}
+  - player1TrailblazerSprite: {instanceID: 0}
+  - player2LancerSprite: {instanceID: 0}
+  - player2VanguardSprite: {instanceID: 0}
+  - player2TrailblazerSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
