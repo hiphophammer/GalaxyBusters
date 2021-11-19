@@ -23,7 +23,9 @@ public class SinglePlayerMenu : MonoBehaviour
 
     private void StoreShipType()
     {
+        Debug.Log("Menu: Storing ship type");
         MainMenu.player1Ship = player1Dropdown.options[player1Dropdown.value].text;
+        Debug.Log("Menu: Ship is: " + MainMenu.player1Ship);
     }
 
     public void StartGame()

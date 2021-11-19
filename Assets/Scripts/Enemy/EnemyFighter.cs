@@ -22,14 +22,14 @@ public class EnemyFighter : MonoBehaviour
         health = GetComponent<EnemyHealth>();
         health.setHealth(1, 1);
 
-        speed = new Vector3(0, 20f, 0);
+        speed = new Vector3(0, 2f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 2f;
+        fireRate = 200.0f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
@@ -56,8 +56,19 @@ public class EnemyFighter : MonoBehaviour
     {
         if (Time.time > nextFire)
         {
+            //Debug.Log("Firing at " + Time.time);
             nextFire = Time.time + fireRate;
             Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject other = collision.gameObject;
+
+        if (other.CompareTag("HeroProjectile"))
+        {
+            health.decreaseHealth();
         }
     }
 

@@ -11,7 +11,7 @@ public class EnemyBullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = new Vector3(0, 50f, 0);
+        speed = new Vector3(0, 5.0f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
@@ -23,11 +23,7 @@ public class EnemyBullet : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 pos = transform.position;
-        if(pos.x > bound.max.x|| pos.x < bound.min.x)
-        {
-            Destroy(gameObject);
-        }
-        if(pos.y > bound.max.y || pos.y < bound.min.y)
+        if(transform.position.y < bound.min.y - 10 || transform.position.x < bound.min.x - 10)
         {
             Destroy(gameObject);
         }

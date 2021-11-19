@@ -24,6 +24,7 @@ public class PlayerBehavior : MonoBehaviour
     public HealthBar healthBar;
     public float speed = 3.0f;
     public bool playerOne = true;
+    public bool alive = true;
 
     // Private member variables.
     private CameraSupport cameraSupport;
@@ -167,7 +168,7 @@ public class PlayerBehavior : MonoBehaviour
 
     public bool IsAlive()
     {
-        return healthBar.Health() != 0.0f;
+        return alive;
     }
 
     public void DestroyedEnemy()

@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour
     int health;
     int bulletDamage;
     GameObject Explosion;
+    GameObject powerUp;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,16 @@ public class EnemyHealth : MonoBehaviour
             Destroy(gameObject);
             Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
             Destroy(Explosion.gameObject, 1);
+            
+            //20% to spawn powerup
+            int chance = Random.Range(1, 6);
+            if(chance == 1)
+            {
+                powerUp = Resources.Load<GameObject>("Prefabs/PowerUp") as GameObject;
+                powerUp.transform.position = transform.position;
+                powerUp.transform.rotation = transform.rotation;
+            }
+            
         }
     }
 
