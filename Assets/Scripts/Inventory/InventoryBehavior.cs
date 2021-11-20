@@ -31,16 +31,16 @@ public class InventoryBehavior : MonoBehaviour
     void Update()
     {
         // TODO: remove this later!
-        player = Camera.main.GetComponent<GameManager>().GetPlayer1();
+        //player = Camera.main.GetComponent<GameManager>().GetPlayer1();
     }
 
     public void SetPlayer(PlayerBehavior player)
     {
         this.player = player;
-        ship = player.name;
+        ship = player.GetShipName();
     }
 
-    public bool AddItem(Item item, bool isPowerUp)
+    public bool AddItem(Item item)
     {
         bool success = false;
 
@@ -53,7 +53,7 @@ public class InventoryBehavior : MonoBehaviour
             AddToInventory(item);
 
             // Update the player.
-            UpdatePlayer(item, isPowerUp);
+            UpdatePlayer(item);
 
             // Updated the UI.
             UpdateUI();
@@ -62,6 +62,26 @@ public class InventoryBehavior : MonoBehaviour
         }
 
         return success;
+    }
+
+    // Clears powerups from a player's inventory. Should be called at the end of a level.
+    public void ClearPowerUps()
+    {
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            List<Item> list = items[i];
+            for (int j = list.Count - 1; j >= 0; j--)
+            {
+                if (list[j].isPowerUp)
+                {
+                    Item item = list[j];
+                    player.SetSpeed(player.GetSpeed() - item.dSpeed);
+                    player.SetWeaponDamage(player.GetWeaponDamage() - item.dDamage);
+
+                    list.RemoveAt(j);
+                }
+            }
+        }
     }
 
     private bool IsCommonItem(Item item)
@@ -123,7 +143,7 @@ public class InventoryBehavior : MonoBehaviour
             {
                 valid = true;
             }
-            else if (!specialItemAdded || item.ship == ship)
+            else if (IsSpecialItem(item) && !specialItemAdded && item.ship == ship)
             {
                 valid = true;
             }
@@ -140,10 +160,14 @@ public class InventoryBehavior : MonoBehaviour
     {
         bool success = false;
 
+        // This is for epic items, of which we can have multiple, but they must take
+        // their own slots.
+        bool stackable = IsCommonItem(item) || IsRareItem(item);
+
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             List<Item> list = items[i];
-            if ((list == null) || (list[0].type == item.type))
+            if ((list == null) || ((list[0].type == item.type) && stackable))
             {
                 // The list at this location is empty, OR the type of the items in this
                 // list matches that of the item we need to add (this only happens with
@@ -176,7 +200,7 @@ public class InventoryBehavior : MonoBehaviour
         }
     }
 
-    private void UpdatePlayer(Item item, bool isPowerUp)
+    private void UpdatePlayer(Item item)
     {
         if (IsCommonItem(item) || IsRareItem(item))
         {
@@ -185,7 +209,7 @@ public class InventoryBehavior : MonoBehaviour
             player.SetWeaponDamage(player.GetWeaponDamage() + item.dDamage);
 
             // Update the health/hitpoints accordingly.
-            if (isPowerUp)
+            if (item.isPowerUp)
             {
                 player.GetHealthBar().AddHealth(item.dHP);
             }

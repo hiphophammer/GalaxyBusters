@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour
 
     public static bool winLoss;
 
+    // DEBUG TODO: Remove
+    private InventoryBehavior inventory;
+    bool testsDone;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +48,10 @@ public class GameManager : MonoBehaviour
         Debug.Assert(playerStatus != null);
 
         ship1 = MainMenu.player1Ship;
+
+        // DEBUG TODO: Remove
+        ship1 = "Lancer";
+
         ship2 = MainMenu.player2Ship;
 
         Debug.Log("Player 1 ship: " + ship1);
@@ -53,34 +61,11 @@ public class GameManager : MonoBehaviour
         BuildPlayers();
         StartCoroutine(StartGame());
 
-        // Put in some power-ups.
-        //GameObject item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(125.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/CommonTest") as Item;
+        // DEBUG TODO: Remove
+        inventory = GameObject.FindGameObjectWithTag("Player1Inventory").GetComponent<InventoryBehavior>();
+        inventory.SetPlayer(player1);
 
-        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(272.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/RareTest") as Item;
-
-        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(458.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/EpicTest") as Item;
-
-        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(610.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/SpecialTest") as Item;
+        testsDone = true;
     }
 
     // Update is called once per frame
@@ -88,6 +73,83 @@ public class GameManager : MonoBehaviour
     {
         UpdateStatus();
         DetectCondition();
+
+        //if (testsDone)
+        //{
+        //    // Create some common items.
+        //    Item common1 = new Item();
+        //    common1.type = Item.ItemType.common;
+        //    common1.dHP = 5.0f;
+
+        //    Item common2 = new Item();
+        //    common2.type = Item.ItemType.common;
+        //    common2.isPowerUp = true;
+        //    common2.dSpeed = 5.0f;
+
+        //    bool retVal = inventory.AddItem(common1);  // success
+        //    retVal = inventory.AddItem(common2);  // success, and should be removed with ClearPowerUps()
+
+        //    // Create some rare items.
+        //    Item rare1 = new Item();
+        //    rare1.type = Item.ItemType.rare;
+        //    rare1.dSpeed = 7.0f;
+        //    rare1.dDamage = -7.0f;
+
+        //    Item rare2 = new Item();
+        //    rare2.type = Item.ItemType.rare;
+        //    rare2.isPowerUp = true;
+        //    rare2.dHP = 7.0f;
+        //    rare2.dSpeed = -7.0f;
+
+        //    retVal = inventory.AddItem(rare1);    // success
+        //    retVal = inventory.AddItem(rare2);    // success, and should be removed with ClearPowerUps()
+        //                                          // we should also see the number of hit points increase by 7.
+
+        //    // Create some epic items.
+        //    Item epic1 = new Item();
+        //    epic1.type = Item.ItemType.epic;
+        //    epic1.ID = 1;   // swap bullet
+        //    epic1.bulletName = "piercing";
+
+        //    Item epic2 = new Item();
+        //    epic2.type = Item.ItemType.epic;
+        //    epic2.ID = 2;   // dual stream
+
+        //    Item epic3 = new Item();
+        //    epic3.type = Item.ItemType.epic;
+        //    epic3.ID = 3;   // shield
+
+        //    //retVal = inventory.AddItem(epic1);    // success
+        //    retVal = inventory.AddItem(epic2);    // success
+        //    retVal = inventory.AddItem(epic3);    // this should fail as we already have 2.
+
+        //    // Create our special items.
+        //    // first, try adding the one of a different name.
+        //    // then, try adding the correct one.
+        //    // then try adding the other correct one (should fail).
+        //    // finally, try adding the incorrect one again (should fail).
+        //    Item special1 = new Item();
+        //    special1.type = Item.ItemType.special;
+        //    special1.ship = "Lancer";
+
+        //    Item special2 = new Item();
+        //    special2.type = Item.ItemType.special;
+        //    special2.ship = "Lancer";
+
+        //    Item special3 = new Item();
+        //    special3.type = Item.ItemType.special;
+        //    special3.ship = "Vanguard";
+
+        //    retVal = inventory.AddItem(special3);     // fail
+        //    retVal = inventory.AddItem(special1);     // success
+        //    retVal = inventory.AddItem(special2);     // fail
+        //    retVal = inventory.AddItem(special3);     // fail
+
+        //    // Clear the powerups.
+        //    inventory.ClearPowerUps();
+
+        //    testsDone = false;
+        //}
     }
 
     public PlayerBehavior GetPlayer1()
