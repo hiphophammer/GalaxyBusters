@@ -31,15 +31,18 @@ public class GameManager : MonoBehaviour
     public string ship1;
     public string ship2;
 
+    public InventoryBehavior player1Inventory;
+    public InventoryBehavior player2Inevntory;
+
     public static bool winLoss;
 
     // DEBUG TODO: Remove
-    private InventoryBehavior inventory;
     bool testsDone;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Perform some checks.
         Debug.Log("GameManager: Waking up!");
         scoreManager = Camera.main.GetComponent<ScoreManager>();
         Debug.Assert(scoreManager != null);
@@ -47,24 +50,29 @@ public class GameManager : MonoBehaviour
         Debug.Assert(playerScore != null);
         Debug.Assert(playerStatus != null);
 
+        // Determine which players to build.
         ship1 = MainMenu.player1Ship;
-
-        // DEBUG TODO: Remove
-        ship1 = "Lancer";
-
         ship2 = MainMenu.player2Ship;
 
         Debug.Log("Player 1 ship: " + ship1);
         Debug.Log("Player 2 ship: " + ship2);
-        
-        Debug.Assert(ship2 == null);
+
+        // Make sure we have valid references to our inventories.
+        Debug.Assert(player1Inventory != null);
+        Debug.Assert(player2Inevntory != null);
+
+        // Build the players.
         BuildPlayers();
         StartCoroutine(StartGame());
 
-        // DEBUG TODO: Remove
-        inventory = GameObject.FindGameObjectWithTag("Player1Inventory").GetComponent<InventoryBehavior>();
-        inventory.SetPlayer(player1);
+        // Set up the inventories.
+        player1Inventory.SetPlayer(player1);
+        if (player2 != null)
+        {
+            player2Inevntory.SetPlayer(player2);
+        }
 
+        // DEBUG TODO: Remove
         testsDone = true;
     }
 
@@ -183,6 +191,7 @@ public class GameManager : MonoBehaviour
                 PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
                 playerBehavior.playerOne = playerOne;
                 playerBehavior.SetShipName(ship);
+                playerBehavior.SetInventory(playerOne ? player1Inventory : player2Inevntory);
 
                 if (playerOne)
                 {
@@ -259,7 +268,7 @@ public class GameManager : MonoBehaviour
         levelAttach.AddComponent<LevelOne>();
         float time = levelAttach.GetComponent<LevelOne>().levelTime;
         Debug.Log("Waiting for " + time + " seconds");
-        yield return new WaitForSeconds(180f);
+        yield return new WaitForSeconds(180.0f);
 
         // Victory!
         if(player1.IsAlive() || player2.IsAlive())

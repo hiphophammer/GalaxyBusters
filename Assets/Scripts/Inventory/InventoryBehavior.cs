@@ -27,13 +27,6 @@ public class InventoryBehavior : MonoBehaviour
         epicItemCount = 0;        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // TODO: remove this later!
-        //player = Camera.main.GetComponent<GameManager>().GetPlayer1();
-    }
-
     public void SetPlayer(PlayerBehavior player)
     {
         this.player = player;

@@ -47,8 +47,8 @@ public class LevelOne : MonoBehaviour
                 }
             }
         }
-        
-        //Debug.Log(timeSinceStart);
+
+        Debug.Log(timeSinceStart);
         timeSinceStart = Time.time - timeAtStart; 
     }
 
