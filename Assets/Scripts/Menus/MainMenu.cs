@@ -13,7 +13,7 @@ public class MainMenu : MonoBehaviour
     public static string player1Ship;
     public static string player2Ship;
 
-    private void Start()
+    void Start()
     {
         Debug.Assert(singlePlayerMenu != null);
         Debug.Assert(cooperativePlayMenu != null);
@@ -24,5 +24,14 @@ public class MainMenu : MonoBehaviour
         singlePlayerMenu.SetActive(false);
         cooperativePlayMenu.SetActive(false);
         mainMenu.SetActive(true);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Quitting Application!");
+            Application.Quit();
+        }
     }
 }
