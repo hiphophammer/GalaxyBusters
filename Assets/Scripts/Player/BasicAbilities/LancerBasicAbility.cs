@@ -13,18 +13,21 @@ public class LancerBasicAbility : MonoBehaviour
     private CooldownBarBehavior cooldownBar;
     private string axis;
 
+    private bool retrievedAxis;
+
     // Start is called before the first frame update
     void Start()
     {
         cooldownBar = parent.GetBasicAbilityCooldownBar();
-        axis = parent.GetBasicAbilityAxis();
+        retrievedAxis = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        RetrieveAxis();
         // Check if the ability is being activated.
-        if (Input.GetAxis(axis) == 1.0f)
+        if (retrievedAxis && Input.GetAxis(axis) == 1.0f)
         {
             if (cooldownBar.ReadyToFire())
             {
@@ -47,5 +50,18 @@ public class LancerBasicAbility : MonoBehaviour
     public void SetParent(PlayerBehavior parent)
     {
         this.parent = parent;
+    }
+
+    // Private helpers.
+    private void RetrieveAxis()
+    {
+        if (!retrievedAxis)
+        {
+            axis = parent.GetBasicAbilityAxis();
+            if (axis != null && axis != "")
+            {
+                retrievedAxis = true;
+            }
+        }
     }
 }

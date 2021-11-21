@@ -4,21 +4,51 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
+    // Public member variables.
+    public ScoreDisplay player1ScoreDisplay;
+    public ScoreDisplay player2ScoreDisplay;
 
+    // Private member variables.
     private float player1Score;
     private float player2Score;
+
+    private bool determinedMode;
+    private bool singlePlayer;
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Assert(player1ScoreDisplay != null);
+        Debug.Assert(player2ScoreDisplay != null);
+
         player1Score = 0.0f;
         player2Score = 0.0f;
+
+        determinedMode = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        DetermineMode();
+        UpdateDisplays();
+    }
+
+    private void DetermineMode()
+    {
+        if (!determinedMode)
+        {
+            GameManager gameManager = Camera.main.GetComponent<GameManager>();
+            if (gameManager.Ready())
+            {
+                singlePlayer = gameManager.SinglePlayer();
+                if (singlePlayer)
+                {
+                    player2ScoreDisplay.Hide();
+                }
+                determinedMode = true;
+            }
+        }
     }
 
     public void DestroyedEnemy(float[] damageDealt, int destroyer)
@@ -37,10 +67,12 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public string GetStatus()
+    private void UpdateDisplays()
     {
-        string player1ScoreMsg = "Player 1: " + player1Score;
-        string player2ScoreMsg = "Player 2: " + player2Score;
-        return player1ScoreMsg + "\n" + player2ScoreMsg;
+        player1ScoreDisplay.SetScore((int) player1Score);
+        if (singlePlayer)
+        {
+            player2ScoreDisplay.SetScore((int)player2Score);
+        }
     }
 }

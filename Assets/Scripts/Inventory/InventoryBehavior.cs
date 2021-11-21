@@ -10,11 +10,14 @@ public class InventoryBehavior : MonoBehaviour
                                                 // and rare items.
     private const int MAX_EPIC_ITEMS = INVENTORY_SIZE - RESERVED_SLOTS;
 
+    // Public member variables.
+    public Slot[] slots;
+
     // Private member variables.
     private PlayerBehavior player;
     private string ship;
 
-    List<Item>[] items;
+    private List<Item>[] items;
     private bool specialItemAdded;
     private int epicItemCount;
 
@@ -24,23 +27,27 @@ public class InventoryBehavior : MonoBehaviour
         // Initialize our list & other members.
         items = new List<Item>[5];
         specialItemAdded = false;
-        epicItemCount = 0;        
+        epicItemCount = 0;
+
+        foreach (Slot slot in slots)
+        {
+            Debug.Assert(slot != null);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Hide()
     {
-        // TODO: remove this later!
-        player = Camera.main.GetComponent<GameManager>().GetPlayer1();
+        gameObject.SetActive(false);
     }
 
     public void SetPlayer(PlayerBehavior player)
     {
         this.player = player;
-        ship = player.name;
+        ship = player.GetShipName();
+        Debug.Log("ShipName: " + ship);
     }
 
-    public bool AddItem(Item item, bool isPowerUp)
+    public bool AddItem(Item item)
     {
         bool success = false;
 
@@ -53,7 +60,7 @@ public class InventoryBehavior : MonoBehaviour
             AddToInventory(item);
 
             // Update the player.
-            UpdatePlayer(item, isPowerUp);
+            UpdatePlayer(item);
 
             // Updated the UI.
             UpdateUI();
@@ -62,6 +69,26 @@ public class InventoryBehavior : MonoBehaviour
         }
 
         return success;
+    }
+
+    // Clears powerups from a player's inventory. Should be called at the end of a level.
+    public void ClearPowerUps()
+    {
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            List<Item> list = items[i];
+            for (int j = list.Count - 1; j >= 0; j--)
+            {
+                if (list[j].isPowerUp)
+                {
+                    Item item = list[j];
+                    player.SetSpeed(player.GetSpeed() - item.dSpeed);
+                    player.SetWeaponDamage(player.GetWeaponDamage() - item.dDamage);
+
+                    list.RemoveAt(j);
+                }
+            }
+        }
     }
 
     private bool IsCommonItem(Item item)
@@ -123,7 +150,7 @@ public class InventoryBehavior : MonoBehaviour
             {
                 valid = true;
             }
-            else if (!specialItemAdded || item.ship == ship)
+            else if (IsSpecialItem(item) && !specialItemAdded && item.ship == ship)
             {
                 valid = true;
             }
@@ -140,10 +167,14 @@ public class InventoryBehavior : MonoBehaviour
     {
         bool success = false;
 
+        // This is for epic items, of which we can have multiple, but they must take
+        // their own slots.
+        bool stackable = IsCommonItem(item) || IsRareItem(item);
+
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             List<Item> list = items[i];
-            if ((list == null) || (list[0].type == item.type))
+            if ((list == null) || ((list[0].type == item.type) && stackable))
             {
                 // The list at this location is empty, OR the type of the items in this
                 // list matches that of the item we need to add (this only happens with
@@ -176,7 +207,7 @@ public class InventoryBehavior : MonoBehaviour
         }
     }
 
-    private void UpdatePlayer(Item item, bool isPowerUp)
+    private void UpdatePlayer(Item item)
     {
         if (IsCommonItem(item) || IsRareItem(item))
         {
@@ -185,7 +216,7 @@ public class InventoryBehavior : MonoBehaviour
             player.SetWeaponDamage(player.GetWeaponDamage() + item.dDamage);
 
             // Update the health/hitpoints accordingly.
-            if (isPowerUp)
+            if (item.isPowerUp)
             {
                 player.GetHealthBar().AddHealth(item.dHP);
             }
@@ -221,6 +252,13 @@ public class InventoryBehavior : MonoBehaviour
 
     private void UpdateUI()
     {
-        // Nothing here yet!
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            List<Item> list = items[i];
+            if (list != null && list.Count > 0)
+            {
+                slots[i].SetIcon(list[0].icon, list.Count);
+            }
+        }
     }
 }

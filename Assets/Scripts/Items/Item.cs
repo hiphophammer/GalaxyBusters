@@ -13,6 +13,8 @@ public class Item: ScriptableObject
         special
     };
 
+    public bool isPowerUp;
+
     // These are used for displaying the item.
     public int ID;
     public ItemType type;

@@ -6,17 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private Vector3 player1StartPos = new Vector3(-1.5f, -2.5f, 0.0f);
-    private Vector3 player2StartPos = new Vector3(1.5f, -2.5f, 0.0f);
-
-    private ScoreManager scoreManager;
+    // Public member variables.
     private PlayerBehavior player1;
     private PlayerBehavior player2;
 
     public GameObject levelAttach;
-    
-    public TMPro.TextMeshProUGUI playerScore;
-    public TMPro.TextMeshProUGUI playerStatus;
+
     public TMPro.TextMeshProUGUI levelNum;
     public TMPro.TextMeshProUGUI levelName;
 
@@ -31,63 +26,64 @@ public class GameManager : MonoBehaviour
     public string ship1;
     public string ship2;
 
+    public InventoryBehavior player1Inventory;
+    public InventoryBehavior player2Inventory;
+
     public static bool winLoss;
+
+    // Private member variables.
+    private Vector3 player1StartPos = new Vector3(-1.5f, -2.5f, 0.0f);
+    private Vector3 player2StartPos = new Vector3(1.5f, -2.5f, 0.0f);
+
+    private bool ready;
+    private bool singlePlayer;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        // Perform some checks.
         Debug.Log("GameManager: Waking up!");
-        scoreManager = Camera.main.GetComponent<ScoreManager>();
-        Debug.Assert(scoreManager != null);
 
-        Debug.Assert(playerScore != null);
-        Debug.Assert(playerStatus != null);
-
+        // Determine which players to build.
         ship1 = MainMenu.player1Ship;
         ship2 = MainMenu.player2Ship;
 
         Debug.Log("Player 1 ship: " + ship1);
         Debug.Log("Player 2 ship: " + ship2);
-        
-        Debug.Assert(ship2 == null);
+
+        // Make sure we have valid references to our inventories.
+        Debug.Assert(player1Inventory != null);
+        Debug.Assert(player2Inventory != null);
+
+        // Build the players.
         BuildPlayers();
         StartCoroutine(StartGame());
 
-        // Put in some power-ups.
-        //GameObject item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(125.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/CommonTest") as Item;
+        // Set up the inventories.
+        player1Inventory.SetPlayer(player1);
+        if (player2 != null)
+        {
+            player2Inventory.SetPlayer(player2);
+        }
 
-        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(272.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/RareTest") as Item;
-
-        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(458.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/EpicTest") as Item;
-
-        //item = Instantiate(Resources.Load("Prefabs/ItemDisplay") as GameObject,
-        //                        new Vector3(610.0f, 560.0f, 0.0f),
-        //                        Quaternion.identity,
-        //                        GameObject.FindGameObjectWithTag("GameCanvas").transform);
-        //item.GetComponent<ItemDisplayBehavior>().powerUpMode = true;
-        //item.GetComponent<ItemDisplayBehavior>().item = Resources.Load("items/SpecialTest") as Item;
+        ready = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateStatus();
         DetectCondition();
+    }
+
+    public bool Ready()
+    {
+        return ready;
+    }
+
+    public bool SinglePlayer()
+    {
+        return singlePlayer;
     }
 
     public PlayerBehavior GetPlayer1()
@@ -95,12 +91,20 @@ public class GameManager : MonoBehaviour
         return player1;
     }
 
+    public PlayerBehavior GetPlayer2()
+    {
+        return player2;
+    }
+
     private void BuildPlayers()
     {
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-        if((ship1 != null && ship1 != "None") && (ship2 == null || ship2 == "None")){
+        if ((ship1 != null && ship1 != "None") && (ship2 == null || ship2 == "None"))
+        {
             Debug.Log("GameManager: Singleplayer detected");
             player1StartPos = new Vector3(0.0f, -2.5f, 0.0f);
+            player2Inventory.Hide();
+            singlePlayer = true;
         }
 
         for (int i = 0; i < 2; i++)
@@ -121,6 +125,7 @@ public class GameManager : MonoBehaviour
                 PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
                 playerBehavior.playerOne = playerOne;
                 playerBehavior.SetShipName(ship);
+                playerBehavior.SetInventory(playerOne ? player1Inventory : player2Inventory);
 
                 if (playerOne)
                 {
@@ -192,12 +197,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void UpdateStatus()
-    {
-        playerScore.text = scoreManager.GetStatus();
-        playerStatus.text = player1.GetStatus();
-    }
-
     private IEnumerator StartGame()
     {
         yield return new WaitForSeconds(3.0f);
@@ -210,7 +209,7 @@ public class GameManager : MonoBehaviour
         levelAttach.AddComponent<LevelOne>();
         float time = levelAttach.GetComponent<LevelOne>().levelTime;
         Debug.Log("Waiting for " + time + " seconds");
-        yield return new WaitForSeconds(180f);
+        yield return new WaitForSeconds(180.0f);
 
         // Victory!
         if(player1.IsAlive() || player2.IsAlive())
