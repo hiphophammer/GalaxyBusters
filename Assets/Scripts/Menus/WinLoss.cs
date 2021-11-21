@@ -20,14 +20,6 @@ public class WinLoss : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if(Input.GetKey("r"))
-        {
-            SceneManager.LoadScene(0);
-        }
-    }
-
     public void BackButton()
     {
         Debug.Log("Going home");

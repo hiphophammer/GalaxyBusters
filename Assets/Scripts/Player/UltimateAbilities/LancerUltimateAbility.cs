@@ -18,6 +18,8 @@ public class LancerUltimateAbility : MonoBehaviour
     private CooldownBarBehavior cooldownBar;
     private string axis;
 
+    private bool retrievedAxis;
+
     // Bullet info.
     private string bulletType;
     private float damage;
@@ -43,7 +45,8 @@ public class LancerUltimateAbility : MonoBehaviour
         // Retrieve a reference to our charge & cooldown bars and the axis.
         chargeBar = parent.GetUltimateAbilityChargeBar();
         cooldownBar = parent.GetWeaponCooldownBar();
-        axis = parent.GetUltimateAbilityAxis();
+
+        retrievedAxis = false;
 
         // Start the FSM off in the charge state.
         state = UltimateAbilityState.charge;
@@ -55,8 +58,13 @@ public class LancerUltimateAbility : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateBulletInfo();
-        UpdateFSM();
+        RetrieveAxis();
+
+        if (retrievedAxis)
+        {
+            UpdateBulletInfo();
+            UpdateFSM();
+        }
     }
 
     // Public modifiers.
@@ -66,6 +74,18 @@ public class LancerUltimateAbility : MonoBehaviour
     }
 
     // Private helpers.
+    private void RetrieveAxis()
+    {
+        if (!retrievedAxis)
+        {
+            axis = parent.GetUltimateAbilityAxis();
+            if (axis != null && axis != "")
+            {
+                retrievedAxis = true;
+            }
+        }
+    }
+
     private void UpdateBulletInfo()
     {
         bulletType = weapon.GetBullet();
