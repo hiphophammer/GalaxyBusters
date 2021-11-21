@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class LevelOne : MonoBehaviour
 {
-    public float levelTime, timeSinceStart, timeAtStart;
+    public float levelTime, timeSinceStart, timeAtStart, timeUntilEnd;
     float timeBetweenSpawns, elapsedTime;
     
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("LevelOne: Waking up!");
-        levelTime = 180f;
+        levelTime = 45f;
         timeSinceStart = 0f;
         timeAtStart = Time.time;
-
+        timeUntilEnd = 45f;
         timeBetweenSpawns = 2f;
     }
 
@@ -23,6 +23,7 @@ public class LevelOne : MonoBehaviour
     {
         //Debug.Log("LevelOne: Wave incoming!");
         elapsedTime += Time.deltaTime;
+        timeUntilEnd = timeUntilEnd - elapsedTime;
         if(timeSinceStart >= levelTime)
         {
             levelEnd();
@@ -48,7 +49,6 @@ public class LevelOne : MonoBehaviour
             }
         }
 
-        Debug.Log(timeSinceStart);
         timeSinceStart = Time.time - timeAtStart; 
     }
 
@@ -60,8 +60,8 @@ public class LevelOne : MonoBehaviour
 
     public void SpawnUFO()
     {
-        Instantiate(Resources.Load("Prefabs/UFO"), new Vector3(-40, 150, 0), Quaternion.Euler(new Vector3(0,0,0))); 
-        Instantiate(Resources.Load("Prefabs/UFO"), new Vector3(40, 150, 0), Quaternion.Euler(new Vector3(0,0,0))); 
+        Instantiate(Resources.Load("Prefabs/UFO"), new Vector3(-40, 150, 0), Quaternion.Euler(new Vector3(0,0,180))); 
+        Instantiate(Resources.Load("Prefabs/UFO"), new Vector3(40, 150, 0), Quaternion.Euler(new Vector3(0,0,180))); 
     }
 
     public void Spawn3Fighters()
@@ -73,7 +73,7 @@ public class LevelOne : MonoBehaviour
 
     public void SpawnFighter()
     {
-        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(Random.Range(-3f, 3f), 5.5f, 0), Quaternion.Euler(new Vector3(0,180,0))); 
+        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(Random.Range(-3f, 3f), 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
     }
 
     public void SpawnChaser()

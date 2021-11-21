@@ -22,7 +22,7 @@ public class CameraBounds : MonoBehaviour
     {
         var vertExtent = cam.orthographicSize;
         var horzExtent = vertExtent * Screen.width / Screen.height;
-        bounds = new Bounds(cam.transform.position, new Vector3(horzExtent * 2f, vertExtent * 2f, 0));
+        bounds = new Bounds(cam.transform.position, new Vector3(horzExtent * .66f, vertExtent * 2f, 0));
     }
 
     

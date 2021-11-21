@@ -34,6 +34,7 @@ public class BaseCollider : MonoBehaviour
             {
                 parent.alive = false;
             }
+            Destroy(other);
         }
         else if (other.CompareTag("Enemy") && parent.IsAlive())
         {

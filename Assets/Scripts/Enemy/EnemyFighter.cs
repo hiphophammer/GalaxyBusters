@@ -35,9 +35,6 @@ public class EnemyFighter : MonoBehaviour
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
 
-        transform.Rotate(Vector3.forward * 180f);
-
-
     }
 
     void FixedUpdate()
@@ -68,7 +65,10 @@ public class EnemyFighter : MonoBehaviour
 
         if (other.CompareTag("HeroProjectile"))
         {
-            health.decreaseHealth();
+            // As a HeroProjectile, other must have a ProjectileBehavior script attached.
+            ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
+            Debug.Log(damageDealer.GetParent());
+            health.decreaseHealth(damageDealer.GetParent());
         }
     }
 
