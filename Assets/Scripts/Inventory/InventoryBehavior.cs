@@ -10,11 +10,14 @@ public class InventoryBehavior : MonoBehaviour
                                                 // and rare items.
     private const int MAX_EPIC_ITEMS = INVENTORY_SIZE - RESERVED_SLOTS;
 
+    // Public member variables.
+    public Slot[] slots;
+
     // Private member variables.
     private PlayerBehavior player;
     private string ship;
 
-    List<Item>[] items;
+    private List<Item>[] items;
     private bool specialItemAdded;
     private int epicItemCount;
 
@@ -24,13 +27,19 @@ public class InventoryBehavior : MonoBehaviour
         // Initialize our list & other members.
         items = new List<Item>[5];
         specialItemAdded = false;
-        epicItemCount = 0;        
+        epicItemCount = 0;
+
+        foreach (Slot slot in slots)
+        {
+            Debug.Assert(slot != null);
+        }
     }
 
     public void SetPlayer(PlayerBehavior player)
     {
         this.player = player;
         ship = player.GetShipName();
+        Debug.Log("ShipName: " + ship);
     }
 
     public bool AddItem(Item item)
@@ -238,6 +247,10 @@ public class InventoryBehavior : MonoBehaviour
 
     private void UpdateUI()
     {
-        // Nothing here yet!
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            List<Item> list = items[i];
+            slots[i].SetIcon(list[0].icon, list.Count);
+        }
     }
 }

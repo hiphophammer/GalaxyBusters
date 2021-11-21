@@ -32,12 +32,12 @@ public class GameManager : MonoBehaviour
     public string ship2;
 
     public InventoryBehavior player1Inventory;
-    public InventoryBehavior player2Inevntory;
+    public InventoryBehavior player2Inventory;
 
     public static bool winLoss;
 
     // DEBUG TODO: Remove
-    bool testsDone;
+    private bool testsDone;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
         // Make sure we have valid references to our inventories.
         Debug.Assert(player1Inventory != null);
-        Debug.Assert(player2Inevntory != null);
+        Debug.Assert(player2Inventory != null);
 
         // Build the players.
         BuildPlayers();
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         player1Inventory.SetPlayer(player1);
         if (player2 != null)
         {
-            player2Inevntory.SetPlayer(player2);
+            player2Inventory.SetPlayer(player2);
         }
 
         // DEBUG TODO: Remove
@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
 
         //if (testsDone)
         //{
+        //    Debug.Log("Foobar");
         //    // Create some common items.
         //    Item common1 = new Item();
         //    common1.type = Item.ItemType.common;
@@ -94,8 +95,8 @@ public class GameManager : MonoBehaviour
         //    common2.isPowerUp = true;
         //    common2.dSpeed = 5.0f;
 
-        //    bool retVal = inventory.AddItem(common1);  // success
-        //    retVal = inventory.AddItem(common2);  // success, and should be removed with ClearPowerUps()
+        //    bool retVal = player1Inventory.AddItem(common1);  // success
+        //    retVal = player1Inventory.AddItem(common2);  // success, and should be removed with ClearPowerUps()
 
         //    // Create some rare items.
         //    Item rare1 = new Item();
@@ -109,8 +110,8 @@ public class GameManager : MonoBehaviour
         //    rare2.dHP = 7.0f;
         //    rare2.dSpeed = -7.0f;
 
-        //    retVal = inventory.AddItem(rare1);    // success
-        //    retVal = inventory.AddItem(rare2);    // success, and should be removed with ClearPowerUps()
+        //    retVal = player1Inventory.AddItem(rare1);    // success
+        //    retVal = player1Inventory.AddItem(rare2);    // success, and should be removed with ClearPowerUps()
         //                                          // we should also see the number of hit points increase by 7.
 
         //    // Create some epic items.
@@ -128,8 +129,8 @@ public class GameManager : MonoBehaviour
         //    epic3.ID = 3;   // shield
 
         //    //retVal = inventory.AddItem(epic1);    // success
-        //    retVal = inventory.AddItem(epic2);    // success
-        //    retVal = inventory.AddItem(epic3);    // this should fail as we already have 2.
+        //    retVal = player1Inventory.AddItem(epic2);    // success
+        //    retVal = player1Inventory.AddItem(epic3);    // this should fail as we already have 2.
 
         //    // Create our special items.
         //    // first, try adding the one of a different name.
@@ -148,13 +149,13 @@ public class GameManager : MonoBehaviour
         //    special3.type = Item.ItemType.special;
         //    special3.ship = "Vanguard";
 
-        //    retVal = inventory.AddItem(special3);     // fail
-        //    retVal = inventory.AddItem(special1);     // success
-        //    retVal = inventory.AddItem(special2);     // fail
-        //    retVal = inventory.AddItem(special3);     // fail
+        //    retVal = player1Inventory.AddItem(special3);     // fail
+        //    retVal = player1Inventory.AddItem(special1);     // success
+        //    retVal = player1Inventory.AddItem(special2);     // fail
+        //    retVal = player1Inventory.AddItem(special3);     // fail
 
         //    // Clear the powerups.
-        //    inventory.ClearPowerUps();
+        //    //player1Inventory.ClearPowerUps();
 
         //    testsDone = false;
         //}
@@ -165,10 +166,16 @@ public class GameManager : MonoBehaviour
         return player1;
     }
 
+    public PlayerBehavior GetPlayer2()
+    {
+        return player2;
+    }
+
     private void BuildPlayers()
     {
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-        if((ship1 != null && ship1 != "None") && (ship2 == null || ship2 == "None")){
+        if ((ship1 != null && ship1 != "None") && (ship2 == null || ship2 == "None"))
+        {
             Debug.Log("GameManager: Singleplayer detected");
             player1StartPos = new Vector3(0.0f, -2.5f, 0.0f);
         }
@@ -191,7 +198,7 @@ public class GameManager : MonoBehaviour
                 PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
                 playerBehavior.playerOne = playerOne;
                 playerBehavior.SetShipName(ship);
-                playerBehavior.SetInventory(playerOne ? player1Inventory : player2Inevntory);
+                playerBehavior.SetInventory(playerOne ? player1Inventory : player2Inventory);
 
                 if (playerOne)
                 {
