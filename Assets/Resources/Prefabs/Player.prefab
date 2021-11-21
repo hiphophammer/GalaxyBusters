@@ -144,6 +144,7 @@ MonoBehaviour:
   healthBar: {fileID: 7881789219732904257}
   speed: 3
   playerOne: 1
+  alive: 1
 --- !u!1001 &148240135168287013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -307,6 +308,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855585839569760579, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855585839569760588, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8855585839569760589, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
