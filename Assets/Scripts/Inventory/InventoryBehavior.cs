@@ -35,6 +35,11 @@ public class InventoryBehavior : MonoBehaviour
         }
     }
 
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void SetPlayer(PlayerBehavior player)
     {
         this.player = player;

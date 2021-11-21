@@ -6,17 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private Vector3 player1StartPos = new Vector3(-1.5f, -2.5f, 0.0f);
-    private Vector3 player2StartPos = new Vector3(1.5f, -2.5f, 0.0f);
-
-    private ScoreManager scoreManager;
+    // Public member variables.
     private PlayerBehavior player1;
     private PlayerBehavior player2;
 
     public GameObject levelAttach;
-    
-    public TMPro.TextMeshProUGUI playerScore;
-    public TMPro.TextMeshProUGUI playerStatus;
+
     public TMPro.TextMeshProUGUI levelNum;
     public TMPro.TextMeshProUGUI levelName;
 
@@ -36,19 +31,19 @@ public class GameManager : MonoBehaviour
 
     public static bool winLoss;
 
-    // DEBUG TODO: Remove
-    private bool testsDone;
+    // Private member variables.
+    private Vector3 player1StartPos = new Vector3(-1.5f, -2.5f, 0.0f);
+    private Vector3 player2StartPos = new Vector3(1.5f, -2.5f, 0.0f);
+
+    private bool ready;
+    private bool singlePlayer;
+
 
     // Start is called before the first frame update
     void Start()
     {
         // Perform some checks.
         Debug.Log("GameManager: Waking up!");
-        scoreManager = Camera.main.GetComponent<ScoreManager>();
-        Debug.Assert(scoreManager != null);
-
-        Debug.Assert(playerScore != null);
-        Debug.Assert(playerStatus != null);
 
         // Determine which players to build.
         ship1 = MainMenu.player1Ship;
@@ -72,94 +67,23 @@ public class GameManager : MonoBehaviour
             player2Inventory.SetPlayer(player2);
         }
 
-        // DEBUG TODO: Remove
-        testsDone = true;
+        ready = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateStatus();
         DetectCondition();
+    }
 
-        // DEBUG TODO: Remove
-        //if (testsDone)
-        //{
-        //    Debug.Log("Foobar");
-        //    // Create some common items.
-        //    Item common1 = new Item();
-        //    common1.type = Item.ItemType.common;
-        //    common1.dHP = 5.0f;
+    public bool Ready()
+    {
+        return ready;
+    }
 
-        //    Item common2 = new Item();
-        //    common2.type = Item.ItemType.common;
-        //    common2.isPowerUp = true;
-        //    common2.dSpeed = 5.0f;
-
-        //    bool retVal = player1Inventory.AddItem(common1);  // success
-        //    retVal = player1Inventory.AddItem(common2);  // success, and should be removed with ClearPowerUps()
-
-        //    // Create some rare items.
-        //    Item rare1 = new Item();
-        //    rare1.type = Item.ItemType.rare;
-        //    rare1.dSpeed = 7.0f;
-        //    rare1.dDamage = -7.0f;
-
-        //    Item rare2 = new Item();
-        //    rare2.type = Item.ItemType.rare;
-        //    rare2.isPowerUp = true;
-        //    rare2.dHP = 7.0f;
-        //    rare2.dSpeed = -7.0f;
-
-        //    retVal = player1Inventory.AddItem(rare1);    // success
-        //    retVal = player1Inventory.AddItem(rare2);    // success, and should be removed with ClearPowerUps()
-        //                                                 // we should also see the number of hit points increase by 7.
-
-        //    // Create some epic items.
-        //    Item epic1 = new Item();
-        //    epic1.type = Item.ItemType.epic;
-        //    epic1.ID = 1;   // swap bullet
-        //    epic1.bulletName = "piercing";
-
-        //    Item epic2 = new Item();
-        //    epic2.type = Item.ItemType.epic;
-        //    epic2.ID = 2;   // dual stream
-
-        //    Item epic3 = new Item();
-        //    epic3.type = Item.ItemType.epic;
-        //    epic3.ID = 3;   // shield
-
-        //    //retVal = inventory.AddItem(epic1);    // success
-        //    retVal = player1Inventory.AddItem(epic2);    // success
-        //    retVal = player1Inventory.AddItem(epic3);    // this should fail as we already have 2.
-
-        //    // Create our special items.
-        //    // first, try adding the one of a different name.
-        //    // then, try adding the correct one.
-        //    // then try adding the other correct one (should fail).
-        //    // finally, try adding the incorrect one again (should fail).
-        //    Item special1 = new Item();
-        //    special1.type = Item.ItemType.special;
-        //    special1.ship = "Lancer";
-
-        //    Item special2 = new Item();
-        //    special2.type = Item.ItemType.special;
-        //    special2.ship = "Lancer";
-
-        //    Item special3 = new Item();
-        //    special3.type = Item.ItemType.special;
-        //    special3.ship = "Vanguard";
-
-        //    //retVal = player1Inventory.AddItem(special3);     // fail
-        //    retVal = player1Inventory.AddItem(special1);     // success
-        //    retVal = player1Inventory.AddItem(special2);     // fail
-        //    retVal = player1Inventory.AddItem(special3);     // fail
-
-        //    // Clear the powerups.
-        //    //player1Inventory.ClearPowerUps();
-
-        //    testsDone = false;
-        //}
+    public bool SinglePlayer()
+    {
+        return singlePlayer;
     }
 
     public PlayerBehavior GetPlayer1()
@@ -179,6 +103,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("GameManager: Singleplayer detected");
             player1StartPos = new Vector3(0.0f, -2.5f, 0.0f);
+            player2Inventory.Hide();
+            singlePlayer = true;
         }
 
         for (int i = 0; i < 2; i++)
@@ -256,12 +182,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void UpdateStatus()
-    {
-        playerScore.text = scoreManager.GetStatus();
-        playerStatus.text = player1.GetStatus();
     }
 
     private IEnumerator StartGame()
