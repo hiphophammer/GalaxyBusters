@@ -15,7 +15,6 @@ public class TrailblazerMovement : MonoBehaviour
     private Vector3 startPos;
     private Vector3 endPos;
     private bool Blink;
-    private Collider2D col;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +28,7 @@ public class TrailblazerMovement : MonoBehaviour
         cooldownBar = parent.GetBasicAbilityCooldownBar();
         axis = parent.GetBasicAbilityAxis();
 
-        col = parent.GetComponent<Collider2D>();
+        
     }
 
     // Update is called once per frame
@@ -63,19 +62,19 @@ public class TrailblazerMovement : MonoBehaviour
                 {
                     Blink = true;
                     cooldownBar.TriggerCooldown();
-                    col.enabled = !col.enabled;
+                    parent.GetComponent<Collider2D>().enabled = false;
                 }
             }
         }
 
         if (Blink)
         {
-            transform.position = Vector3.Lerp(transform.position, endPos, .5f);
+            transform.position = Vector3.Lerp(transform.position, endPos, 20f * Time.deltaTime);
             if (transform.position == endPos)
             {
                 Instantiate(Resources.Load("Prefabs/BulletDestructionZone"), transform.position, transform.rotation);
                 Blink = false;
-                col.enabled = !col.enabled;
+                parent.GetComponent<Collider2D>().enabled = true;
             }
         }
         else
