@@ -123,6 +123,8 @@ public class ProjectileBehavior : MonoBehaviour
             {
                 alive = false;
             }
+
+            Destroy(gameObject);
         }
     }
 }

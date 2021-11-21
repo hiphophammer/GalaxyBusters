@@ -38,8 +38,6 @@ public class UFOBehavior : MonoBehaviour
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
 
-        transform.Rotate(Vector3.forward * 180f);
-
         turnSpd = 15f;
     }
 
@@ -100,6 +98,18 @@ public class UFOBehavior : MonoBehaviour
                 right.transform.Rotate(Vector3.forward * -90f);
                 left.transform.Rotate(Vector3.forward * 90f);
             }   
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject other = collision.gameObject;
+
+        if (other.CompareTag("HeroProjectile"))
+        {
+            // As a HeroProjectile, other must have a ProjectileBehavior script attached.
+            ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
+            health.decreaseHealth(damageDealer.GetParent());
         }
     }
 

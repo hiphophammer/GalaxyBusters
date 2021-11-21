@@ -7,7 +7,7 @@ public class LancerUltimateAbility : MonoBehaviour
     // Constants.
     private const float BULLET_VERTICAL_OFFSET = 0.3f;
 
-    private const float BULLET_SPRAY_TIME = 3.0f;
+    private const float BULLET_SPRAY_TIME = 6.0f;
     private const float THETA = 15.0f * Mathf.Deg2Rad;
     private const int BULLETS_PER_WAVE = 5;
 

@@ -174,6 +174,19 @@ public class GameManager : MonoBehaviour
                     playerBehavior.GetHealthBar().SetHitPoints(75.0f);
                     playerBehavior.SetWeaponDamage(5.0f);
                     playerBehavior.SetSpeed(5.0f);
+
+                    // Add appropriate components
+                    player.AddComponent<TrailblazerMovement>();
+                    player.GetComponent<TrailblazerMovement>().SetParent(playerBehavior);
+
+                    player.AddComponent<BaseCollider>();
+                    player.GetComponent<BaseCollider>().SetParent(playerBehavior);
+
+                    player.AddComponent<BaseWeapon>();
+                    player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
+
+                    player.AddComponent<TrailblazerUltimateAbility>();
+                    player.GetComponent<TrailblazerUltimateAbility>().SetParent(playerBehavior);
                 }
             }
         }

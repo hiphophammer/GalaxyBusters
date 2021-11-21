@@ -27,7 +27,7 @@ public class ChaserBehavior : MonoBehaviour
         health = GetComponent<EnemyHealth>();
         health.setHealth(1, 1);
         
-        speed = new Vector3(0, 3f, 0);
+        speed = new Vector3(0, 2.5f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
@@ -50,9 +50,6 @@ public class ChaserBehavior : MonoBehaviour
 
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
-
-        
-
 
     }
 
@@ -106,7 +103,9 @@ public class ChaserBehavior : MonoBehaviour
 
         if (other.CompareTag("HeroProjectile"))
         {
-            health.decreaseHealth();
+            // As a HeroProjectile, other must have a ProjectileBehavior script attached.
+            ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
+            health.decreaseHealth(damageDealer.GetParent());
         }
     }
 }
