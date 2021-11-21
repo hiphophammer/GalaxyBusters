@@ -26,6 +26,8 @@ public class BaseMovement : MonoBehaviour
 
         maxXPos -= (parent.transform.localScale.x / 2.0f);
         maxYPos -= (parent.transform.localScale.y / 2.0f);
+
+        retrievedAxes = false;
     }
 
     // Update is called once per frame
