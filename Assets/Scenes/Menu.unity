@@ -2525,8 +2525,6 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: None
-      m_Image: {fileID: 0}
     - m_Text: Lancer
       m_Image: {fileID: 0}
     - m_Text: Vanguard
@@ -3458,8 +3456,6 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: None
-      m_Image: {fileID: 0}
     - m_Text: Lancer
       m_Image: {fileID: 0}
     - m_Text: Vanguard

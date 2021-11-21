@@ -9,7 +9,6 @@ public class TrailblazerUltimateAbility : MonoBehaviour
 
     // Private member variables.
     private PlayerBehavior parent;
-    private BaseWeapon weapon;
     private ChargeBarBehavior chargeBar;
     private string axis;
     private Color baseColor, alpha;
@@ -25,12 +24,13 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     private UltimateAbilityState state;
     private float stateEntryTime;
 
+    private bool retrivedAxis;
+
     // Start is called before the first frame update
     void Start()
     {
         // Retrieve a reference to our charge & cooldown bars and the axis.
         chargeBar = parent.GetUltimateAbilityChargeBar();
-        axis = parent.GetUltimateAbilityAxis();
         
         // Get parent's SpriteRenderer component.
         renderer = parent.GetComponent<SpriteRenderer>();
@@ -39,18 +39,36 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         // Start the FSM off in the charge state.
         state = UltimateAbilityState.charge;
 
-
+        retrivedAxis = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateFSM();
+        RetrieveAxis();
+
+        if (retrivedAxis)
+        {
+            UpdateFSM();
+        }
     }
 
     public void SetParent(PlayerBehavior parent)
     {
         this.parent = parent;
+    }
+
+    // Private helper methods.
+    private void RetrieveAxis()
+    {
+        if (!retrivedAxis)
+        {
+            axis = parent.GetUltimateAbilityAxis();
+            if (axis != null && axis != "")
+            {
+                retrivedAxis = true;
+            }
+        }
     }
 
     // FSM definition.
@@ -96,7 +114,5 @@ public class TrailblazerUltimateAbility : MonoBehaviour
             parent.GetComponent<SpriteRenderer>().material.color = alpha;
         }
     }
-
-
 }
 
