@@ -82,83 +82,84 @@ public class GameManager : MonoBehaviour
         UpdateStatus();
         DetectCondition();
 
-        if (testsDone)
-        {
-            Debug.Log("Foobar");
-            // Create some common items.
-            Item common1 = new Item();
-            common1.type = Item.ItemType.common;
-            common1.dHP = 5.0f;
+        // DEBUG TODO: Remove
+        //if (testsDone)
+        //{
+        //    Debug.Log("Foobar");
+        //    // Create some common items.
+        //    Item common1 = new Item();
+        //    common1.type = Item.ItemType.common;
+        //    common1.dHP = 5.0f;
 
-            Item common2 = new Item();
-            common2.type = Item.ItemType.common;
-            common2.isPowerUp = true;
-            common2.dSpeed = 5.0f;
+        //    Item common2 = new Item();
+        //    common2.type = Item.ItemType.common;
+        //    common2.isPowerUp = true;
+        //    common2.dSpeed = 5.0f;
 
-            bool retVal = player1Inventory.AddItem(common1);  // success
-            retVal = player1Inventory.AddItem(common2);  // success, and should be removed with ClearPowerUps()
+        //    bool retVal = player1Inventory.AddItem(common1);  // success
+        //    retVal = player1Inventory.AddItem(common2);  // success, and should be removed with ClearPowerUps()
 
-            // Create some rare items.
-            Item rare1 = new Item();
-            rare1.type = Item.ItemType.rare;
-            rare1.dSpeed = 7.0f;
-            rare1.dDamage = -7.0f;
+        //    // Create some rare items.
+        //    Item rare1 = new Item();
+        //    rare1.type = Item.ItemType.rare;
+        //    rare1.dSpeed = 7.0f;
+        //    rare1.dDamage = -7.0f;
 
-            Item rare2 = new Item();
-            rare2.type = Item.ItemType.rare;
-            rare2.isPowerUp = true;
-            rare2.dHP = 7.0f;
-            rare2.dSpeed = -7.0f;
+        //    Item rare2 = new Item();
+        //    rare2.type = Item.ItemType.rare;
+        //    rare2.isPowerUp = true;
+        //    rare2.dHP = 7.0f;
+        //    rare2.dSpeed = -7.0f;
 
-            retVal = player1Inventory.AddItem(rare1);    // success
-            retVal = player1Inventory.AddItem(rare2);    // success, and should be removed with ClearPowerUps()
-                                                         // we should also see the number of hit points increase by 7.
+        //    retVal = player1Inventory.AddItem(rare1);    // success
+        //    retVal = player1Inventory.AddItem(rare2);    // success, and should be removed with ClearPowerUps()
+        //                                                 // we should also see the number of hit points increase by 7.
 
-            // Create some epic items.
-            Item epic1 = new Item();
-            epic1.type = Item.ItemType.epic;
-            epic1.ID = 1;   // swap bullet
-            epic1.bulletName = "piercing";
+        //    // Create some epic items.
+        //    Item epic1 = new Item();
+        //    epic1.type = Item.ItemType.epic;
+        //    epic1.ID = 1;   // swap bullet
+        //    epic1.bulletName = "piercing";
 
-            Item epic2 = new Item();
-            epic2.type = Item.ItemType.epic;
-            epic2.ID = 2;   // dual stream
+        //    Item epic2 = new Item();
+        //    epic2.type = Item.ItemType.epic;
+        //    epic2.ID = 2;   // dual stream
 
-            Item epic3 = new Item();
-            epic3.type = Item.ItemType.epic;
-            epic3.ID = 3;   // shield
+        //    Item epic3 = new Item();
+        //    epic3.type = Item.ItemType.epic;
+        //    epic3.ID = 3;   // shield
 
-            //retVal = inventory.AddItem(epic1);    // success
-            //retVal = player1Inventory.AddItem(epic2);    // success
-            //retVal = player1Inventory.AddItem(epic3);    // this should fail as we already have 2.
+        //    //retVal = inventory.AddItem(epic1);    // success
+        //    retVal = player1Inventory.AddItem(epic2);    // success
+        //    retVal = player1Inventory.AddItem(epic3);    // this should fail as we already have 2.
 
-            // Create our special items.
-            // first, try adding the one of a different name.
-            // then, try adding the correct one.
-            // then try adding the other correct one (should fail).
-            // finally, try adding the incorrect one again (should fail).
-            Item special1 = new Item();
-            special1.type = Item.ItemType.special;
-            special1.ship = "Lancer";
+        //    // Create our special items.
+        //    // first, try adding the one of a different name.
+        //    // then, try adding the correct one.
+        //    // then try adding the other correct one (should fail).
+        //    // finally, try adding the incorrect one again (should fail).
+        //    Item special1 = new Item();
+        //    special1.type = Item.ItemType.special;
+        //    special1.ship = "Lancer";
 
-            Item special2 = new Item();
-            special2.type = Item.ItemType.special;
-            special2.ship = "Lancer";
+        //    Item special2 = new Item();
+        //    special2.type = Item.ItemType.special;
+        //    special2.ship = "Lancer";
 
-            Item special3 = new Item();
-            special3.type = Item.ItemType.special;
-            special3.ship = "Vanguard";
+        //    Item special3 = new Item();
+        //    special3.type = Item.ItemType.special;
+        //    special3.ship = "Vanguard";
 
-            //retVal = player1Inventory.AddItem(special3);     // fail
-            //retVal = player1Inventory.AddItem(special1);     // success
-            //retVal = player1Inventory.AddItem(special2);     // fail
-            //retVal = player1Inventory.AddItem(special3);     // fail
+        //    //retVal = player1Inventory.AddItem(special3);     // fail
+        //    retVal = player1Inventory.AddItem(special1);     // success
+        //    retVal = player1Inventory.AddItem(special2);     // fail
+        //    retVal = player1Inventory.AddItem(special3);     // fail
 
-            // Clear the powerups.
-            //player1Inventory.ClearPowerUps();
+        //    // Clear the powerups.
+        //    //player1Inventory.ClearPowerUps();
 
-            testsDone = false;
-        }
+        //    testsDone = false;
+        //}
     }
 
     public PlayerBehavior GetPlayer1()

@@ -58,7 +58,7 @@ public class InventoryBehavior : MonoBehaviour
             UpdatePlayer(item);
 
             // Updated the UI.
-            //UpdateUI();
+            UpdateUI();
 
             success = true;
         }
