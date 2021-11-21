@@ -58,7 +58,7 @@ public class InventoryBehavior : MonoBehaviour
             UpdatePlayer(item);
 
             // Updated the UI.
-            UpdateUI();
+            //UpdateUI();
 
             success = true;
         }
@@ -250,7 +250,10 @@ public class InventoryBehavior : MonoBehaviour
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             List<Item> list = items[i];
-            slots[i].SetIcon(list[0].icon, list.Count);
+            if (list != null && list.Count > 0)
+            {
+                slots[i].SetIcon(list[0].icon, list.Count);
+            }
         }
     }
 }
