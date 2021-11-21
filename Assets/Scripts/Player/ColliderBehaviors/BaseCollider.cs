@@ -57,7 +57,7 @@ public class BaseCollider : MonoBehaviour
 
                 // DEBUG TODO: Add this to inventory.
                 //Debug.Log(item.type);
-                parent.GetInventory().AddItem(item, true);
+                parent.GetInventory().AddItem(item);
             }
         }
     }

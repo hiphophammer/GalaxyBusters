@@ -57,15 +57,9 @@ public class PlayerBehavior : MonoBehaviour
         weapon = GetComponent<BaseWeapon>();
         Debug.Assert(weapon != null);
 
-        inventory = GameObject.FindGameObjectWithTag("Player1Inventory").GetComponent<InventoryBehavior>();
+        Debug.Assert(inventory != null);
 
         SetupPlayer();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     // Ship name accessors/modifiers.
@@ -79,7 +73,12 @@ public class PlayerBehavior : MonoBehaviour
         return shipName;
     }
 
-    // Inevtory accessor.
+    // Inevtory accessor/modifier.
+    public void SetInventory(InventoryBehavior inventory)
+    {
+        this.inventory = inventory;
+    }
+
     public InventoryBehavior GetInventory()
     {
         return inventory;
@@ -91,7 +90,7 @@ public class PlayerBehavior : MonoBehaviour
         specialItemEnabled = true;
     }
 
-    public void DisablSpecialItem()
+    public void DisableSpecialItem()
     {
         specialItemEnabled = false;
     }
