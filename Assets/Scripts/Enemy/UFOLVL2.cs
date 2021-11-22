@@ -32,7 +32,7 @@ public class UFOLVL2 : MonoBehaviour
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 0.15f;
+        fireRate = 0.35f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
@@ -44,7 +44,7 @@ public class UFOLVL2 : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(timeSinceSpawn > 2.5f && timeSinceSpawn < 10f)
+        if(timeSinceSpawn > 1f && timeSinceSpawn < 10f)
         {
             transform.Rotate(Vector3.forward * spin(turnSpd) * Time.fixedDeltaTime);
             shoot();

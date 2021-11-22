@@ -13,6 +13,8 @@ public class LevelOne : MonoBehaviour
     private float timeAtStart;
     private float timeUntilEnd;
     private float elapsedTime;
+
+    public EnemySpawnControl spawner;
     
     // Start is called before the first frame update
     void Start()
@@ -40,15 +42,19 @@ public class LevelOne : MonoBehaviour
                 int rand = Random.Range(1, 5);
                 if (rand == 1 || rand == 2)
                 {
-                    Spawn3Fighters();
+                    spawner.SpawnChaser();
+                    spawner.SpawnSquare();
                 }
                 else if (rand == 3)
                 {
-                    SpawnChaser();
+                    spawner.SpawnChaser();
+                    spawner.SpawnChaser();
                 }
                 else
                 {
-                    SpawnFighter();
+                    spawner.SpawnFighter();
+                    spawner.SpawnFighter();
+                    spawner.SpawnFighter();
                 }
             }
         }
@@ -62,33 +68,15 @@ public class LevelOne : MonoBehaviour
         return LEVEL_TIME;
     }
 
+    public void SetSpawner(EnemySpawnControl s)
+    {
+        spawner = s;
+    }
+
     // Private helpers.
     private void LevelEnd()
     {
         Debug.Log("End of first level");
         Destroy(this);
-    }
-
-    private void SpawnUFO()
-    {
-        Instantiate(Resources.Load("Prefabs/UFO"), new Vector3(-40, 150, 0), Quaternion.Euler(new Vector3(0,0,180))); 
-        Instantiate(Resources.Load("Prefabs/UFO"), new Vector3(40, 150, 0), Quaternion.Euler(new Vector3(0,0,180))); 
-    }
-
-    private void Spawn3Fighters()
-    {
-        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(-1.667981f, 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
-        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(0, 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
-        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(1.667981f, 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
-    }
-
-    private void SpawnFighter()
-    {
-        Instantiate(Resources.Load("Prefabs/Fighter"), new Vector3(Random.Range(-3f, 3f), 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
-    }
-
-    private void SpawnChaser()
-    {
-        Instantiate(Resources.Load("Prefabs/Chaser"), new Vector3(Random.Range(-3f, 3f), 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
     }
 }

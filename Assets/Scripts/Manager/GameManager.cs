@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     // Stuff for levels.
     public GameObject levelAttach;
+    public EnemySpawnControl spawner;
 
     public TMPro.TextMeshProUGUI levelNum;
     public TMPro.TextMeshProUGUI levelName;
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     private bool ready;
     private bool singlePlayer;
+
+    private float levelTime;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +64,7 @@ public class GameManager : MonoBehaviour
         }
 
         // This takes care of the levels - the actual gameplay.
+        spawner =  levelAttach.GetComponent<EnemySpawnControl>();
         StartCoroutine(StartGame());
 
         // This tells the ScoreManager we've determined whether this is single player.
@@ -73,6 +77,13 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         DetectCondition();
+        
+        // Pseudo-invulnerability key
+        if(Input.GetKey("x"))
+        {
+            GameObject p = GameObject.FindWithTag("Player");
+            p.transform.position = new Vector3(0.0f, -999.0f, 0.0f);
+        }
     }
 
     // Public methods.
@@ -144,9 +155,9 @@ public class GameManager : MonoBehaviour
                     renderer.sprite = playerOne ? player1LancerSprite : player2LancerSprite;
 
                     // Set stats.
-                    playerBehavior.GetHealthBar().SetHitPoints(50.0f);
+                    playerBehavior.GetHealthBar().SetHitPoints(150.0f);
                     playerBehavior.SetWeaponDamage(25.0f);
-                    playerBehavior.SetSpeed(10.0f);
+                    playerBehavior.SetSpeed(7.0f);
 
                     // Add appropriate components.
                     player.AddComponent<BaseMovement>();
@@ -168,9 +179,9 @@ public class GameManager : MonoBehaviour
                 {
                     renderer.sprite = playerOne ? player1VanguardSprite : player2VanguardSprite;
 
-                    playerBehavior.GetHealthBar().SetHitPoints(100.0f);
-                    playerBehavior.SetWeaponDamage(15.0f);
-                    playerBehavior.SetSpeed(3.0f);
+                    playerBehavior.GetHealthBar().SetHitPoints(200.0f);
+                    playerBehavior.SetWeaponDamage(20.0f);
+                    playerBehavior.SetSpeed(5.0f);
                     
                     player.AddComponent<VanguardMovement>();
                     player.GetComponent<VanguardMovement>().SetParent(playerBehavior);
@@ -186,9 +197,9 @@ public class GameManager : MonoBehaviour
                     // Otherwise, given the string is not null, it must be the trailblazer.
                     renderer.sprite = playerOne ? player1TrailblazerSprite : player2TrailblazerSprite;
 
-                    playerBehavior.GetHealthBar().SetHitPoints(75.0f);
-                    playerBehavior.SetWeaponDamage(5.0f);
-                    playerBehavior.SetSpeed(5.0f);
+                    playerBehavior.GetHealthBar().SetHitPoints(100.0f);
+                    playerBehavior.SetWeaponDamage(20.0f);
+                    playerBehavior.SetSpeed(10.0f);
 
                     // Add appropriate components
                     player.AddComponent<TrailblazerMovement>();
@@ -217,34 +228,47 @@ public class GameManager : MonoBehaviour
 
         // Level 1.
         levelAttach.AddComponent<LevelOne>();
-        float levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+        levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
+        levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
 
-        // TODO: Level 2 - Set number and name.
+        // Level 2 - Set number and name.
         SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What we had Written Down)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
-        // TODO: Level 2.
+        // Level 2.
+        levelAttach.AddComponent<LevelTwo>();
+        levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
+        levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
+        yield return new WaitForSeconds(levelTime);
 
-        // TODO: Level 3 - Set number and name.
+        // Level 3 - Set number and name.
         SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
-        // TODO: Level 3.
+        // Level 3.
+        levelAttach.AddComponent<LevelThree>();
+        levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
+        levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
+        yield return new WaitForSeconds(levelTime);
 
-        // TODO: Level 4 - Set number and name.
+        // Level 4 - Set number and name.
         SetLevelNumAndName(4, "Stupid Level Name (We�re out of ideas)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
-        // TODO: Level 4.
+        // Level 4.
+        levelAttach.AddComponent<LevelFour>();
+        levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
+        levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
+        yield return new WaitForSeconds(levelTime);
 
         // TODO: Level 5 - Set number and name.
-        SetLevelNumAndName(5, "Galaxy Buster");
+        /*SetLevelNumAndName(5, "Galaxy Buster");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
+        HideLevelNumAndName();*/
 
         // TODO: Level 5 (Boss fight).
 
