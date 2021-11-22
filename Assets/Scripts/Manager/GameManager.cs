@@ -6,15 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // Constants.
+    private const float LEVEL_INFO_FLASH_TIME = 3.0f;
+
     // Public member variables.
-    private PlayerBehavior player1;
-    private PlayerBehavior player2;
-
-    public GameObject levelAttach;
-
-    public TMPro.TextMeshProUGUI levelNum;
-    public TMPro.TextMeshProUGUI levelName;
-
+    // Stuff for the players.
     public Sprite player1LancerSprite;
     public Sprite player1VanguardSprite;
     public Sprite player1TrailblazerSprite;
@@ -23,21 +19,26 @@ public class GameManager : MonoBehaviour
     public Sprite player2VanguardSprite;
     public Sprite player2TrailblazerSprite;
 
-    public string ship1;
-    public string ship2;
-
     public InventoryBehavior player1Inventory;
     public InventoryBehavior player2Inventory;
+
+    // Stuff for levels.
+    public GameObject levelAttach;
+
+    public TMPro.TextMeshProUGUI levelNum;
+    public TMPro.TextMeshProUGUI levelName;
 
     public static bool winLoss;
 
     // Private member variables.
+    private PlayerBehavior player1;
+    private PlayerBehavior player2;
+
     private Vector3 player1StartPos = new Vector3(-1.5f, -2.5f, 0.0f);
     private Vector3 player2StartPos = new Vector3(1.5f, -2.5f, 0.0f);
 
     private bool ready;
     private bool singlePlayer;
-
 
     // Start is called before the first frame update
     void Start()
@@ -45,20 +46,12 @@ public class GameManager : MonoBehaviour
         // Perform some checks.
         Debug.Log("GameManager: Waking up!");
 
-        // Determine which players to build.
-        ship1 = MainMenu.player1Ship;
-        ship2 = MainMenu.player2Ship;
-
-        Debug.Log("Player 1 ship: " + ship1);
-        Debug.Log("Player 2 ship: " + ship2);
-
         // Make sure we have valid references to our inventories.
         Debug.Assert(player1Inventory != null);
         Debug.Assert(player2Inventory != null);
 
         // Build the players.
-        BuildPlayers();
-        StartCoroutine(StartGame());
+        BuildPlayers(MainMenu.player1Ship, MainMenu.player2Ship);
 
         // Set up the inventories.
         player1Inventory.SetPlayer(player1);
@@ -67,7 +60,13 @@ public class GameManager : MonoBehaviour
             player2Inventory.SetPlayer(player2);
         }
 
+        // This takes care of the levels - the actual gameplay.
+        StartCoroutine(StartGame());
+
+        // This tells the ScoreManager we've determined whether this is single player.
         ready = true;
+
+        winLoss = false;
     }
 
     // Update is called once per frame
@@ -76,6 +75,7 @@ public class GameManager : MonoBehaviour
         DetectCondition();
     }
 
+    // Public methods.
     public bool Ready()
     {
         return ready;
@@ -96,7 +96,8 @@ public class GameManager : MonoBehaviour
         return player2;
     }
 
-    private void BuildPlayers()
+    // Private helper methods.
+    private void BuildPlayers(string ship1, string ship2)
     {
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
         if ((ship1 != null && ship1 != "None") && (ship2 == null || ship2 == "None"))
@@ -197,31 +198,72 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Methods for gameplay/level management.
     private IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(3.0f);
-        Debug.Log("GameManager: Disabling text now");
-        levelNum.enabled = false;
-        levelName.enabled = false;
+        // Level 1 - Set number and name.
+        SetLevelNumAndName(1, "A Walk in the Park (Except the Park is an Endless Void)");
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        HideLevelNumAndName();
 
-        // Level 1
-        Debug.Log("GameManager: Running Level 1");
+        // Level 1.
         levelAttach.AddComponent<LevelOne>();
-        float time = levelAttach.GetComponent<LevelOne>().levelTime;
-        Debug.Log("Waiting for " + time + " seconds");
-        yield return new WaitForSeconds(180.0f);
+        float levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+        yield return new WaitForSeconds(levelTime);
+
+        // TODO: Level 2 - Set number and name.
+        SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What we had Written Down)");
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        HideLevelNumAndName();
+
+        // TODO: Level 2.
+
+        // TODO: Level 3 - Set number and name.
+        SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        HideLevelNumAndName();
+
+        // TODO: Level 3.
+
+        // TODO: Level 4 - Set number and name.
+        SetLevelNumAndName(4, "Stupid Level Name (We’re out of ideas)");
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        HideLevelNumAndName();
+
+        // TODO: Level 4.
+
+        // TODO: Level 5 - Set number and name.
+        SetLevelNumAndName(5, "Galaxy Buster");
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        HideLevelNumAndName();
+
+        // TODO: Level 5 (Boss fight).
 
         // Victory!
-        if(player1.IsAlive() || player2.IsAlive())
+        if (player1.IsAlive() || player2.IsAlive())
         {
             winLoss = true;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
+    private void SetLevelNumAndName(int num, string name)
+    {
+        levelNum.text = "Level " + num.ToString();
+        levelNum.enabled = true;
+        levelName.text = name;
+        levelName.enabled = true;
+    }
+
+    private void HideLevelNumAndName()
+    {
+        levelNum.enabled = false;
+        levelName.enabled = false;
+    }
+
     private void DetectCondition()
     {
-        if(!player1.IsAlive())
+        if (!player1.IsAlive())
         {
             Debug.Log("PLAYER DIED");
             winLoss = false;

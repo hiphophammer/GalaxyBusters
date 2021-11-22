@@ -5,9 +5,9 @@ using UnityEngine;
 public class LancerMissileBehavior : MonoBehaviour
 {
     // Constants.
-    private const float ACCELERATION = 1.5f; // This is the amount by which the speed
+    private const float ACCELERATION = 1.01f; // This is the amount by which the speed
                                                // increases by each update.
-    private const float MAX_SPEED = 20.0f;     // The max speed of the missile.
+    private const float MAX_SPEED = 15.0f;     // The max speed of the missile.
 
     private const float POST_MORTEM_PERIOD = 0.5f;
 
@@ -51,7 +51,7 @@ public class LancerMissileBehavior : MonoBehaviour
             }
             else
             {
-                UpdatePosition();
+                //UpdatePosition();
             }
         }
     }

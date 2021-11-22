@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChaserBehavior : MonoBehaviour
+public class ChaserBehavior : MonoBehaviour, EnemyBehavior
 {
     public EnemyHealth health;
     
@@ -107,5 +107,15 @@ public class ChaserBehavior : MonoBehaviour
             ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
             health.decreaseHealth(damageDealer.GetParent());
         }
+    }
+
+    public void TakeDamage(float totalDamage, PlayerBehavior playerBehavior)
+    {
+        health.decreaseHealth(playerBehavior);
+    }
+
+    public bool IsAlive()
+    {
+        return health.GetHealth() > 0;
     }
 }
