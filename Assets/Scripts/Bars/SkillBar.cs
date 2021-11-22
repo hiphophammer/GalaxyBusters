@@ -14,9 +14,9 @@ public class SkillBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        barFiller.fillAmount = 1.0f;
         managerInstance = mainCam.GetComponent<GameManager>();
         player = managerInstance.GetPlayer1();
+        barFiller.fillAmount = 1.0f;
     }
 
     // Update is called once per frame
