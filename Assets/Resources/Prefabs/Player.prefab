@@ -356,8 +356,16 @@ PrefabInstance:
       value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: 3333428934338344397, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
+      propertyPath: headless
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333428934338344397, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
       propertyPath: maxCharge
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333428934338344397, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
+      propertyPath: percentage
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3333428934338344398, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
       propertyPath: m_RootOrder

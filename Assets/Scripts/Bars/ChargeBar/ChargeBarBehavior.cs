@@ -10,6 +10,8 @@ public class ChargeBarBehavior : MonoBehaviour
     public float yOffset;                       // Our Y-offset from the parent.
     public float maxCharge;                     // The maximum charge (when the bar
                                                 // should be appear full).
+    public bool headless;                       // Whether the bar should be visible.
+    public float percentage;
 
     // Private member variables.
     private float maxWidth;                     // The maximum width of the reload bar.
@@ -31,9 +33,16 @@ public class ChargeBarBehavior : MonoBehaviour
         Vector3 curScale = transform.localScale;
         maxWidth = curScale.x;
 
-        // Set the color of the bar.
-        Color color = new Color(173.0f / 255.0f, 44.0f / 255.0f, 255.0f / 255.0f);
-        GetComponent<SpriteRenderer>().color = color;
+        if (headless)
+        {
+            SetOpacity(0.0f);
+        }
+        else
+        {
+            SetOpacity(1.0f);
+            Color color = new Color(173.0f / 255.0f, 44.0f / 255.0f, 255.0f / 255.0f);
+            GetComponent<SpriteRenderer>().color = color;
+        }
     }
 
     /// <summary>
@@ -98,7 +107,7 @@ public class ChargeBarBehavior : MonoBehaviour
 
         
         // Update the bar width.
-        float percentage = curCharge / maxCharge;
+        percentage = curCharge / maxCharge;
         if (percentage > 1.0f)
         {
             percentage = 1.0f;
@@ -117,6 +126,19 @@ public class ChargeBarBehavior : MonoBehaviour
                                                 44.0f / 255.0f,
                                                 255.0f / 255.0f),
                                     percentage);
+        GetComponent<SpriteRenderer>().color = newColor;
+    }
+
+    /// <summary>
+    /// This sets the opacity (transparency) of the reload bar.
+    /// </summary>
+    /// <param name="newOpacity">The desired opacity, where 1 is no transparency, and 0
+    /// and completely invisible.</param>
+    private void SetOpacity(float opacity)
+    {
+        Color curColor = GetComponent<SpriteRenderer>().color;
+        Color newColor = curColor;
+        newColor.a = opacity;
         GetComponent<SpriteRenderer>().color = newColor;
     }
 }
