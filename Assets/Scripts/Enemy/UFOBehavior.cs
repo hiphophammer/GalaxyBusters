@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UFOBehavior : MonoBehaviour
+public class UFOBehavior : MonoBehaviour, EnemyBehavior
 {
     public EnemyHealth health;
 
@@ -113,5 +113,14 @@ public class UFOBehavior : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float totalDamage, PlayerBehavior playerBehavior)
+    {
+        health.decreaseHealth(playerBehavior);
+    }
+
+    public bool IsAlive()
+    {
+        return health.GetHealth() > 0;
+    }
 }
 

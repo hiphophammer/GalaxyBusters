@@ -54,6 +54,11 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
     public void setHealth(int h, int lvl)
     {
         health = h * lvl;
