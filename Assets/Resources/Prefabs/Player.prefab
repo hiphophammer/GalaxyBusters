@@ -78,15 +78,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: b9d49ce3c925f95499d8e9acbb7fd115, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.896, y: 0.888}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &7640019827894534440
@@ -263,6 +263,10 @@ PrefabInstance:
       value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4140068680949097546, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
+      propertyPath: percentage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140068680949097546, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
       propertyPath: cooldownTime
       value: 5
       objectReference: {fileID: 0}
@@ -310,6 +314,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8855585839569760588, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8855585839569760589, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
       propertyPath: m_Name
       value: BasicAbilityCooldown
@@ -348,8 +356,16 @@ PrefabInstance:
       value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: 3333428934338344397, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
+      propertyPath: headless
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333428934338344397, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
       propertyPath: maxCharge
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333428934338344397, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
+      propertyPath: percentage
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3333428934338344398, guid: 6604ca0542c6ee24196130dd92258a8a, type: 3}
       propertyPath: m_RootOrder

@@ -10,6 +10,7 @@ public class CooldownBarBehavior : MonoBehaviour
     public float yOffset;                       // Our Y-offset from the parent.
     public float cooldownTime;                  // The cooldown time.
     public bool headless;                       // Whether the bar should be visible.
+    public float percentage;
 
     // Private member variables.
     private float maxWidth;                     // The maximum width of the reload bar.
@@ -109,7 +110,7 @@ public class CooldownBarBehavior : MonoBehaviour
         if (!headless)
         {
             // Update the bar width.
-            float percentage = dTime / cooldownTime;
+            percentage = dTime / cooldownTime;
             if (percentage > 1.0f)
             {
                 percentage = 1.0f;
