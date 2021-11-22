@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UFOBehavior : MonoBehaviour
+public class UFOLVL2 : MonoBehaviour
 {
-    public EnemyHealth health;
+   public EnemyHealth health;
 
     private Vector3 speed;
     
@@ -23,7 +23,7 @@ public class UFOBehavior : MonoBehaviour
     void Start()
     {
         health = GetComponent<EnemyHealth>();
-        health.setHealth(4, 1);
+        health.setHealth(8, 1);
         
         speed = new Vector3(0, -3f, 0);
         speed = speed * Time.fixedDeltaTime;
@@ -32,13 +32,13 @@ public class UFOBehavior : MonoBehaviour
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 0.2f;
+        fireRate = 0.15f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
 
-        turnSpd = 15f;
+        turnSpd = 20f;
     }
 
     // Update is called once per frame
@@ -53,7 +53,7 @@ public class UFOBehavior : MonoBehaviour
         {
             transform.Translate(speed, Space.World);
             
-            if(transform.position.y < bound.min.y - 10)
+            if(transform.position.y < bound.min.y - 5f)
             {
                 Destroy(gameObject);
             }
@@ -82,21 +82,31 @@ public class UFOBehavior : MonoBehaviour
             nextFire = Time.time + fireRate;
 
             Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
+            Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, Quaternion.Inverse(transform.rotation));
             GameObject behind = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
             GameObject right = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
             GameObject left = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
+            GameObject behind2 = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, Quaternion.Inverse(transform.rotation)) as GameObject;
+            GameObject right2 = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, Quaternion.Inverse(transform.rotation)) as GameObject;
+            GameObject left2 = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, Quaternion.Inverse(transform.rotation)) as GameObject;
 
             if(transform.position.x < 0)
             {
                 behind.transform.Rotate(Vector3.forward * 180f);
                 right.transform.Rotate(Vector3.forward * 90f);
                 left.transform.Rotate(Vector3.forward * -90f);
+                behind2.transform.Rotate(Vector3.forward * 180f);
+                right2.transform.Rotate(Vector3.forward * -90f);
+                left2.transform.Rotate(Vector3.forward * 90f);
             }
             else if(transform.position.x >= 0)
             {
                 behind.transform.Rotate(Vector3.forward * 180f);
                 right.transform.Rotate(Vector3.forward * -90f);
                 left.transform.Rotate(Vector3.forward * 90f);
+                behind2.transform.Rotate(Vector3.forward * 180f);
+                right2.transform.Rotate(Vector3.forward * 90f);
+                left2.transform.Rotate(Vector3.forward * -90f);
             }   
         }
     }
@@ -112,6 +122,4 @@ public class UFOBehavior : MonoBehaviour
             health.decreaseHealth(damageDealer.GetParent());
         }
     }
-
 }
-

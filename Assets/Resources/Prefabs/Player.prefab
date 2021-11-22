@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1837593137340008612}
   - component: {fileID: 1837593137340008613}
-  - component: {fileID: 1837593137340008610}
+  - component: {fileID: 7640019827894534440}
   - component: {fileID: 1837593137340008615}
   - component: {fileID: 1837593137340008614}
   m_Layer: 0
@@ -78,19 +78,19 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 29ac65f9339a17941b1930980096b61a, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.896, y: 0.888}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &1837593137340008610
-CapsuleCollider2D:
+--- !u!58 &7640019827894534440
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,9 +102,9 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.015, y: -0.05}
-  m_Size: {x: 0.68382835, y: 1}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!50 &1837593137340008615
 Rigidbody2D:
   serializedVersion: 4
@@ -144,6 +144,7 @@ MonoBehaviour:
   healthBar: {fileID: 7881789219732904257}
   speed: 3
   playerOne: 1
+  alive: 1
 --- !u!1001 &148240135168287013
 PrefabInstance:
   m_ObjectHideFlags: 0
