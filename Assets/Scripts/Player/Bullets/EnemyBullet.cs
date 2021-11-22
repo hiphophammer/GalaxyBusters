@@ -18,6 +18,7 @@ public class EnemyBullet : MonoBehaviour
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
         
+        this.GetComponent<Renderer>().material.color = new Color(Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f));
     }
 
     void FixedUpdate()

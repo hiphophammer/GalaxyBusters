@@ -10,9 +10,12 @@ public class BaseMovement : MonoBehaviour
 
     private string[] movementAxes;
     private float speed;
+    private string axis;
 
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
+
+    private bool retrievedAxes;
 
     // Start is called before the first frame update
     void Start()
@@ -25,41 +28,49 @@ public class BaseMovement : MonoBehaviour
 
         maxXPos -= (parent.transform.localScale.x / 2.0f);
         maxYPos -= (parent.transform.localScale.y / 2.0f);
+
+        retrievedAxes = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateSpeed();
-
-        // Retrieve the values from our axes.
-        float upDown = Input.GetAxis(movementAxes[0]);
-        float leftRight = Input.GetAxis(movementAxes[1]);
-
-        // Scale the values appropriately and check for bounds
-        Vector3 pos = transform.position;
-        upDown *= (speed * Time.deltaTime);
-        if ((upDown < 0.0f) && (pos.y <= (-1.0f * maxYPos + 0.4f)))
+        RetrieveAxes();
+        
+        if (retrievedAxes)
         {
-            upDown = 0.0f;
-        }
-        else if ((upDown > 0.0f) && (pos.y >= maxYPos))
-        {
-            upDown = 0.0f;
-        }
+            UpdateSpeed();
 
-        leftRight *= (speed * Time.deltaTime);
-        if ((leftRight < 0.0f) && (pos.x <= (-1.0f * maxXPos)))
-        {
-            leftRight = 0.0f;
-        }
-        else if ((leftRight > 0.0f) && (pos.x >= maxXPos))
-        {
-            leftRight = 0.0f;
-        }
+            // Retrieve the values from our axes.
+            float upDown = Input.GetAxis(movementAxes[0]);
+            float leftRight = Input.GetAxis(movementAxes[1]);
 
-        // Translate the player by the computed amount.
-        transform.Translate(leftRight, upDown, 0.0f);
+            // Scale the values appropriately and check for bounds
+            Vector3 pos = transform.position;
+            upDown *= (speed * Time.deltaTime);
+            if ((upDown < 0.0f) && (pos.y <= (-1.0f * maxYPos + 0.4f)))
+            {
+                upDown = 0.0f;
+            }
+            else if ((upDown > 0.0f) && (pos.y >= maxYPos))
+            {
+                upDown = 0.0f;
+            }
+
+            leftRight *= (speed * Time.deltaTime);
+            if ((leftRight < 0.0f) && (pos.x <= (-1.0f * maxXPos)))
+            {
+                leftRight = 0.0f;
+            }
+            else if ((leftRight > 0.0f) && (pos.x >= maxXPos))
+            {
+                leftRight = 0.0f;
+            }
+
+            // Translate the player by the computed amount.
+            transform.Translate(leftRight, upDown, 0.0f);
+        }
+        
     }
 
     public void SetParent(PlayerBehavior parent)
@@ -70,5 +81,24 @@ public class BaseMovement : MonoBehaviour
     private void UpdateSpeed()
     {
         speed = parent.GetSpeed();
+    }
+
+    // Private helpers.
+    private void RetrieveAxes()
+    {
+        if (!retrievedAxes)
+        {
+            movementAxes = parent.GetMovementAxes();
+            bool verticalAxisValid = movementAxes[0] != null && movementAxes[0] != "";
+            bool horizontalAxisValid = movementAxes[1] != null && movementAxes[1] != "";
+
+            axis = parent.GetBasicAbilityAxis();
+            bool axisValid = axis != null && axis != "";
+
+            if (verticalAxisValid && horizontalAxisValid && axisValid)
+            {
+                retrievedAxes = true;
+            }
+        }
     }
 }

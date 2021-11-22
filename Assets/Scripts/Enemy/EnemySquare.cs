@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UFOBehavior : MonoBehaviour
+public class EnemySquare : MonoBehaviour
 {
     public EnemyHealth health;
 
@@ -32,7 +32,7 @@ public class UFOBehavior : MonoBehaviour
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 0.35f;
+        fireRate = 1.2f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
@@ -46,7 +46,6 @@ public class UFOBehavior : MonoBehaviour
     {
         if(timeSinceSpawn > 1f && timeSinceSpawn < 10f)
         {
-            transform.Rotate(Vector3.forward * spin(turnSpd) * Time.fixedDeltaTime);
             shoot();
         }
         else
@@ -61,18 +60,6 @@ public class UFOBehavior : MonoBehaviour
 
         timeSinceSpawn = Time.time - timeAtSpawn;
     }
-
-    float spin(float spd)
-    {
-        if(this.transform.position.x < 0)
-        {
-            return spd;
-        }
-        else
-        {
-            return -spd;
-        }
-    }
     
     //Tells UFO to shoot projectiles.
     void shoot()
@@ -80,18 +67,13 @@ public class UFOBehavior : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-
-            Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
-            GameObject behind = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
-
-            if(transform.position.x < 0)
+            int random = Random.Range(-5, 6);
+            for(int i = 150 + random; i <= 210 + random; i+=10)
             {
-                behind.transform.Rotate(Vector3.forward * 180f);
-            }
-            else if(transform.position.x >= 0)
-            {
-                behind.transform.Rotate(Vector3.forward * 180f);
-            }   
+                GameObject b = Instantiate(Resources.Load("Prefabs/Bullet")) as GameObject;
+                b.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+                b.transform.rotation = Quaternion.Euler(new Vector3(0,0,i));
+            } 
         }
     }
 

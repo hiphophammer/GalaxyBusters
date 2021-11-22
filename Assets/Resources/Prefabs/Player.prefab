@@ -104,7 +104,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.1
 --- !u!50 &1837593137340008615
 Rigidbody2D:
   serializedVersion: 4
@@ -454,7 +454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4140068680949097546, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
       propertyPath: cooldownTime
-      value: 0.7
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8855585839569760579, guid: b944c3bccf0305f43b7f07c5f091b6a2, type: 3}
       propertyPath: m_RootOrder
