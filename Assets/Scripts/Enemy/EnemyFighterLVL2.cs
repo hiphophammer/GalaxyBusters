@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFighter : MonoBehaviour
+public class EnemyFighterLVL2 : MonoBehaviour
 {
-    public EnemyHealth health;
+     public EnemyHealth health;
 
     private Vector3 speed;
     
@@ -20,16 +20,16 @@ public class EnemyFighter : MonoBehaviour
     void Start()
     {
         health = GetComponent<EnemyHealth>();
-        health.setHealth(2, 1);
+        health.setHealth(4, 1);
 
-        speed = new Vector3(0, 3f, 0);
+        speed = new Vector3(0, 3.25f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 150.0f;
+        fireRate = 75.0f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
@@ -55,7 +55,11 @@ public class EnemyFighter : MonoBehaviour
         {
             //Debug.Log("Firing at " + Time.time);
             nextFire = Time.time + fireRate;
+            GameObject bullet1 = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
+            GameObject bullet2 = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
             Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
+            bullet1.transform.Rotate(Vector3.forward * 10f);
+            bullet2.transform.Rotate(Vector3.forward * -10f);
         }
     }
 

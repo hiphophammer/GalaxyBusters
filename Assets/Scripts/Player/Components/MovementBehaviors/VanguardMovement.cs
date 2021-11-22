@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrailblazerMovement : MonoBehaviour
+public class VanguardMovement : MonoBehaviour
 {
-     // Private member variables.
+    // Private member variables.
     PlayerBehavior parent;
-    CameraSupport cameraSupport;
     private CooldownBarBehavior cooldownBar;
 
     private string[] movementAxes;
@@ -14,7 +13,10 @@ public class TrailblazerMovement : MonoBehaviour
     private string axis;
     private Vector3 startPos;
     private Vector3 endPos;
-    private bool Blink;
+
+    private bool Shield;
+    private float ShieldTime, ActivateTime;
+
     private Color baseColor, alpha;
 
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
@@ -28,27 +30,22 @@ public class TrailblazerMovement : MonoBehaviour
         maxXPos -= (parent.transform.localScale.x / 2.0f);
         maxYPos -= (parent.transform.localScale.y / 2.0f);
 
-        cameraSupport = Camera.main.GetComponent<CameraSupport>();
-        Debug.Assert(cameraSupport != null);
-
-        movementAxes = parent.GetMovementAxes();
-        speed = parent.GetSpeed();
-
         cooldownBar = parent.GetBasicAbilityCooldownBar();
         // Get parent's SpriteRenderer component.
         baseColor = parent.GetComponent<SpriteRenderer>().color;
         alpha = parent.GetComponent<SpriteRenderer>().color;
         alpha.a = .6f;
 
-        retrievedAxes = false;
+        ShieldTime = 6.0f;
         
+        retrievedAxes = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         RetrieveAxes();
-        
+
         if (retrievedAxes)
         {
             UpdateSpeed();
@@ -61,9 +58,6 @@ public class TrailblazerMovement : MonoBehaviour
             upDown *= (speed * Time.deltaTime);
             leftRight *= (speed * Time.deltaTime);
 
-            // Get the bounds of our renderer.
-            Bounds myBound = GetComponent<Renderer>().bounds;
-
             // Get collider to expand and contract as necessary.
             CircleCollider2D col = GetComponent<CircleCollider2D>();
             float OGradius = col.radius;
@@ -72,45 +66,56 @@ public class TrailblazerMovement : MonoBehaviour
             {
                 if (cooldownBar.ReadyToFire())
                 {
-                    // Blink
-                    startPos = transform.position;
-                    endPos = new Vector3(transform.position.x + (500 * leftRight), transform.position.y + (500 * upDown), transform.position.z);
-                    endPos.x = Clip(-1.0f * maxXPos, maxXPos, endPos.x);
-                    endPos.y = Clip(-1.0f * maxYPos, maxYPos, endPos.y);
-                    Debug.Log(upDown);
-                    if (startPos != endPos)
-                    {
-                        Blink = true;
-                        cooldownBar.TriggerCooldown();
-                        GetComponent<CircleCollider2D>().radius = OGradius * 6f;
-                        parent.GetComponent<SpriteRenderer>().color = alpha;
-                    }
+                    // Activate Shield
+                    Shield = true;
+                    ActivateTime = Time.time;
+                    cooldownBar.TriggerCooldown();
+                    GetComponent<CircleCollider2D>().radius = OGradius * 6f;
+                    parent.GetComponent<SpriteRenderer>().color = alpha;
                 }
             }
 
-            if (Blink)
+            if (Shield)
             {
-                transform.position = Vector3.Lerp(transform.position, endPos, 20f * Time.deltaTime);
-                if (transform.position == endPos)
-                {
-                    GetComponent<CircleCollider2D>().radius = OGradius / 6f;
-                    Blink = false;
-                    parent.GetComponent<SpriteRenderer>().color = baseColor;
-                }
+                ShieldTime -= Time.time - ActivateTime;
             }
-            else
+
+            if (ShieldTime < 0.0f)
             {
-                // Translate the player by the computed amount.
-                transform.Translate(leftRight, upDown, 0.0f);
+                GetComponent<CircleCollider2D>().radius = OGradius / 6f;
+                Shield = false;
+                parent.GetComponent<SpriteRenderer>().material.color = baseColor;
             }
-        } 
+            
+             Vector3 pos = transform.position;
+            if ((upDown < 0.0f) && (pos.y <= (-1.0f * maxYPos + 0.4f)))
+            {
+                upDown = 0.0f;
+            }
+            else if ((upDown > 0.0f) && (pos.y >= maxYPos))
+            {
+                upDown = 0.0f;
+            }
+    
+            if ((leftRight < 0.0f) && (pos.x <= (-1.0f * maxXPos)))
+            {
+                leftRight = 0.0f;
+            }
+            else if ((leftRight > 0.0f) && (pos.x >= maxXPos))
+            {
+                leftRight = 0.0f;                
+            }
+    
+            // Translate the player by the computed amount.
+            transform.Translate(leftRight, upDown, 0.0f);   
+        }
     }
 
     public void SetParent(PlayerBehavior parent)
     {
         this.parent = parent;
     }
-    
+
     // Private helpers.
     private void RetrieveAxes()
     {
@@ -151,8 +156,8 @@ public class TrailblazerMovement : MonoBehaviour
         }
     }
 
-    public bool getBlinkStatus()
+    public bool getShieldStatus()
     {
-        return Blink;
+        return Shield;
     }
 }

@@ -171,6 +171,15 @@ public class GameManager : MonoBehaviour
                     playerBehavior.GetHealthBar().SetHitPoints(100.0f);
                     playerBehavior.SetWeaponDamage(15.0f);
                     playerBehavior.SetSpeed(3.0f);
+                    
+                    player.AddComponent<VanguardMovement>();
+                    player.GetComponent<VanguardMovement>().SetParent(playerBehavior);
+
+                    player.AddComponent<VanguardCollider>();
+                    player.GetComponent<VanguardCollider>().SetParent(playerBehavior);
+
+                    player.AddComponent<BaseWeapon>();
+                    player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
                 }
                 else if (ship == "Trailblazer")
                 {
@@ -185,8 +194,8 @@ public class GameManager : MonoBehaviour
                     player.AddComponent<TrailblazerMovement>();
                     player.GetComponent<TrailblazerMovement>().SetParent(playerBehavior);
 
-                    player.AddComponent<BaseCollider>();
-                    player.GetComponent<BaseCollider>().SetParent(playerBehavior);
+                    player.AddComponent<TrailblazerCollider>();
+                    player.GetComponent<TrailblazerCollider>().SetParent(playerBehavior);
 
                     player.AddComponent<BaseWeapon>();
                     player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
@@ -226,7 +235,7 @@ public class GameManager : MonoBehaviour
         // TODO: Level 3.
 
         // TODO: Level 4 - Set number and name.
-        SetLevelNumAndName(4, "Stupid Level Name (We’re out of ideas)");
+        SetLevelNumAndName(4, "Stupid Level Name (Weï¿½re out of ideas)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
