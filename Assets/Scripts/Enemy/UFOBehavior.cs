@@ -23,22 +23,20 @@ public class UFOBehavior : MonoBehaviour
     void Start()
     {
         health = GetComponent<EnemyHealth>();
-        health.setHealth(8, 1);
+        health.setHealth(4, 1);
         
-        speed = new Vector3(0, -30f, 0);
+        speed = new Vector3(0, -3f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 0.4f;
+        fireRate = 0.2f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
-
-        transform.Rotate(Vector3.forward * 180f);
 
         turnSpd = 15f;
     }
@@ -100,6 +98,18 @@ public class UFOBehavior : MonoBehaviour
                 right.transform.Rotate(Vector3.forward * -90f);
                 left.transform.Rotate(Vector3.forward * 90f);
             }   
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject other = collision.gameObject;
+
+        if (other.CompareTag("HeroProjectile"))
+        {
+            // As a HeroProjectile, other must have a ProjectileBehavior script attached.
+            ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
+            health.decreaseHealth(damageDealer.GetParent());
         }
     }
 

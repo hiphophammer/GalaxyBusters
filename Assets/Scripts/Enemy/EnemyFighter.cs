@@ -20,23 +20,20 @@ public class EnemyFighter : MonoBehaviour
     void Start()
     {
         health = GetComponent<EnemyHealth>();
-        health.setHealth(1, 1);
+        health.setHealth(2, 1);
 
-        speed = new Vector3(0, 2f, 0);
+        speed = new Vector3(0, 3f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 200.0f;
+        fireRate = 150.0f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
-
-        transform.Rotate(Vector3.forward * 180f);
-
 
     }
 
@@ -68,7 +65,10 @@ public class EnemyFighter : MonoBehaviour
 
         if (other.CompareTag("HeroProjectile"))
         {
-            health.decreaseHealth();
+            // As a HeroProjectile, other must have a ProjectileBehavior script attached.
+            ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
+            Debug.Log(damageDealer.GetParent());
+            health.decreaseHealth(damageDealer.GetParent());
         }
     }
 

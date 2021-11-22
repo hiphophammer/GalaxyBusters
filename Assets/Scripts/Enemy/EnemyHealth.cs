@@ -5,13 +5,23 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     int health;
-    int bulletDamage;
+    float[] damageDealt;
+    
     GameObject Explosion;
     GameObject powerUp;
+
+    PlayerBehavior destroyerBehavior;
+
+    Camera cam;
+    ScoreManager score;
     // Start is called before the first frame update
     void Start()
     {
-        
+        cam = Camera.main;
+        score = cam.GetComponent<ScoreManager>();
+        damageDealt = new float[2];
+        damageDealt[0] = 0;
+        damageDealt[1] = 0;
     }
 
     // Update is called once per frame
@@ -31,8 +41,22 @@ public class EnemyHealth : MonoBehaviour
                 powerUp.transform.position = transform.position;
                 powerUp.transform.rotation = transform.rotation;
             }
+
+            if(destroyerBehavior.IsPlayerOne())
+            {
+                score.DestroyedEnemy(damageDealt, 0);
+            }
+            else
+            {
+                score.DestroyedEnemy(damageDealt, 1);
+            }
             
         }
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
     public void setHealth(int h, int lvl)
@@ -40,8 +64,21 @@ public class EnemyHealth : MonoBehaviour
         health = h * lvl;
     }
 
-    public void decreaseHealth()
+    public void decreaseHealth(PlayerBehavior damageDealer)
     {
-        health--;
+        if(damageDealer.IsPlayerOne())
+        {
+            Debug.Log("Player 1 did damage.");
+            damageDealt[0]++;
+            destroyerBehavior = damageDealer;
+            health--;
+        }
+        else
+        {
+            damageDealt[1]++;
+            destroyerBehavior = damageDealer;
+            health--;
+        }
+        Debug.Log(damageDealer.IsPlayerOne());
     }
 }

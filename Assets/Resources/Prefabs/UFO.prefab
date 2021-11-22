@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4107245479288209961}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -114,7 +114,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9e5187b1ae2ef468ba322fe43e007f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 0}
   fireRate: 0
+  turnSpd: 0
 --- !u!50 &-1485595720836528233
 Rigidbody2D:
   serializedVersion: 4
