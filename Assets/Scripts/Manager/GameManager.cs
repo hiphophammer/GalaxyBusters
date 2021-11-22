@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public InventoryBehavior player2Inventory;
 
     // Stuff for levels.
+    public ItemSelection itemSelection;
     public GameObject levelAttach;
 
     public TMPro.TextMeshProUGUI levelNum;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
     {
         // Perform some checks.
         Debug.Log("GameManager: Waking up!");
+        Debug.Assert(itemSelection != null);
 
         // Make sure we have valid references to our inventories.
         Debug.Assert(player1Inventory != null);
@@ -210,6 +212,9 @@ public class GameManager : MonoBehaviour
         levelAttach.AddComponent<LevelOne>();
         float levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
+
+        itemSelection.PresentItems();
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // TODO: Level 2 - Set number and name.
         SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What we had Written Down)");
