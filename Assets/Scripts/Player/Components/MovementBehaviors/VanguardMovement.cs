@@ -14,10 +14,11 @@ public class VanguardMovement : MonoBehaviour
     private Vector3 startPos;
     private Vector3 endPos;
 
+    private Color baseColor, alpha;
     private bool Shield;
     private float ShieldTime, ActivateTime;
 
-    private Color baseColor, alpha;
+    private float OGradius;
 
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
@@ -31,13 +32,16 @@ public class VanguardMovement : MonoBehaviour
         maxYPos -= (parent.transform.localScale.y / 2.0f);
 
         cooldownBar = parent.GetBasicAbilityCooldownBar();
-        // Get parent's SpriteRenderer component.
-        baseColor = parent.GetComponent<SpriteRenderer>().color;
-        alpha = parent.GetComponent<SpriteRenderer>().color;
-        alpha.a = .6f;
-
-        ShieldTime = 6.0f;
         
+        baseColor = parent.GetComponent<SpriteRenderer>().color;
+        alpha = Color.red;
+
+        // Get collider to expand and contract as necessary.
+        CircleCollider2D col = GetComponent<CircleCollider2D>();
+        OGradius = col.radius;
+
+        ShieldTime = 0.0f;
+
         retrievedAxes = false;
     }
 
@@ -58,9 +62,7 @@ public class VanguardMovement : MonoBehaviour
             upDown *= (speed * Time.deltaTime);
             leftRight *= (speed * Time.deltaTime);
 
-            // Get collider to expand and contract as necessary.
-            CircleCollider2D col = GetComponent<CircleCollider2D>();
-            float OGradius = col.radius;
+            
 
             if (Input.GetAxis(axis) == 1.0f)
             {
@@ -70,21 +72,21 @@ public class VanguardMovement : MonoBehaviour
                     Shield = true;
                     ActivateTime = Time.time;
                     cooldownBar.TriggerCooldown();
-                    GetComponent<CircleCollider2D>().radius = OGradius * 6f;
-                    parent.GetComponent<SpriteRenderer>().color = alpha;
+                    GetComponent<CircleCollider2D>().radius = OGradius * 3f;
                 }
             }
 
             if (Shield)
             {
-                ShieldTime -= Time.time - ActivateTime;
+                ShieldTime = Time.time - ActivateTime;
+                parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, alpha, .25f);
             }
 
-            if (ShieldTime < 0.0f)
+            if (ShieldTime > 4.0f)
             {
-                GetComponent<CircleCollider2D>().radius = OGradius / 6f;
+                GetComponent<CircleCollider2D>().radius = OGradius;
                 Shield = false;
-                parent.GetComponent<SpriteRenderer>().material.color = baseColor;
+                parent.GetComponent<SpriteRenderer>().color = baseColor;
             }
             
              Vector3 pos = transform.position;

@@ -17,6 +17,8 @@ public class TrailblazerMovement : MonoBehaviour
     private bool Blink;
     private Color baseColor, alpha;
 
+    private float OGradius;
+
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
 
@@ -39,6 +41,16 @@ public class TrailblazerMovement : MonoBehaviour
         baseColor = parent.GetComponent<SpriteRenderer>().color;
         alpha = parent.GetComponent<SpriteRenderer>().color;
         alpha.a = .6f;
+
+
+        // Get collider to expand and contract as necessary.
+        CircleCollider2D col = GetComponent<CircleCollider2D>();
+
+        // Set radius of collider to .1f
+        col.radius = .1f;
+        OGradius = col.radius;
+
+        
 
         retrievedAxes = false;
         
@@ -64,9 +76,6 @@ public class TrailblazerMovement : MonoBehaviour
             // Get the bounds of our renderer.
             Bounds myBound = GetComponent<Renderer>().bounds;
 
-            // Get collider to expand and contract as necessary.
-            CircleCollider2D col = GetComponent<CircleCollider2D>();
-            float OGradius = col.radius;
 
             if (Input.GetAxis(axis) == 1.0f)
             {
@@ -93,7 +102,7 @@ public class TrailblazerMovement : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position, endPos, 20f * Time.deltaTime);
                 if (transform.position == endPos)
                 {
-                    GetComponent<CircleCollider2D>().radius = OGradius / 6f;
+                    GetComponent<CircleCollider2D>().radius = OGradius;
                     Blink = false;
                     parent.GetComponent<SpriteRenderer>().color = baseColor;
                 }
