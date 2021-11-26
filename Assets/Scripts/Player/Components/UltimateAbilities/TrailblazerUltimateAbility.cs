@@ -9,6 +9,7 @@ public class TrailblazerUltimateAbility : MonoBehaviour
 
     // Private member variables.
     private PlayerBehavior parent;
+    private BaseWeapon weapon;
     private ChargeBarBehavior chargeBar;
     private string axis;
     private Color baseColor, alpha;
@@ -31,6 +32,7 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     {
         // Retrieve a reference to our charge & cooldown bars and the axis.
         chargeBar = parent.GetUltimateAbilityChargeBar();
+        axis = parent.GetUltimateAbilityAxis();
         
         // Get parent's SpriteRenderer component.
         renderer = parent.GetComponent<SpriteRenderer>();
@@ -46,7 +48,6 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     void Update()
     {
         RetrieveAxis();
-
         if (retrivedAxis)
         {
             UpdateFSM();
@@ -99,7 +100,7 @@ public class TrailblazerUltimateAbility : MonoBehaviour
 
     private void ServiceIntangibilityState()
     {
-        alpha.a = 0.75f;
+        alpha.a = 0.6f;
         float dTime = Time.time - stateEntryTime;
         if (dTime >= INTANGIBILITY_TIME)
         {
@@ -114,5 +115,7 @@ public class TrailblazerUltimateAbility : MonoBehaviour
             parent.GetComponent<SpriteRenderer>().material.color = alpha;
         }
     }
+
+
 }
 

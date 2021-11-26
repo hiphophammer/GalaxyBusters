@@ -10,6 +10,7 @@ public class BaseMovement : MonoBehaviour
 
     private string[] movementAxes;
     private float speed;
+    private string axis;
 
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
@@ -22,6 +23,7 @@ public class BaseMovement : MonoBehaviour
         cameraSupport = Camera.main.GetComponent<CameraSupport>();
         Debug.Assert(cameraSupport != null);
 
+        movementAxes = parent.GetMovementAxes();
         speed = parent.GetSpeed();
 
         maxXPos -= (parent.transform.localScale.x / 2.0f);
@@ -34,7 +36,7 @@ public class BaseMovement : MonoBehaviour
     void Update()
     {
         RetrieveAxes();
-
+        
         if (retrievedAxes)
         {
             UpdateSpeed();
@@ -68,11 +70,17 @@ public class BaseMovement : MonoBehaviour
             // Translate the player by the computed amount.
             transform.Translate(leftRight, upDown, 0.0f);
         }
+        
     }
 
     public void SetParent(PlayerBehavior parent)
     {
         this.parent = parent;
+    }
+
+    private void UpdateSpeed()
+    {
+        speed = parent.GetSpeed();
     }
 
     // Private helpers.
@@ -83,15 +91,14 @@ public class BaseMovement : MonoBehaviour
             movementAxes = parent.GetMovementAxes();
             bool verticalAxisValid = movementAxes[0] != null && movementAxes[0] != "";
             bool horizontalAxisValid = movementAxes[1] != null && movementAxes[1] != "";
-            if (verticalAxisValid && horizontalAxisValid)
+
+            axis = parent.GetBasicAbilityAxis();
+            bool axisValid = axis != null && axis != "";
+
+            if (verticalAxisValid && horizontalAxisValid && axisValid)
             {
                 retrievedAxes = true;
             }
         }
-    }
-
-    private void UpdateSpeed()
-    {
-        speed = parent.GetSpeed();
     }
 }

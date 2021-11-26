@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFighter : MonoBehaviour, EnemyBehavior
+public class EnemyFighter : MonoBehaviour
 {
     public EnemyHealth health;
 
@@ -20,16 +20,16 @@ public class EnemyFighter : MonoBehaviour, EnemyBehavior
     void Start()
     {
         health = GetComponent<EnemyHealth>();
-        health.setHealth(1, 1);
+        health.setHealth(2, 1);
 
-        speed = new Vector3(0, 2f, 0);
+        speed = new Vector3(0, 3f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 200.0f;
+        fireRate = 150.0f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
@@ -72,13 +72,4 @@ public class EnemyFighter : MonoBehaviour, EnemyBehavior
         }
     }
 
-    public void TakeDamage(float totalDamage, PlayerBehavior playerBehavior)
-    {
-        health.decreaseHealth(playerBehavior);
-    }
-
-    public bool IsAlive()
-    {
-        return health.GetHealth() > 0;
-    }
 }

@@ -93,7 +93,7 @@ public class ChaserBehavior : MonoBehaviour, EnemyBehavior
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            Instantiate(Resources.Load("Prefabs/Bullet"), transform.position + Vector3.up, transform.rotation);
+            Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
         }
     }
 

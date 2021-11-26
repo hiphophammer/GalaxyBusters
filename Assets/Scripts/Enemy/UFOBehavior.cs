@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UFOBehavior : MonoBehaviour, EnemyBehavior
+public class UFOBehavior : MonoBehaviour
 {
     public EnemyHealth health;
 
@@ -23,16 +23,16 @@ public class UFOBehavior : MonoBehaviour, EnemyBehavior
     void Start()
     {
         health = GetComponent<EnemyHealth>();
-        health.setHealth(8, 1);
+        health.setHealth(4, 1);
         
-        speed = new Vector3(0, -30f, 0);
+        speed = new Vector3(0, -3f, 0);
         speed = speed * Time.fixedDeltaTime;
 
         cam = Camera.main;
         camBounds = cam.GetComponent<CameraBounds>();
         bound = camBounds.bounds;
 
-        fireRate = 0.4f;
+        fireRate = 0.35f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
@@ -44,7 +44,7 @@ public class UFOBehavior : MonoBehaviour, EnemyBehavior
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(timeSinceSpawn > 2.5f && timeSinceSpawn < 10f)
+        if(timeSinceSpawn > 1f && timeSinceSpawn < 10f)
         {
             transform.Rotate(Vector3.forward * spin(turnSpd) * Time.fixedDeltaTime);
             shoot();
@@ -83,20 +83,14 @@ public class UFOBehavior : MonoBehaviour, EnemyBehavior
 
             Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
             GameObject behind = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
-            GameObject right = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
-            GameObject left = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
 
             if(transform.position.x < 0)
             {
                 behind.transform.Rotate(Vector3.forward * 180f);
-                right.transform.Rotate(Vector3.forward * 90f);
-                left.transform.Rotate(Vector3.forward * -90f);
             }
             else if(transform.position.x >= 0)
             {
                 behind.transform.Rotate(Vector3.forward * 180f);
-                right.transform.Rotate(Vector3.forward * -90f);
-                left.transform.Rotate(Vector3.forward * 90f);
             }   
         }
     }
@@ -113,14 +107,5 @@ public class UFOBehavior : MonoBehaviour, EnemyBehavior
         }
     }
 
-    public void TakeDamage(float totalDamage, PlayerBehavior playerBehavior)
-    {
-        health.decreaseHealth(playerBehavior);
-    }
-
-    public bool IsAlive()
-    {
-        return health.GetHealth() > 0;
-    }
 }
 
