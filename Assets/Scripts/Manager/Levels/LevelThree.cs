@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelThree : MonoBehaviour
 {
     // Constants.
-    private const float LEVEL_TIME = 45.0f;
+    private const float LEVEL_TIME = 1.0f;
     private const float TIME_BETWEEN_SPAWNS = 5.0f;
 
     // Private member variables.
