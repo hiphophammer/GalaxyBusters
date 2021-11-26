@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da8575b38c3c6fc40a5539685790ee6f, type: 3}
-  m_Name: SpeedBoost
+  m_Name: DamageBoost
   m_EditorClassIdentifier: 
+  isPowerUp: 0
   ID: 0
   type: 0
-  description: 
-  icon: {fileID: 21300000, guid: 3f9f255dc20b43948a945b6a32213333, type: 3}
+  description: +5 Damage
+  icon: {fileID: 21300000, guid: e900bf21dc510744db9ccd573bfc20e7, type: 3}
   dHP: 0
-  dSpeed: 5
-  dDamage: 0
+  dSpeed: 0
+  dDamage: 5
   bulletName: 
   ship: 

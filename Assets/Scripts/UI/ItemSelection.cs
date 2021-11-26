@@ -19,6 +19,8 @@ public class ItemSelection : MonoBehaviour
     private InventoryBehavior player1Inventory;
     private InventoryBehavior player2Inventory;
 
+    private ItemCatalog player1ItemCatalog;
+
     private PlayerBehavior player1;
     private PlayerBehavior player2;
 
@@ -26,6 +28,7 @@ public class ItemSelection : MonoBehaviour
 
     private bool donePresenting;
     private int itemChosen;
+    private int levelNum;
 
     private Item item1;
     private Item item2;
@@ -73,8 +76,9 @@ public class ItemSelection : MonoBehaviour
     }
 
     // Public methods.
-    public void PresentItems()
+    public void PresentItems(int levelNum)
     {
+        this.levelNum = levelNum;
         donePresenting = false;
         state = ItemSelectionState.setPlayer1Items;
         gameObject.SetActive(true);
@@ -104,9 +108,39 @@ public class ItemSelection : MonoBehaviour
     // Private helper methods.
     private void GenerateItems()
     {
-        item1 = Resources.Load("Powerups/InventoryTest/DualStream") as Item;
-        item2 = Resources.Load("Powerups/InventoryTest/HPBoost") as Item;
-        item3 = Resources.Load("Powerups/InventoryTest/LancerSpecial") as Item;
+        if (levelNum == 1)
+        {
+            // End of level 1.
+            Item[] commonItems = player1ItemCatalog.GetCommonItem(3);
+            item1 = commonItems[0];
+            item2 = commonItems[1];
+            item3 = commonItems[2];
+        }
+        if (levelNum == 2)
+        {
+            // End of level 2.
+            Item[] commonItems = player1ItemCatalog.GetCommonItem(2);
+            item1 = commonItems[0];
+            item2 = commonItems[1];
+
+            Item[] rareItem = player1ItemCatalog.GetRareItem(1);
+            item3 = rareItem[0];
+        }
+        if (levelNum == 3)
+        {
+            // End of level 3.
+            Item[] rareItems = player1ItemCatalog.GetRareItem(3);
+            item1 = rareItems[0];
+            item2 = rareItems[1];
+            item3 = rareItems[2];
+        }
+        if (levelNum == 4)
+        {
+            // End of level 4.
+            item1 = player1ItemCatalog.GetRareItem(1)[0];
+            item2 = player1ItemCatalog.GetEpicItem(1)[0];
+            item3 = player1ItemCatalog.GetSpecialItem();
+        }
     }
 
     private void SetItems()
@@ -131,6 +165,8 @@ public class ItemSelection : MonoBehaviour
 
                 player1Inventory = gameManager.player1Inventory;
                 player2Inventory = gameManager.player2Inventory;
+
+                player1ItemCatalog = player1Inventory.GetItemCatalog();
 
                 retrievedReferences = true;
             }
@@ -210,7 +246,10 @@ public class ItemSelection : MonoBehaviour
                 }
 
                 // Add the item.
-                player1Inventory.AddItem(chosenItem);
+                if (chosenItem != null)
+                {
+                    player1Inventory.AddItem(chosenItem);
+                }
             }
 
             // Transition to the next state.
@@ -270,7 +309,10 @@ public class ItemSelection : MonoBehaviour
                 }
 
                 // Add the item.
-                player2Inventory.AddItem(chosenItem);
+                if (chosenItem != null)
+                {
+                    player2Inventory.AddItem(chosenItem);
+                }
             }
 
             // Transition to the next state.

@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour
         float levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
 
-        itemSelection.PresentItems();
+        itemSelection.PresentItems(1);
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // TODO: Level 2 - Set number and name.
@@ -222,6 +222,8 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // TODO: Level 2.
+        itemSelection.PresentItems(2);
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // TODO: Level 3 - Set number and name.
         SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
@@ -229,6 +231,8 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // TODO: Level 3.
+        itemSelection.PresentItems(3);
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // TODO: Level 4 - Set number and name.
         SetLevelNumAndName(4, "Stupid Level Name (We’re out of ideas)");
@@ -236,6 +240,8 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // TODO: Level 4.
+        itemSelection.PresentItems(4);
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // TODO: Level 5 - Set number and name.
         SetLevelNumAndName(5, "Galaxy Buster");

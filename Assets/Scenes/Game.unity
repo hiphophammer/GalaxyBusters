@@ -1378,6 +1378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 425246029}
   - component: {fileID: 425246030}
+  - component: {fileID: 425246031}
   m_Layer: 5
   m_Name: Player1Inventory
   m_TagString: Untagged
@@ -1422,12 +1423,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7843fbc02a9ce1e4fbf7a0c40e0252f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemCatalog: {fileID: 425246031}
   slots:
   - {fileID: 244459401}
   - {fileID: 1046924591}
   - {fileID: 2126631634}
   - {fileID: 1555162890}
   - {fileID: 338704946}
+--- !u!114 &425246031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425246028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5855dc8d80ec70f478eb73705ba4a904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 519420034}
 --- !u!1001 &494981582
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4867,6 +4882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7843fbc02a9ce1e4fbf7a0c40e0252f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemCatalog: {fileID: 0}
   slots:
   - {fileID: 1738301801}
   - {fileID: 1620849550}

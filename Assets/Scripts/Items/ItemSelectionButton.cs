@@ -22,6 +22,8 @@ public class ItemSelectionButton : MonoBehaviour
     private Item item;                          // The actual item itself containing the 
                                                 // information.
 
+    private Sprite defaultIcon;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,8 +36,15 @@ public class ItemSelectionButton : MonoBehaviour
     // Public modifiers.
     public void SetItem(Item newItem)
     {
-        item = newItem;
-        UpdateButton();
+        if (newItem == null)
+        {
+            ClearButton();
+        }
+        else
+        {
+            item = newItem;
+            UpdateButton();
+        }
     }
 
     // Private helper methods.
@@ -51,6 +60,19 @@ public class ItemSelectionButton : MonoBehaviour
 
         // Set up the description.
         description.text = item.description;
+    }
+
+    private void ClearButton()
+    {
+        // Set the icon and scale.
+        image.transform.localScale = new Vector3(IMAGE_SCALE, IMAGE_SCALE, 1.0f);
+        image.sprite = defaultIcon;
+
+        // Set up the type.
+        type.text = "";
+
+        // Set up the description.
+        description.text = "No item!";
     }
 
     private string GetType(Item.ItemType type)
