@@ -42,8 +42,8 @@ public class BaseMovement : MonoBehaviour
             UpdateSpeed();
 
             // Retrieve the values from our axes.
-            float upDown = Input.GetAxis(movementAxes[0]);
-            float leftRight = Input.GetAxis(movementAxes[1]);
+            float upDown = Input.GetAxisRaw(movementAxes[0]);
+            float leftRight = Input.GetAxisRaw(movementAxes[1]);
 
             // Scale the values appropriately and check for bounds
             Vector3 pos = transform.position;
