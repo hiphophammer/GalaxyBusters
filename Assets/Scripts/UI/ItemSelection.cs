@@ -20,6 +20,7 @@ public class ItemSelection : MonoBehaviour
     private InventoryBehavior player2Inventory;
 
     private ItemCatalog player1ItemCatalog;
+    private ItemCatalog player2ItemCatalog;
 
     private PlayerBehavior player1;
     private PlayerBehavior player2;
@@ -106,12 +107,12 @@ public class ItemSelection : MonoBehaviour
     }
 
     // Private helper methods.
-    private void GenerateItems()
+    private void GenerateItems(ItemCatalog itemCatalog)
     {
         if (levelNum == 1)
         {
             // End of level 1.
-            Item[] commonItems = player1ItemCatalog.GetCommonItem(3);
+            Item[] commonItems = itemCatalog.GetCommonItem(3);
             item1 = commonItems[0];
             item2 = commonItems[1];
             item3 = commonItems[2];
@@ -119,17 +120,17 @@ public class ItemSelection : MonoBehaviour
         if (levelNum == 2)
         {
             // End of level 2.
-            Item[] commonItems = player1ItemCatalog.GetCommonItem(2);
+            Item[] commonItems = itemCatalog.GetCommonItem(2);
             item1 = commonItems[0];
             item2 = commonItems[1];
 
-            Item[] rareItem = player1ItemCatalog.GetRareItem(1);
+            Item[] rareItem = itemCatalog.GetRareItem(1);
             item3 = rareItem[0];
         }
         if (levelNum == 3)
         {
             // End of level 3.
-            Item[] rareItems = player1ItemCatalog.GetRareItem(3);
+            Item[] rareItems = itemCatalog.GetRareItem(3);
             item1 = rareItems[0];
             item2 = rareItems[1];
             item3 = rareItems[2];
@@ -137,9 +138,9 @@ public class ItemSelection : MonoBehaviour
         if (levelNum == 4)
         {
             // End of level 4.
-            item1 = player1ItemCatalog.GetRareItem(1)[0];
-            item2 = player1ItemCatalog.GetEpicItem(1)[0];
-            item3 = player1ItemCatalog.GetSpecialItem();
+            item1 = itemCatalog.GetRareItem(1)[0];
+            item2 = itemCatalog.GetEpicItem(1)[0];
+            item3 = itemCatalog.GetSpecialItem();
         }
     }
 
@@ -167,6 +168,7 @@ public class ItemSelection : MonoBehaviour
                 player2Inventory = gameManager.player2Inventory;
 
                 player1ItemCatalog = player1Inventory.GetItemCatalog();
+                player2ItemCatalog = player2Inventory.GetItemCatalog();
 
                 retrievedReferences = true;
             }
@@ -208,7 +210,7 @@ public class ItemSelection : MonoBehaviour
         header.text = headerText;
 
         // Generate and set the items.
-        GenerateItems();
+        GenerateItems(player1ItemCatalog);
         SetItems();
 
         // Transition to the next state.
@@ -271,7 +273,7 @@ public class ItemSelection : MonoBehaviour
         header.text = headerText;
 
         // Generate and set the items.
-        GenerateItems();
+        GenerateItems(player2ItemCatalog);
         SetItems();
 
         // Transition to the next state.

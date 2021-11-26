@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelOne : MonoBehaviour
 {
     // Constants.
-    private const float LEVEL_TIME = 45.0f;
+    private const float LEVEL_TIME = 1.0f;
     private const float TIME_BETWEEN_SPAWNS = 2.0f;
 
     // Private member variables.
@@ -43,7 +43,6 @@ public class LevelOne : MonoBehaviour
                 if (rand == 1 || rand == 2)
                 {
                     spawner.SpawnChaser();
-                    //spawner.SpawnSquare();
                 }
                 else if (rand == 3)
                 {

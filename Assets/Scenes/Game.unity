@@ -2273,8 +2273,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1954909031}
   - {fileID: 1176096707}
+  - {fileID: 1954909031}
   m_Father: {fileID: 365127148}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2922,7 +2922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 157033409252596396, guid: 7c7882311a61efb4ba72ac18a9ac01a0, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 157033409252596396, guid: 7c7882311a61efb4ba72ac18a9ac01a0, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5284,6 +5284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1954909031}
   - component: {fileID: 1954909032}
+  - component: {fileID: 1954909033}
   m_Layer: 5
   m_Name: Player2Inventory
   m_TagString: Untagged
@@ -5309,7 +5310,7 @@ RectTransform:
   - {fileID: 943265378}
   - {fileID: 528636918}
   m_Father: {fileID: 1080414620}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -5328,13 +5329,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7843fbc02a9ce1e4fbf7a0c40e0252f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemCatalog: {fileID: 0}
+  itemCatalog: {fileID: 1954909033}
   slots:
   - {fileID: 1738301801}
   - {fileID: 1620849550}
   - {fileID: 1497429863}
   - {fileID: 943265379}
   - {fileID: 528636919}
+--- !u!114 &1954909033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954909030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5855dc8d80ec70f478eb73705ba4a904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 519420034}
 --- !u!1 &2007258201
 GameObject:
   m_ObjectHideFlags: 0
