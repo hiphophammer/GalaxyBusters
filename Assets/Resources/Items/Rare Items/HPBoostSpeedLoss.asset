@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da8575b38c3c6fc40a5539685790ee6f, type: 3}
-  m_Name: EpicTest
+  m_Name: HPBoostSpeedLoss
   m_EditorClassIdentifier: 
+  isPowerUp: 0
   ID: 0
-  type: 2
-  description: Epic
-  icon: {fileID: 21300000, guid: 9666780b74121e64482b34b57616a4d0, type: 3}
-  dHP: 0
-  dSpeed: 0
+  type: 1
+  description: +7 HP, -3 Speed
+  icon: {fileID: 21300000, guid: 485afb6d9e6004543950901a8bc994c7, type: 3}
+  dHP: 7
+  dSpeed: -3
   dDamage: 0
   bulletName: 
   ship: 

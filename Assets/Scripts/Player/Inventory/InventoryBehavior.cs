@@ -11,6 +11,7 @@ public class InventoryBehavior : MonoBehaviour
     private const int MAX_EPIC_ITEMS = INVENTORY_SIZE - RESERVED_SLOTS;
 
     // Public member variables.
+    public ItemCatalog itemCatalog;
     public Slot[] slots;
 
     // Private member variables.
@@ -24,6 +25,8 @@ public class InventoryBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Assert(itemCatalog != null);
+
         // Initialize our list & other members.
         items = new List<Item>[5];
         specialItemAdded = false;
@@ -33,6 +36,11 @@ public class InventoryBehavior : MonoBehaviour
         {
             Debug.Assert(slot != null);
         }
+    }
+
+    public ItemCatalog GetItemCatalog()
+    {
+        return itemCatalog;
     }
 
     public void Hide()
@@ -58,6 +66,7 @@ public class InventoryBehavior : MonoBehaviour
         {
             // Add the item to inventory.
             AddToInventory(item);
+            itemCatalog.RemoveItem(item);
 
             // Update the player.
             UpdatePlayer(item);

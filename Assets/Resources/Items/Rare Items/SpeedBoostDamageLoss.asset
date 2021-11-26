@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da8575b38c3c6fc40a5539685790ee6f, type: 3}
-  m_Name: HPBoostSpeedLoss
+  m_Name: SpeedBoostDamageLoss
   m_EditorClassIdentifier: 
-  isPowerUp: 1
+  isPowerUp: 0
   ID: 0
   type: 1
-  description: +7 HP, -7 Speed
-  icon: {fileID: 21300000, guid: 485afb6d9e6004543950901a8bc994c7, type: 3}
-  dHP: 7
-  dSpeed: -7
-  dDamage: 0
+  description: +7 Speed, -3 Damage
+  icon: {fileID: 21300000, guid: 5e10e02925ed7884f8270a6d95d6de95, type: 3}
+  dHP: 0
+  dSpeed: 7
+  dDamage: -3
   bulletName: 
   ship: 

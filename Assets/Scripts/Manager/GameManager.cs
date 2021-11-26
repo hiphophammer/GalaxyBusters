@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public InventoryBehavior player2Inventory;
 
     // Stuff for levels.
+    public ItemSelection itemSelection;
     public GameObject levelAttach;
     public EnemySpawnControl spawner;
 
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         // Perform some checks.
         Debug.Log("GameManager: Waking up!");
+        Debug.Assert(itemSelection != null);
 
         // Make sure we have valid references to our inventories.
         Debug.Assert(player1Inventory != null);
@@ -232,6 +234,9 @@ public class GameManager : MonoBehaviour
         levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
 
+        itemSelection.PresentItems(1);
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
+
         // Level 2 - Set number and name.
         SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What we had Written Down)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
@@ -242,6 +247,9 @@ public class GameManager : MonoBehaviour
         levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
         levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
+        
+        itemSelection.PresentItems(2);
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 3 - Set number and name.
         SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
@@ -253,17 +261,23 @@ public class GameManager : MonoBehaviour
         levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
         levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
+        
+        itemSelection.PresentItems(3);
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 4 - Set number and name.
-        SetLevelNumAndName(4, "Stupid Level Name (We�re out of ideas)");
+        SetLevelNumAndName(4, "Stupid Level Name (We're out of ideas)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
-
+        
         // Level 4.
         levelAttach.AddComponent<LevelFour>();
         levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
         levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
+        
+        itemSelection.PresentItems(4);
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // TODO: Level 5 - Set number and name.
         /*SetLevelNumAndName(5, "Galaxy Buster");

@@ -43,7 +43,7 @@ public class LevelOne : MonoBehaviour
                 if (rand == 1 || rand == 2)
                 {
                     spawner.SpawnChaser();
-                    spawner.SpawnSquare();
+                    //spawner.SpawnSquare();
                 }
                 else if (rand == 3)
                 {
