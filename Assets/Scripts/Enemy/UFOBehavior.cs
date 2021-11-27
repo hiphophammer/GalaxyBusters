@@ -103,6 +103,9 @@ public class UFOBehavior : MonoBehaviour
         {
             // As a HeroProjectile, other must have a ProjectileBehavior script attached.
             ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
+            PlayerBehavior p = damageDealer.GetParent();
+            p.DestroyedEnemy();
+            Debug.Log(damageDealer.GetParent());
             health.decreaseHealth(damageDealer.GetParent());
         }
     }

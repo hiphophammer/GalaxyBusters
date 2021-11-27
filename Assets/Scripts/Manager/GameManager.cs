@@ -81,10 +81,15 @@ public class GameManager : MonoBehaviour
         DetectCondition();
         
         // Pseudo-invulnerability key
-        if(Input.GetKey("x"))
+        if(Input.GetKeyDown("x"))
         {
             GameObject p = GameObject.FindWithTag("Player");
             p.transform.position = new Vector3(0.0f, -999.0f, 0.0f);
+        }
+        if(Input.GetKeyUp("x"))
+        {
+            GameObject p = GameObject.FindWithTag("Player");
+            p.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         }
     }
 

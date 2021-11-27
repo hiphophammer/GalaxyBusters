@@ -69,9 +69,28 @@ public class TrailblazerMovement : MonoBehaviour
             float upDown = Input.GetAxisRaw(movementAxes[0]);
             float leftRight = Input.GetAxisRaw(movementAxes[1]);
 
-            // Scale the values appropriately.
+            // Scale the values appropriately and check for bounds
+            Vector3 pos = transform.position;
             upDown *= (speed * Time.deltaTime);
+            if ((upDown < 0.0f) && (pos.y <= (-1.0f * maxYPos + 0.4f)))
+            {
+                upDown = 0.0f;
+            }
+            else if ((upDown > 0.0f) && (pos.y >= maxYPos))
+            {
+                upDown = 0.0f;
+            }
+
             leftRight *= (speed * Time.deltaTime);
+            if ((leftRight < 0.0f) && (pos.x <= (-1.0f * maxXPos)))
+            {
+                leftRight = 0.0f;
+            }
+            else if ((leftRight > 0.0f) && (pos.x >= maxXPos))
+            {
+                leftRight = 0.0f;
+            }
+
 
             // Get the bounds of our renderer.
             Bounds myBound = GetComponent<Renderer>().bounds;
@@ -83,7 +102,7 @@ public class TrailblazerMovement : MonoBehaviour
                 {
                     // Blink
                     startPos = transform.position;
-                    endPos = new Vector3(transform.position.x + (500 * leftRight), transform.position.y + (500 * upDown), transform.position.z);
+                    endPos = new Vector3(transform.position.x + (100 * leftRight), transform.position.y + (100 * upDown), transform.position.z);
                     endPos.x = Clip(-1.0f * maxXPos, maxXPos, endPos.x);
                     endPos.y = Clip(-1.0f * maxYPos, maxYPos, endPos.y);
                     Debug.Log(upDown);
@@ -99,7 +118,7 @@ public class TrailblazerMovement : MonoBehaviour
 
             if (Blink)
             {
-                transform.position = Vector3.Lerp(transform.position, endPos, 20f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, endPos, 15f * Time.deltaTime);
                 if (transform.position == endPos)
                 {
                     GetComponent<CircleCollider2D>().radius = OGradius;

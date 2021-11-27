@@ -20,7 +20,7 @@ public class EnemyFighter : MonoBehaviour
     void Start()
     {
         health = GetComponent<EnemyHealth>();
-        health.setHealth(2, 1);
+        health.setHealth(1, 1);
 
         speed = new Vector3(0, 3f, 0);
         speed = speed * Time.fixedDeltaTime;
@@ -67,6 +67,8 @@ public class EnemyFighter : MonoBehaviour
         {
             // As a HeroProjectile, other must have a ProjectileBehavior script attached.
             ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
+            PlayerBehavior p = damageDealer.GetParent();
+            p.DestroyedEnemy();
             Debug.Log(damageDealer.GetParent());
             health.decreaseHealth(damageDealer.GetParent());
         }

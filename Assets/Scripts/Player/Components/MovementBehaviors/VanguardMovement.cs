@@ -82,7 +82,7 @@ public class VanguardMovement : MonoBehaviour
                 parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, alpha, .25f);
             }
 
-            if (ShieldTime > 4.0f)
+            if (ShieldTime > 2.5f)
             {
                 GetComponent<CircleCollider2D>().radius = OGradius;
                 Shield = false;
