@@ -46,7 +46,7 @@ public class CooperativePlayMenu : MonoBehaviour
         lancerSpriteOne = Resources.Load<Sprite>("Textures/Ships/Player 1/Lancer");
         vanguardSpriteOne = Resources.Load<Sprite>("Textures/Ships/Player 1/Vanguard");
         trailblazerSpriteOne = Resources.Load<Sprite>("Textures/Ships/Player 1/Trailblazer");
-        lancerSpriteTwo = Resources.Load<Sprite>("Textures/Ships/Player 25/Lancer");
+        lancerSpriteTwo = Resources.Load<Sprite>("Textures/Ships/Player 2/Lancer");
         vanguardSpriteTwo = Resources.Load<Sprite>("Textures/Ships/Player 2/Vanguard");
         trailblazerSpriteTwo = Resources.Load<Sprite>("Textures/Ships/Player 2/Trailblazer");
     }
@@ -195,6 +195,18 @@ public class CooperativePlayMenu : MonoBehaviour
         if (!sceneLoaded)
         {
             // StoreShipTypes();
+            if (shipIndexOne == 0)
+                MainMenu.player1Ship = "Lancer";
+            else if (shipIndexOne == 1)
+                MainMenu.player1Ship = "Vanguard";
+            else
+                MainMenu.player1Ship = "Trailblazer";
+            if (shipIndexTwo == 0)
+                MainMenu.player2Ship = "Lancer";
+            else if (shipIndexTwo == 1)
+                MainMenu.player2Ship = "Vanguard";
+            else
+                MainMenu.player2Ship = "Trailblazer";
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             sceneLoaded = true;
         }
