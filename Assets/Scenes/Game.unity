@@ -1412,12 +1412,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8d6331a2253ad4ea7e1081de723913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1LancerSprite: {fileID: 21300000, guid: b9d49ce3c925f95499d8e9acbb7fd115, type: 3}
-  player1VanguardSprite: {fileID: 21300000, guid: 85d00a598c38d7b47baf7a2d04b2385b, type: 3}
-  player1TrailblazerSprite: {fileID: 21300000, guid: e8784ea8e9e7a484c971d32a27714179, type: 3}
-  player2LancerSprite: {fileID: 21300000, guid: 28b14b0c799ab2c459c788e2a6934f01, type: 3}
-  player2VanguardSprite: {fileID: 21300000, guid: f8963699964f760448f3887c63be058f, type: 3}
-  player2TrailblazerSprite: {fileID: 21300000, guid: f982e172bd8f64843bcf455720346bfc, type: 3}
+  player1LancerSprite: {fileID: 21300000, guid: 4d4916ef88b688c4ea7eaa4bcd4b76d0, type: 3}
+  player1VanguardSprite: {fileID: 21300000, guid: 4ec434ec84418aa4fa9d776dd97735ba, type: 3}
+  player1TrailblazerSprite: {fileID: 21300000, guid: f14b48337d3f2b24b9b11ebe9e004c7e, type: 3}
+  player2LancerSprite: {fileID: 21300000, guid: b7828968de288b34ebfb4d342fc0a4bf, type: 3}
+  player2VanguardSprite: {fileID: 21300000, guid: 1520a54c20745564995f9b37d3c92739, type: 3}
+  player2TrailblazerSprite: {fileID: 21300000, guid: 209f7aba4b3395745a3f5897f0c0738a, type: 3}
   player1Inventory: {fileID: 425246030}
   player2Inventory: {fileID: 1954909032}
   itemSelection: {fileID: 1780805318}
