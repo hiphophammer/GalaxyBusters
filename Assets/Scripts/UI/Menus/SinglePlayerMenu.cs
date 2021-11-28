@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class SinglePlayerMenu : MonoBehaviour
 {
@@ -40,7 +39,8 @@ public class SinglePlayerMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        // check for any input
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             if(shipIndex == 0)
             {
@@ -55,7 +55,7 @@ public class SinglePlayerMenu : MonoBehaviour
                 shipIndex = 0;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             if (shipIndex == 2)
             {
@@ -71,6 +71,7 @@ public class SinglePlayerMenu : MonoBehaviour
             }
         }
 
+        // update screen
         if (shipIndex == 0) // lancer
         {
             shipObject.GetComponent<Image>().sprite = lancerSprite;
