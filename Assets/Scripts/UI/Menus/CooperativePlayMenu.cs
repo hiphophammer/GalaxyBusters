@@ -21,8 +21,8 @@ public class CooperativePlayMenu : MonoBehaviour
     public TMPro.TMP_Text basicDescriptionTwo, ultDescriptionTwo;
     public TMPro.TMP_Text shipNameTwo;
 
-    private int shipIndexOne = 0;
-    private int shipIndexTwo = 0;
+    private int shipIndexOne;
+    private int shipIndexTwo;
     private GameObject shipObjectOne;
     private GameObject shipObjectTwo;
     private Sprite lancerSpriteOne, lancerSpriteTwo;
@@ -41,6 +41,8 @@ public class CooperativePlayMenu : MonoBehaviour
 
     private void LoadComps()
     {
+        shipIndexOne = 0;
+        shipIndexTwo = 0;
         shipObjectOne = shipImageOne.gameObject;
         shipObjectTwo = shipImageTwo.gameObject;
         lancerSpriteOne = Resources.Load<Sprite>("Textures/Ships/Player 1/Lancer");
@@ -195,18 +197,21 @@ public class CooperativePlayMenu : MonoBehaviour
         if (!sceneLoaded)
         {
             // StoreShipTypes();
+            // set player ship strings accordingly
             if (shipIndexOne == 0)
                 MainMenu.player1Ship = "Lancer";
             else if (shipIndexOne == 1)
                 MainMenu.player1Ship = "Vanguard";
             else
                 MainMenu.player1Ship = "Trailblazer";
+
             if (shipIndexTwo == 0)
                 MainMenu.player2Ship = "Lancer";
             else if (shipIndexTwo == 1)
                 MainMenu.player2Ship = "Vanguard";
             else
                 MainMenu.player2Ship = "Trailblazer";
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             sceneLoaded = true;
         }
