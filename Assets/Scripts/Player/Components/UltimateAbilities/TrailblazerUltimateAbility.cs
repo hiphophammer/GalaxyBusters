@@ -11,6 +11,7 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     private PlayerBehavior parent;
     private BaseWeapon weapon;
     private ChargeBarBehavior chargeBar;
+    private CooldownBarBehavior cooldownBar;
     private string axis;
     private Color baseColor, alpha;
     private SpriteRenderer renderer;
@@ -33,7 +34,9 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         // Retrieve a reference to our charge & cooldown bars and the axis.
         chargeBar = parent.GetUltimateAbilityChargeBar();
         axis = parent.GetUltimateAbilityAxis();
-        
+
+        chargeBar = parent.GetUltimateAbilityChargeBar();
+        cooldownBar = parent.GetWeaponCooldownBar();
         // Get parent's SpriteRenderer component.
         renderer = parent.GetComponent<SpriteRenderer>();
         baseColor = renderer.color;
