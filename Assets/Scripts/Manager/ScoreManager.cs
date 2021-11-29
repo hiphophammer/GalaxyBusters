@@ -51,26 +51,26 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public void DestroyedEnemy(float[] damageDealt, int destroyer)
+    public void DestroyedEnemy(float[] damageDealt, int destroyer, float totalEnemyHealth)
     {
         if (destroyer == 0)
         {
             // Player 1 destroyed the enemy.
-            player1Score += 1.0f;
+            player1Score += totalEnemyHealth;
             player2Score += damageDealt[1];
         }
         else
         {
             // Player 2 destroyed the enemy.
             player1Score += damageDealt[0];
-            player2Score += 1.0f;
+            player2Score += totalEnemyHealth;
         }
     }
 
     private void UpdateDisplays()
     {
         player1ScoreDisplay.SetScore((int) player1Score);
-        if (singlePlayer)
+        if (!singlePlayer)
         {
             player2ScoreDisplay.SetScore((int)player2Score);
         }

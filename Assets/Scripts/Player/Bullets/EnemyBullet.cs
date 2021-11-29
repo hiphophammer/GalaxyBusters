@@ -5,18 +5,22 @@ using UnityEngine;
 public class EnemyBullet : MonoBehaviour
 {
     private Vector3 speed;
-    Camera cam;
-    CameraBounds camBounds;
-    Bounds bound;
+
+    CameraSupport cameraSupport;
+
+    private float maxXPos = (20.0f / 3.0f) / 2.0f;
+    private float maxYPos = 5.0f;
     // Start is called before the first frame update
     void Start()
     {
+        maxXPos -= (transform.localScale.x / 2.0f);
+        maxYPos -= (transform.localScale.y / 2.0f);
+
         speed = new Vector3(0, 5.0f, 0);
         speed = speed * Time.fixedDeltaTime;
 
-        cam = Camera.main;
-        camBounds = cam.GetComponent<CameraBounds>();
-        bound = camBounds.bounds;
+        cameraSupport = Camera.main.GetComponent<CameraSupport>();
+        Debug.Assert(cameraSupport != null);
         
         this.GetComponent<Renderer>().material.color = new Color(Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f));
     }
@@ -24,7 +28,12 @@ public class EnemyBullet : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 pos = transform.position;
-        if(transform.position.y < bound.min.y || transform.position.x < bound.min.x || transform.position.x > bound.max.x)
+        
+        if (transform.position.y <= (-1.0f * (maxYPos + .25f)))
+        {
+            Destroy(gameObject);
+        }
+        else if (transform.position.x <= (-1.0f * maxXPos) - 1f || transform.position.x >= (maxXPos + 1f))
         {
             Destroy(gameObject);
         }

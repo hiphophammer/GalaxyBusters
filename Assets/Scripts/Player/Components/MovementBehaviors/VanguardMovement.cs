@@ -55,8 +55,8 @@ public class VanguardMovement : MonoBehaviour
             UpdateSpeed();
 
             // Retrieve the values from our axes.
-            float upDown = Input.GetAxisRaw(movementAxes[0]);
-            float leftRight = Input.GetAxisRaw(movementAxes[1]);
+            float upDown = Input.GetAxis(movementAxes[0]);
+            float leftRight = Input.GetAxis(movementAxes[1]);
 
             // Scale the values appropriately.
             upDown *= (speed * Time.deltaTime);

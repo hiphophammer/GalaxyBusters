@@ -240,6 +240,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(levelTime);
 
         itemSelection.PresentItems(1);
+        ClearEnemies();
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 2 - Set number and name.
@@ -254,6 +255,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(levelTime);
         
         itemSelection.PresentItems(2);
+        ClearEnemies();
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 3 - Set number and name.
@@ -268,6 +270,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(levelTime);
         
         itemSelection.PresentItems(3);
+        ClearEnemies();
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 4 - Set number and name.
@@ -282,6 +285,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(levelTime);
         
         itemSelection.PresentItems(4);
+        ClearEnemies();
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // TODO: Level 5 - Set number and name.
@@ -320,6 +324,22 @@ public class GameManager : MonoBehaviour
             Debug.Log("PLAYER DIED");
             winLoss = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
+
+    // Meant to be called at the end of every level.
+    // Destroys all enemies and enemy bullets currently onscreen.
+    private void ClearEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] enemyBullets = GameObject.FindGameObjectsWithTag("EnemyProjectile");
+        foreach(GameObject enemy in enemies)
+        {
+            Destroy(enemy);
+        }
+        foreach(GameObject bullet in enemyBullets)
+        {
+            Destroy(bullet);
         }
     }
 }

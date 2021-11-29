@@ -239,7 +239,7 @@ public class InventoryBehavior : MonoBehaviour
             if (item.ID == 1)
             {
                 // Bullet upgrade.
-                player.GetWeapon().SetBullet(item.bulletName);
+                player.GetWeapon().SetPenetrate(true);
             }
             else if (item.ID == 2)
             {
@@ -250,6 +250,11 @@ public class InventoryBehavior : MonoBehaviour
             {
                 // Shield.
                 // TODO: implement this!
+            }
+            else if (item.ID == 4)
+            {
+                // Vampire Bullets: Health gained on hit
+                player.GetWeapon().SetVampire(true);
             }
         }
         else
