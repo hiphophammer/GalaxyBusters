@@ -19,6 +19,13 @@ public class GameManager : MonoBehaviour
     public Sprite player2VanguardSprite;
     public Sprite player2TrailblazerSprite;
 
+    public GameObject player1LancerUlt;
+    public GameObject player1VanguardUlt;
+    public GameObject player1TrailblazerUlt;
+    public GameObject player2LancerUlt;
+    public GameObject player2VanguardUlt;
+    public GameObject player2TrailblazerUlt;
+
     public InventoryBehavior player1Inventory;
     public InventoryBehavior player2Inventory;
 
@@ -66,7 +73,7 @@ public class GameManager : MonoBehaviour
         }
 
         // This takes care of the levels - the actual gameplay.
-        spawner =  levelAttach.GetComponent<EnemySpawnControl>();
+        spawner = levelAttach.GetComponent<EnemySpawnControl>();
         StartCoroutine(StartGame());
 
         // This tells the ScoreManager we've determined whether this is single player.
@@ -79,14 +86,14 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         DetectCondition();
-        
+
         // Pseudo-invulnerability key
-        if(Input.GetKeyDown("x"))
+        if (Input.GetKeyDown("x"))
         {
             GameObject p = GameObject.FindWithTag("Player");
             p.transform.position = new Vector3(0.0f, -999.0f, 0.0f);
         }
-        if(Input.GetKeyUp("x"))
+        if (Input.GetKeyUp("x"))
         {
             GameObject p = GameObject.FindWithTag("Player");
             p.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
@@ -181,6 +188,7 @@ public class GameManager : MonoBehaviour
 
                     player.AddComponent<LancerUltimateAbility>();
                     player.GetComponent<LancerUltimateAbility>().SetParent(playerBehavior);
+                    SetupUltBars(playerOne, ship);
                 }
                 else if (ship == "Vanguard")
                 {
@@ -189,7 +197,7 @@ public class GameManager : MonoBehaviour
                     playerBehavior.GetHealthBar().SetHitPoints(200.0f);
                     playerBehavior.SetWeaponDamage(20.0f);
                     playerBehavior.SetSpeed(5.0f);
-                    
+
                     player.AddComponent<VanguardMovement>();
                     player.GetComponent<VanguardMovement>().SetParent(playerBehavior);
 
@@ -198,6 +206,7 @@ public class GameManager : MonoBehaviour
 
                     player.AddComponent<BaseWeapon>();
                     player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
+                    SetupUltBars(playerOne, ship);
                 }
                 else if (ship == "Trailblazer")
                 {
@@ -220,7 +229,54 @@ public class GameManager : MonoBehaviour
 
                     player.AddComponent<TrailblazerUltimateAbility>();
                     player.GetComponent<TrailblazerUltimateAbility>().SetParent(playerBehavior);
+                    SetupUltBars(playerOne, ship);
                 }
+            }
+        }
+    }
+
+    private void SetupUltBars(bool forPlayerOne, string shipName)
+    {
+        if(forPlayerOne)
+        {
+            if(shipName == "Lancer")
+            {
+                player1LancerUlt.SetActive(true);
+                player1VanguardUlt.SetActive(false);
+                player1TrailblazerUlt.SetActive(false);
+            }
+            else if(shipName == "Vanguard")
+            {
+                player1LancerUlt.SetActive(false);
+                player1VanguardUlt.SetActive(true);
+                player1TrailblazerUlt.SetActive(false);
+            }
+            else
+            {
+                player1LancerUlt.SetActive(false);
+                player1VanguardUlt.SetActive(false);
+                player1TrailblazerUlt.SetActive(true);
+            }
+        }
+        else
+        {
+            if (shipName == "Lancer")
+            {
+                player2LancerUlt.SetActive(true);
+                player2VanguardUlt.SetActive(false);
+                player2TrailblazerUlt.SetActive(false);
+            }
+            else if (shipName == "Vanguard")
+            {
+                player2LancerUlt.SetActive(false);
+                player2VanguardUlt.SetActive(true);
+                player2TrailblazerUlt.SetActive(false);
+            }
+            else
+            {
+                player2LancerUlt.SetActive(false);
+                player2VanguardUlt.SetActive(false);
+                player2TrailblazerUlt.SetActive(true);
             }
         }
     }
@@ -252,7 +308,7 @@ public class GameManager : MonoBehaviour
         levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
         levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
-        
+
         itemSelection.PresentItems(2);
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
@@ -266,7 +322,7 @@ public class GameManager : MonoBehaviour
         levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
         levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
-        
+
         itemSelection.PresentItems(3);
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
@@ -274,13 +330,13 @@ public class GameManager : MonoBehaviour
         SetLevelNumAndName(4, "Stupid Level Name (We're out of ideas)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
-        
+
         // Level 4.
         levelAttach.AddComponent<LevelFour>();
         levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
         levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
-        
+
         itemSelection.PresentItems(4);
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
