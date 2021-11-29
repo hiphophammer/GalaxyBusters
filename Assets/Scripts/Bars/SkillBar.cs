@@ -7,6 +7,7 @@ public class SkillBar : MonoBehaviour
 {
     public Image barFiller;
     public Camera mainCam;
+    public bool forPlayerOne;
 
     private GameManager managerInstance;
     private PlayerBehavior player;
@@ -15,8 +16,19 @@ public class SkillBar : MonoBehaviour
     void Start()
     {
         managerInstance = mainCam.GetComponent<GameManager>();
-        player = managerInstance.GetPlayer1();
-        barFiller.fillAmount = 1.0f;
+        if (forPlayerOne)
+            player = managerInstance.GetPlayer1();
+        else
+        {
+            if (managerInstance.GetPlayer2() == null)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                player = managerInstance.GetPlayer2();
+            }
+        }
     }
 
     // Update is called once per frame

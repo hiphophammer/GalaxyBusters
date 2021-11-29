@@ -9,9 +9,11 @@ public class PlayerHealthBar : MonoBehaviour
     public Image circleBar;                     // primary bar for HP from 1.0f to 0.5f
     public Image horizontalBar;                 // secondary bar for HP from 0.5f to 0.0f
     public Camera mainCam;
+    public bool forPlayerOne;
 
     private const float CIRCLE_MAX = 0.75f;
 
+    private string shipType;
     private GameManager managerInstance;
     private PlayerBehavior player;
 
@@ -19,7 +21,23 @@ public class PlayerHealthBar : MonoBehaviour
     void Start()
     {
         managerInstance = mainCam.GetComponent<GameManager>();
-        player = managerInstance.GetPlayer1();
+        if (forPlayerOne)
+        {
+            player = managerInstance.GetPlayer1();
+            shipType = player.GetShipName();
+        }
+        else
+        {
+            if (managerInstance.GetPlayer2() == null)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                player = managerInstance.GetPlayer2();
+                shipType = player.GetShipName();
+            }
+        }
     }
 
     // Update is called once per frame
