@@ -170,10 +170,10 @@ public class PlayerBehavior : MonoBehaviour
         return alive;
     }
 
-    public void DestroyedEnemy()
+    public void DestroyedEnemy(int enemyHealth)
     {
         // Add some charge to the ultimate ability charge bar.
-        ultimateAbilityChargeBar.AddCharge(25.0f / 2.0f);
+        ultimateAbilityChargeBar.AddCharge((enemyHealth + 10) / 2.0f);
     }
 
     public string GetStatus()

@@ -17,6 +17,9 @@ public class BaseWeapon : MonoBehaviour
     private string bulletType;
     private float damage;
 
+    private bool vampire;
+    private bool penetrate;
+
     private bool dualStream;
 
     private bool shouldFire;
@@ -94,6 +97,27 @@ public class BaseWeapon : MonoBehaviour
     {
         this.dualStream = dualStream;
     }
+
+    public void SetPenetrate(bool penetrate)
+    {
+        this.penetrate = penetrate;
+    }
+
+    public bool GetPenetrate()
+    {
+        return this.penetrate;
+    }
+
+    public void SetVampire(bool vampire)
+    {
+        this.vampire = vampire;
+    }
+
+    public bool GetVampire()
+    {
+        return this.vampire;
+    }
+    
 
     // Private helpers.
     private void UpdateDamage()

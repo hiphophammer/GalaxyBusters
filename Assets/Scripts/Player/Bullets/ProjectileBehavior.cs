@@ -113,6 +113,7 @@ public class ProjectileBehavior : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject other = collision.gameObject;
+
         if (other.CompareTag("Enemy"))
         {
             // Check if the enemy is alive.
@@ -124,7 +125,21 @@ public class ProjectileBehavior : MonoBehaviour
                 alive = false;
             }
 
-            Destroy(gameObject);
+            // Checks for if Vampire Bullet is active and acts accordingly.
+            if (parent.GetWeapon().GetVampire())
+            {
+                HealthBar hp = parent.GetHealthBar();
+                hp.AddHealth(5);
+            }
+
+            // Checks for if Penetration Bullet is active and acts accordingly. 
+            // Set true for testing purposes, set to false to destroy bullet on impact with enemy.
+            //
+            // TODO: Find out why bullets destroy on collision with Chaser regardless of status.
+            if (!parent.GetWeapon().GetPenetrate())
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

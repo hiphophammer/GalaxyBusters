@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    int health;
+    public int health;
+    int totalHealth;
     float[] damageDealt;
     
     GameObject Explosion;
@@ -22,13 +23,16 @@ public class EnemyHealth : MonoBehaviour
         damageDealt = new float[2];
         damageDealt[0] = 0;
         damageDealt[1] = 0;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(health == 0)
+        if(health <= 0)
         {
+            
+            destroyerBehavior.DestroyedEnemy(totalHealth);
             Destroy(gameObject);
             Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
             Destroy(Explosion.gameObject, 1);
@@ -44,11 +48,11 @@ public class EnemyHealth : MonoBehaviour
 
             if(destroyerBehavior.IsPlayerOne())
             {
-                score.DestroyedEnemy(damageDealt, 0);
+                score.DestroyedEnemy(damageDealt, 0, totalHealth);
             }
             else
             {
-                score.DestroyedEnemy(damageDealt, 1);
+                score.DestroyedEnemy(damageDealt, 1, totalHealth);
             }
             
         }
@@ -59,9 +63,10 @@ public class EnemyHealth : MonoBehaviour
         return health;
     }
 
-    public void setHealth(int h, int lvl)
+    public void setHealth(int h)
     {
-        health = h * lvl;
+        health = h;
+        totalHealth = health;
     }
 
     public void decreaseHealth(PlayerBehavior damageDealer)
@@ -79,6 +84,5 @@ public class EnemyHealth : MonoBehaviour
             destroyerBehavior = damageDealer;
             health--;
         }
-        Debug.Log(damageDealer.IsPlayerOne());
     }
 }

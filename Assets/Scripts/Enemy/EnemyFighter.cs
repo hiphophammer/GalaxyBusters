@@ -8,26 +8,29 @@ public class EnemyFighter : MonoBehaviour
 
     private Vector3 speed;
     
-    Camera cam;
-    CameraBounds camBounds;
-    Bounds bound;
+    CameraSupport cameraSupport;
     
     private float nextFire;
     public float fireRate;
+
+    private float maxXPos = (20.0f / 3.0f) / 2.0f;
+    private float maxYPos = 5.0f;
 
     private float timeSinceSpawn, timeAtSpawn;
 
     void Start()
     {
+        maxXPos -= (transform.localScale.x / 2.0f);
+        maxYPos -= (transform.localScale.y / 2.0f);
+
         health = GetComponent<EnemyHealth>();
-        health.setHealth(1, 1);
+        health.setHealth(1);
 
         speed = new Vector3(0, 3f, 0);
         speed = speed * Time.fixedDeltaTime;
 
-        cam = Camera.main;
-        camBounds = cam.GetComponent<CameraBounds>();
-        bound = camBounds.bounds;
+        cameraSupport = Camera.main.GetComponent<CameraSupport>();
+        Debug.Assert(cameraSupport != null);
 
         fireRate = 150.0f;
         nextFire = 0f;
@@ -41,7 +44,12 @@ public class EnemyFighter : MonoBehaviour
     {
         transform.Translate(speed);
         shoot();
-        if(transform.position.y < bound.min.y - 10 || transform.position.x < bound.min.x - 10)
+        
+        if (transform.position.y <= (-1.0f * (maxYPos + .75f)))
+        {
+            Destroy(gameObject);
+        }
+        else if (transform.position.x <= (-1.0f * maxXPos) - 0.5f || transform.position.x >= (maxXPos + 0.5f))
         {
             Destroy(gameObject);
         }
@@ -67,8 +75,6 @@ public class EnemyFighter : MonoBehaviour
         {
             // As a HeroProjectile, other must have a ProjectileBehavior script attached.
             ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
-            PlayerBehavior p = damageDealer.GetParent();
-            p.DestroyedEnemy();
             Debug.Log(damageDealer.GetParent());
             health.decreaseHealth(damageDealer.GetParent());
         }
