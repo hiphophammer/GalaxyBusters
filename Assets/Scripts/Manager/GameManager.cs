@@ -375,7 +375,7 @@ public class GameManager : MonoBehaviour
 
     private void DetectCondition()
     {
-        if (!player1.IsAlive())
+        if (!player1.IsAlive() || (!singlePlayer && !player2.IsAlive()))
         {
             Debug.Log("PLAYER DIED");
             winLoss = false;

@@ -129,7 +129,7 @@ public class CooperativePlayMenu : MonoBehaviour
             speedBarOne.fillAmount = 0.66f;
             damageBarOne.fillAmount = 1.0f;
             basicDescriptionOne.SetText("Launches a missile, dealing a small AOE damage.");
-            ultDescriptionOne.SetText("Sprays bullets in cone");
+            ultDescriptionOne.SetText("Sprays bullets in cone.");
         }
         else if (shipIndexOne == 1) // vanguard
         {
@@ -139,7 +139,7 @@ public class CooperativePlayMenu : MonoBehaviour
             speedBarOne.fillAmount = 0.33f;
             damageBarOne.fillAmount = 0.66f;
             basicDescriptionOne.SetText("Gains small shield.");
-            ultDescriptionOne.SetText("Takes reduced damage for a duration");
+            ultDescriptionOne.SetText("Takes reduced damage for a duration.");
         }
         else // trailblazer
         {
@@ -160,7 +160,7 @@ public class CooperativePlayMenu : MonoBehaviour
             speedBarTwo.fillAmount = 0.66f;
             damageBarTwo.fillAmount = 1.0f;
             basicDescriptionTwo.SetText("Launches a missile, dealing a small AOE damage.");
-            ultDescriptionTwo.SetText("Sprays bullets in cTwo");
+            ultDescriptionTwo.SetText("Sprays bullets in cone.");
         }
         else if (shipIndexTwo == 1) // vanguard
         {
@@ -170,7 +170,7 @@ public class CooperativePlayMenu : MonoBehaviour
             speedBarTwo.fillAmount = 0.33f;
             damageBarTwo.fillAmount = 0.66f;
             basicDescriptionTwo.SetText("Gains small shield.");
-            ultDescriptionTwo.SetText("Takes reduced damage for a duration");
+            ultDescriptionTwo.SetText("Takes reduced damage for a duration.");
         }
         else // trailblazer
         {
