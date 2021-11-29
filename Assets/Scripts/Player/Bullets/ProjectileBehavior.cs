@@ -136,7 +136,7 @@ public class ProjectileBehavior : MonoBehaviour
             // Set true for testing purposes, set to false to destroy bullet on impact with enemy.
             //
             // TODO: Find out why bullets destroy on collision with Chaser regardless of status.
-            if (parent.GetWeapon().GetPenetrate() == true)
+            if (!parent.GetWeapon().GetPenetrate())
             {
                 Destroy(gameObject);
             }
