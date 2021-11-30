@@ -281,6 +281,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ResetPlayerHealth()
+    {
+        player1.GetHealthBar().AddHealth(player1.GetHealthBar().GetHitPoints());
+
+        if (player2 != null)
+        {
+            player2.GetHealthBar().AddHealth(player2.GetHealthBar().GetHitPoints());
+        }
+    }
+
     // Methods for gameplay/level management.
     private IEnumerator StartGame()
     {
@@ -294,6 +304,8 @@ public class GameManager : MonoBehaviour
         levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
         levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
         yield return new WaitForSeconds(levelTime);
+
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(1);
         ClearEnemies();
