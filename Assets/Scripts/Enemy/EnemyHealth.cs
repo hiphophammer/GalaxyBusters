@@ -76,13 +76,13 @@ public class EnemyHealth : MonoBehaviour
             Debug.Log("Player 1 did damage.");
             damageDealt[0]++;
             destroyerBehavior = damageDealer;
-            health--;
+            health = health - (int)damageDealer.GetWeaponDamage();
         }
         else
         {
             damageDealt[1]++;
             destroyerBehavior = damageDealer;
-            health--;
+            health = health - (int)damageDealer.GetWeaponDamage();
         }
     }
 }

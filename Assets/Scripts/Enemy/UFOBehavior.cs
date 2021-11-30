@@ -27,7 +27,7 @@ public class UFOBehavior : MonoBehaviour
         maxYPos -= (transform.localScale.y / 2.0f);
 
         health = GetComponent<EnemyHealth>();
-        health.setHealth(4);
+        health.setHealth(80);
         
         speed = new Vector3(0, -3f, 0);
         speed = speed * Time.fixedDeltaTime;
