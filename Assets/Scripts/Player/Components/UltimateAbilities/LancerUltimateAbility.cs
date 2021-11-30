@@ -16,6 +16,7 @@ public class LancerUltimateAbility : MonoBehaviour
     private BaseWeapon weapon;
     private ChargeBarBehavior chargeBar;
     private CooldownBarBehavior cooldownBar;
+    private CameraShake csx;
     private string axis;
 
     private bool retrievedAxis;
@@ -53,6 +54,9 @@ public class LancerUltimateAbility : MonoBehaviour
 
         // Grab the bullet info for the first time.
         UpdateBulletInfo();
+
+        // Camera shake setup
+        csx = Camera.main.GetComponent<CameraShake>();
     }
 
     // Update is called once per frame
@@ -133,6 +137,7 @@ public class LancerUltimateAbility : MonoBehaviour
 
     private void ServiceSprayBulletsState()
     {
+        StartCoroutine(csx.Shake(0.1f, 0.1f));
         float dTime = Time.time - stateEntryTime;
         if (dTime >= BULLET_SPRAY_TIME)
         {

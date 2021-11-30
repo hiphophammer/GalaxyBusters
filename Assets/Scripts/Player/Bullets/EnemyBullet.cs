@@ -21,8 +21,6 @@ public class EnemyBullet : MonoBehaviour
 
         cameraSupport = Camera.main.GetComponent<CameraSupport>();
         Debug.Assert(cameraSupport != null);
-        
-        this.GetComponent<Renderer>().material.color = new Color(Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f));
     }
 
     void FixedUpdate()

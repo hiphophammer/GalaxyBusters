@@ -11,6 +11,7 @@ TagManager:
   - Item
   - GameCanvas
   - PowerUp
+  - Boss
   layers:
   - Default
   - TransparentFX

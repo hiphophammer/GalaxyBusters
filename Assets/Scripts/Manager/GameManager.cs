@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     private bool ready;
     private bool singlePlayer;
+    private bool bossAlive;
 
     private float levelTime;
 
@@ -162,7 +163,7 @@ public class GameManager : MonoBehaviour
                     player2 = playerBehavior;
                 }
 
-                // Set the sprite and add appropriate components.
+                // Set the sprite, camera shake, and add appropriate components.
                 SpriteRenderer renderer = player.GetComponent<SpriteRenderer>();
                 if (ship == "Lancer")
                 {
@@ -284,7 +285,7 @@ public class GameManager : MonoBehaviour
     // Methods for gameplay/level management.
     private IEnumerator StartGame()
     {
-        // Level 1 - Set number and name.
+        /*// Level 1 - Set number and name.
         SetLevelNumAndName(1, "A Walk in the Park (Except the Park is an Endless Void)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
@@ -342,14 +343,19 @@ public class GameManager : MonoBehaviour
 
         itemSelection.PresentItems(4);
         ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
+        yield return new WaitUntil(() => itemSelection.DonePresenting());*/
 
-        // TODO: Level 5 - Set number and name.
-        /*SetLevelNumAndName(5, "Galaxy Buster");
+        // Level 5 - Set number and name.
+        SetLevelNumAndName(5, "Galaxy Buster");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();*/
+        HideLevelNumAndName();
 
-        // TODO: Level 5 (Boss fight).
+        // Level 5 (Boss fight).
+        levelAttach.AddComponent<LevelFive>();
+        levelAttach.GetComponent<LevelFive>().SetSpawner(spawner);
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        while (bossAlive) yield return null;
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
 
         // Victory!
         if (player1.IsAlive() || player2.IsAlive())
@@ -381,6 +387,11 @@ public class GameManager : MonoBehaviour
             winLoss = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
+
+        if(GameObject.FindWithTag("Boss"))
+        {
+            bossAlive = true;
+        } else bossAlive = false;
     }
 
     // Meant to be called at the end of every level.

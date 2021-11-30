@@ -36,7 +36,7 @@ public class BaseCollider : MonoBehaviour
             }
             Destroy(other);
         }
-        else if (other.CompareTag("Enemy") && parent.IsAlive())
+        else if ((other.CompareTag("Enemy") || other.CompareTag("Boss")) && parent.IsAlive())
         {
             // Update our health bar.
             healthBar.RemoveHealth(10.0f);

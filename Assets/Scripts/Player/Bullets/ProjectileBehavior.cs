@@ -114,7 +114,7 @@ public class ProjectileBehavior : MonoBehaviour
     {
         GameObject other = collision.gameObject;
 
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Boss"))
         {
             // Check if the enemy is alive.
             EnemyBehavior enemyBehavior =
