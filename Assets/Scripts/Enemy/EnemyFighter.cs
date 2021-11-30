@@ -24,7 +24,7 @@ public class EnemyFighter : MonoBehaviour
         maxYPos -= (transform.localScale.y / 2.0f);
 
         health = GetComponent<EnemyHealth>();
-        health.setHealth(1);
+        health.setHealth(20);
 
         speed = new Vector3(0, 3f, 0);
         speed = speed * Time.fixedDeltaTime;
