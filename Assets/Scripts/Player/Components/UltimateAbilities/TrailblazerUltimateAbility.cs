@@ -9,7 +9,9 @@ public class TrailblazerUltimateAbility : MonoBehaviour
 
     // Private member variables.
     private PlayerBehavior parent;
+    private float parentSpeed;
     private BaseWeapon weapon;
+    private float OGFireRate;
     private ChargeBarBehavior chargeBar;
     private CooldownBarBehavior cooldownBar;
     private string axis;
@@ -35,8 +37,13 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         chargeBar = parent.GetUltimateAbilityChargeBar();
         axis = parent.GetUltimateAbilityAxis();
 
+        // Retrieve a reference to parent's weapon.
+        weapon = GetComponent<BaseWeapon>();
+        Debug.Assert(weapon != null);
+
         chargeBar = parent.GetUltimateAbilityChargeBar();
         cooldownBar = parent.GetWeaponCooldownBar();
+
         // Get parent's SpriteRenderer component.
         renderer = parent.GetComponent<SpriteRenderer>();
         baseColor = renderer.color;
@@ -95,7 +102,10 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         {
             state = UltimateAbilityState.intangible;
             stateEntryTime = Time.time;
-
+            parentSpeed = parent.speed;
+            OGFireRate = weapon.fireRate;
+            parent.speed *= 1.1f;
+            weapon.fireRate /= 1.5f;
             // Trigger the reload.
             chargeBar.ResetCharge();
         }
@@ -109,6 +119,8 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         {
             parent.GetComponent<Collider2D>().enabled = true;
             parent.GetComponent<SpriteRenderer>().material.color = baseColor;
+            parent.speed = parentSpeed;
+            weapon.fireRate = OGFireRate;
             // The ultimate ability has ended.
             state = UltimateAbilityState.charge;
         }

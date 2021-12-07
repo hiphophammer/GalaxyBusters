@@ -25,6 +25,7 @@ public class PlayerBehavior : MonoBehaviour
     public float speed = 3.0f;
     public bool playerOne = true;
     public bool alive = true;
+    public float comboMult;
 
     // Private member variables.
     private CameraSupport cameraSupport;
@@ -58,6 +59,8 @@ public class PlayerBehavior : MonoBehaviour
         Debug.Assert(weapon != null);
 
         Debug.Assert(inventory != null);
+
+        comboMult = 1;
 
         SetupPlayer();
     }
