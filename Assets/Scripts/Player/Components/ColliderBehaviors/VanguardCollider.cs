@@ -33,11 +33,13 @@ public class VanguardCollider : MonoBehaviour
                 // Update our health bar.
                 healthBar.RemoveHealth(10.0f);
                 Debug.Log("Losing Health");
+                parent.comboMult = 1f;
                 if(healthBar.Health() <= 0.0f)
                 {
                     parent.alive = false;
                 }
             }
+            healthBar.AddHealth(1.0f);
             Destroy(other);
         }
         else if (other.CompareTag("Enemy") && parent.IsAlive())
@@ -47,6 +49,7 @@ public class VanguardCollider : MonoBehaviour
                 // Update our health bar.
                 healthBar.RemoveHealth(10.0f);
                 Debug.Log("Losing Health");
+                parent.comboMult = 1f;
                 if(healthBar.Health() <= 0.0f)
                 {
                     parent.alive = false;

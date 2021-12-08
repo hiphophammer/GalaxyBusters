@@ -48,11 +48,27 @@ public class EnemyHealth : MonoBehaviour
 
             if(destroyerBehavior.IsPlayerOne())
             {
-                score.DestroyedEnemy(damageDealt, 0, totalHealth);
+                score.DestroyedEnemy(damageDealt, 0, totalHealth * destroyerBehavior.comboMult);
+                if(destroyerBehavior.comboMult <= 4f)
+                {
+                    destroyerBehavior.comboMult += totalHealth * .01f;
+                }
+                else if(destroyerBehavior.comboMult > 4f)
+                {
+                    destroyerBehavior.comboMult = 4f;
+                }
             }
             else
             {
-                score.DestroyedEnemy(damageDealt, 1, totalHealth);
+                score.DestroyedEnemy(damageDealt, 1, totalHealth * destroyerBehavior.comboMult);
+                if((destroyerBehavior.comboMult + totalHealth * .01f) <= 4f)
+                {
+                    destroyerBehavior.comboMult += totalHealth * .01f;
+                }
+                else if((destroyerBehavior.comboMult + totalHealth * .01f) > 4f)
+                {
+                    destroyerBehavior.comboMult = 4f;
+                }
             }
             
         }

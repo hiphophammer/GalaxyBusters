@@ -10,10 +10,12 @@ public class BaseWeapon : MonoBehaviour
 
     private const string BULLET_TYPE_PREFIX = "Prefabs/";
     private const string DEFAULT_BULLET = "Projectile";
+    
+    // Public member variables.
+    public float fireRate;
 
     // Private member variables.
     private PlayerBehavior parent;
-    private CooldownBarBehavior cooldownBar;
     private string bulletType;
     private float damage;
 
@@ -22,19 +24,18 @@ public class BaseWeapon : MonoBehaviour
 
     private bool dualStream;
 
+    private float nextFire;
     private bool shouldFire;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Retrieve a reference to the cooldown bar.
-        cooldownBar = parent.GetWeaponCooldownBar();
-
         // Set our defaults.
         UpdateDamage();
         SetBullet(DEFAULT_BULLET);
         FireDualStream(false);
-        StartFiring();
+        nextFire = 0;
+        shouldFire = true;
     }
 
     // Update is called once per frame
@@ -42,8 +43,7 @@ public class BaseWeapon : MonoBehaviour
     {
         UpdateDamage();
 
-        // Check if enough time has passed to fire another round.
-        if (cooldownBar.ReadyToFire() && shouldFire)
+        if (shouldFire == true)
         {
             // Spawn the bullets.
             if (dualStream)
@@ -51,21 +51,20 @@ public class BaseWeapon : MonoBehaviour
                 // We need to shoot two streams of bullets.
 
                 // Spawn the left bullet.
-                SpawnBullet(-1.0f * PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
+                shoot(-1.0f * PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
 
                 // And the right bullet.
-                SpawnBullet(PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
+                shoot(PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
             }
             else
             {
                 // We don't shoot the bullets in a cone.
-                SpawnBullet(0.0f, PROJECTILE_Y_OFFSET);
+                shoot(0.0f, PROJECTILE_Y_OFFSET);
             }            
-
-            // Trigger the reload.
-            cooldownBar.TriggerCooldown();
         }
+        
     }
+
 
     // Modifiers.
     public void SetParent(PlayerBehavior parent)
@@ -118,6 +117,10 @@ public class BaseWeapon : MonoBehaviour
         return this.vampire;
     }
     
+    public void SetFireRate(float fireRate)
+    {
+        this.fireRate = fireRate;
+    }
 
     // Private helpers.
     private void UpdateDamage()
@@ -142,4 +145,30 @@ public class BaseWeapon : MonoBehaviour
         bulletBehavior.SetParent(parent);
         bulletBehavior.SetDamage(damage);
     }
+
+    // Tells BaseWeapon to shoot projectiles.
+    // Does what SpawnBullet did, but localized entirely within this script, without reliance on Cooldown Bar.
+    private void shoot(float xOffset, float yOffset)
+    {
+        if (Time.time > nextFire && shouldFire)
+        {
+            //Debug.Log("Firing at " + Time.time);
+            nextFire = Time.time + fireRate;
+            // Define the start position.
+            Vector3 startPos = transform.position;
+            startPos.x += xOffset;
+            startPos.y += yOffset;
+
+            // Instantiate the bullet.
+            GameObject bullet = Instantiate(Resources.Load(bulletType) as GameObject,
+                                        startPos,
+                                        transform.rotation);
+
+            // Configure the component of the bullet.
+            ProjectileBehavior bulletBehavior = bullet.GetComponent<ProjectileBehavior>();
+            bulletBehavior.SetParent(parent);
+            bulletBehavior.SetDamage(damage);
+        }
+    }
 }
+

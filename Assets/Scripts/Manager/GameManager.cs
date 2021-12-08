@@ -182,6 +182,7 @@ public class GameManager : MonoBehaviour
 
                     player.AddComponent<BaseWeapon>();
                     player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
+                    player.GetComponent<BaseWeapon>().SetFireRate(.4f);
 
                     player.AddComponent<LancerBasicAbility>();
                     player.GetComponent<LancerBasicAbility>().SetParent(playerBehavior);
@@ -206,6 +207,7 @@ public class GameManager : MonoBehaviour
 
                     player.AddComponent<BaseWeapon>();
                     player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
+                    player.GetComponent<BaseWeapon>().SetFireRate(.5f);
                     SetupUltBars(playerOne, ship);
                 }
                 else if (ship == "Trailblazer")
@@ -226,6 +228,7 @@ public class GameManager : MonoBehaviour
 
                     player.AddComponent<BaseWeapon>();
                     player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
+                    player.GetComponent<BaseWeapon>().SetFireRate(.45f);
 
                     player.AddComponent<TrailblazerUltimateAbility>();
                     player.GetComponent<TrailblazerUltimateAbility>().SetParent(playerBehavior);
@@ -312,7 +315,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 2 - Set number and name.
-        SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What we had Written Down)");
+        SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What We Have Written Down)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 

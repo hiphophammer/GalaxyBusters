@@ -20,6 +20,8 @@ public class LancerUltimateAbility : MonoBehaviour
 
     private bool retrievedAxis;
 
+    private float nextFire;
+
     // Bullet info.
     private string bulletType;
     private float damage;
@@ -47,6 +49,8 @@ public class LancerUltimateAbility : MonoBehaviour
         cooldownBar = parent.GetWeaponCooldownBar();
 
         retrievedAxis = false;
+
+        nextFire = 0;
 
         // Start the FSM off in the charge state.
         state = UltimateAbilityState.charge;
@@ -138,12 +142,11 @@ public class LancerUltimateAbility : MonoBehaviour
         {
             // The ultimate ability has ended.
             state = UltimateAbilityState.charge;
-
             weapon.StartFiring();
         }
         else
         {
-            if (cooldownBar.ReadyToFire())
+            if (Time.time > nextFire)
             {
                 // Spray bullets.
                 float dTheta = THETA / (BULLETS_PER_WAVE - 1);
@@ -181,7 +184,7 @@ public class LancerUltimateAbility : MonoBehaviour
                     angle += dTheta;
                 }
 
-                cooldownBar.TriggerCooldown();
+                nextFire = Time.time + weapon.fireRate;
             }
         }
     }
