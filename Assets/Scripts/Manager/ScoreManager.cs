@@ -21,6 +21,9 @@ public class ScoreManager : MonoBehaviour
         Debug.Assert(player1ScoreDisplay != null);
         Debug.Assert(player2ScoreDisplay != null);
 
+        player1ScoreDisplay.Show();
+        player2ScoreDisplay.Show();
+
         player1Score = 0.0f;
         player2Score = 0.0f;
 
@@ -32,6 +35,16 @@ public class ScoreManager : MonoBehaviour
     {
         DetermineMode();
         UpdateDisplays();
+    }
+
+    public float GetPlayer1Score()
+    {
+        return player1Score;
+    }
+
+    public float GetPlayer2Score()
+    {
+        return player2Score;
     }
 
     private void DetermineMode()
@@ -73,6 +86,10 @@ public class ScoreManager : MonoBehaviour
         if (!singlePlayer)
         {
             player2ScoreDisplay.SetScore((int)player2Score);
+        }
+        else
+        {
+            player2ScoreDisplay.Hide();
         }
     }
 }

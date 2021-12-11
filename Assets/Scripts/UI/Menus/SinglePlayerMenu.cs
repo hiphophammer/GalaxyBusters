@@ -124,6 +124,7 @@ public class SinglePlayerMenu : MonoBehaviour
                 MainMenu.player1Ship = "Vanguard";
             else
                 MainMenu.player1Ship = "Trailblazer";
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             sceneLoaded = true;
         }

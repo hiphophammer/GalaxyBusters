@@ -19,6 +19,11 @@ public class ScoreDisplay : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
     public void SetScore(int score)
     {
         scoreText.text = score.ToString();

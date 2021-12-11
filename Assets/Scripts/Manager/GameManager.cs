@@ -49,6 +49,10 @@ public class GameManager : MonoBehaviour
     private bool ready;
     private bool singlePlayer;
 
+    public static bool showBothScores;
+    public static float player1Score;
+    public static float player2Score;
+
     private float levelTime;
 
     // Start is called before the first frame update
@@ -394,6 +398,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("PLAYER DIED");
             winLoss = false;
+            showBothScores = singlePlayer;
+            player1Score = GetComponent<ScoreManager>().GetPlayer1Score();
+            player2Score = GetComponent<ScoreManager>().GetPlayer2Score();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
