@@ -49,6 +49,10 @@ public class GameManager : MonoBehaviour
     private bool ready;
     private bool singlePlayer;
 
+    public static bool showBothScores;
+    public static float player1Score;
+    public static float player2Score;
+
     private float levelTime;
 
     // Start is called before the first frame update
@@ -303,10 +307,10 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 1.
-        levelAttach.AddComponent<LevelOne>();
-        levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelOne>();
+        //levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
 
         ResetPlayerHealth();
 
@@ -320,10 +324,12 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 2.
-        levelAttach.AddComponent<LevelTwo>();
-        levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelTwo>();
+        //levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
+
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(2);
         ClearEnemies();
@@ -335,10 +341,12 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 3.
-        levelAttach.AddComponent<LevelThree>();
-        levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelThree>();
+        //levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
+
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(3);
         ClearEnemies();
@@ -350,10 +358,12 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 4.
-        levelAttach.AddComponent<LevelFour>();
-        levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelFour>();
+        //levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
+
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(4);
         ClearEnemies();
@@ -394,6 +404,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("PLAYER DIED");
             winLoss = false;
+            showBothScores = singlePlayer;
+            player1Score = GetComponent<ScoreManager>().GetPlayer1Score();
+            player2Score = GetComponent<ScoreManager>().GetPlayer2Score();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

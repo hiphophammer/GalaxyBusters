@@ -18,9 +18,8 @@ public class InventoryBehavior : MonoBehaviour
     private PlayerBehavior player;
     private string ship;
 
-    private List<Item>[] items;
+    private Item[] items;
     private bool specialItemAdded;
-    private int epicItemCount;
 
     // Start is called before the first frame update
     void Start()
@@ -28,9 +27,8 @@ public class InventoryBehavior : MonoBehaviour
         Debug.Assert(itemCatalog != null);
 
         // Initialize our list & other members.
-        items = new List<Item>[5];
+        items = new Item[5];
         specialItemAdded = false;
-        epicItemCount = 0;
 
         foreach (Slot slot in slots)
         {
@@ -78,26 +76,6 @@ public class InventoryBehavior : MonoBehaviour
         }
 
         return success;
-    }
-
-    // Clears powerups from a player's inventory. Should be called at the end of a level.
-    public void ClearPowerUps()
-    {
-        for (int i = 0; i < INVENTORY_SIZE; i++)
-        {
-            List<Item> list = items[i];
-            for (int j = list.Count - 1; j >= 0; j--)
-            {
-                if (list[j].isPowerUp)
-                {
-                    Item item = list[j];
-                    player.SetSpeed(player.GetSpeed() - item.dSpeed);
-                    player.SetWeaponDamage(player.GetWeaponDamage() - item.dDamage);
-
-                    list.RemoveAt(j);
-                }
-            }
-        }
     }
 
     private bool IsCommonItem(Item item)
@@ -152,14 +130,10 @@ public class InventoryBehavior : MonoBehaviour
     {
         bool valid = false;
 
-        if (!IsCommonItem(item) && !IsRareItem(item))
+        if (!IsCommonItem(item) && !IsRareItem(item) && !IsEpicItem(item))
         {
             // Check if we have a valid epic item.
-            if (IsEpicItem(item) && (epicItemCount < MAX_EPIC_ITEMS))
-            {
-                valid = true;
-            }
-            else if (IsSpecialItem(item) && !specialItemAdded && item.ship == ship)
+            if (IsSpecialItem(item) && !specialItemAdded && item.ship == ship)
             {
                 valid = true;
             }
@@ -176,25 +150,11 @@ public class InventoryBehavior : MonoBehaviour
     {
         bool success = false;
 
-        // This is for epic items, of which we can have multiple, but they must take
-        // their own slots.
-        bool stackable = IsCommonItem(item) || IsRareItem(item);
-
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
-            List<Item> list = items[i];
-            if ((list == null) || ((list[0].type == item.type) && stackable))
+            if (items[i] == null)
             {
-                // The list at this location is empty, OR the type of the items in this
-                // list matches that of the item we need to add (this only happens with
-                // common, rare, and epic items), so we add it here.
-                if (list == null)
-                {
-                    items[i] = new List<Item>();
-                    list = items[i];
-                }
-
-                list.Add(item);
+                items[i] = item;
                 success = true;
                 break;
             }
@@ -204,11 +164,7 @@ public class InventoryBehavior : MonoBehaviour
                                         // give an error.
 
         // Update our counters/flags accordingly.
-        if (IsEpicItem(item))
-        {
-            epicItemCount++;
-        }
-        else if (IsSpecialItem(item))
+        if (IsSpecialItem(item))
         {
             Debug.Assert(specialItemAdded == false);    // We must never add a special
                                                         // item twice.
@@ -268,10 +224,9 @@ public class InventoryBehavior : MonoBehaviour
     {
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
-            List<Item> list = items[i];
-            if (list != null && list.Count > 0)
+            if (items[i] != null)
             {
-                slots[i].SetIcon(list[0].icon, list.Count);
+                slots[i].SetIcon(items[i].icon, 0);
             }
         }
     }
