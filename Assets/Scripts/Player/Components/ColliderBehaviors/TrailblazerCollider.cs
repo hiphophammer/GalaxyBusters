@@ -67,10 +67,14 @@ public class TrailblazerCollider : MonoBehaviour
             {
                 Item item = powerUpBehavior.item;
                 powerUpBehavior.SetPickedUp();
-
-                // DEBUG TODO: Add this to inventory.
-                //Debug.Log(item.type);
-                parent.GetInventory().AddItem(item);
+                if (item.isPowerUp && item.ID == 0)
+                {
+                    parent.GetHealthBar().AddHealth(item.dHP);
+                }
+                if (item.isPowerUp && item.ID == 1)
+                {
+                    parent.ultimateAbilityChargeBar.AddCharge(25.0f / 2.0f);
+                }
             }
         }
     }

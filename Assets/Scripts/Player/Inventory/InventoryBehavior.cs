@@ -181,14 +181,8 @@ public class InventoryBehavior : MonoBehaviour
             player.SetWeaponDamage(player.GetWeaponDamage() + item.dDamage);
 
             // Update the health/hitpoints accordingly.
-            if (item.isPowerUp)
-            {
-                player.GetHealthBar().AddHealth(item.dHP);
-            }
-            else
-            {
-                player.GetHealthBar().IncreaseHitPoints(item.dHP);
-            }
+            player.GetHealthBar().IncreaseHitPoints(item.dHP);
+            
         }
         else if (IsEpicItem(item))
         {

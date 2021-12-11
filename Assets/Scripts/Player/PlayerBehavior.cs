@@ -175,8 +175,9 @@ public class PlayerBehavior : MonoBehaviour
 
     public void DestroyedEnemy(int enemyHealth)
     {
-        // Add some charge to the ultimate ability charge bar.
-        ultimateAbilityChargeBar.AddCharge((enemyHealth - 10) / 2.0f);
+        // Add 30% of enemyHealth multiplied by the combo multiplier to the ultimate ability charge bar.
+        ultimateAbilityChargeBar.AddCharge(((enemyHealth * .3f) / 2.0f) * comboMult);
+        Debug.Log("Ult Charged by " + ((enemyHealth * .3f) / 2.0f) * comboMult);
     }
 
     public string GetStatus()
