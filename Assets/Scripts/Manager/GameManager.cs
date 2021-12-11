@@ -307,10 +307,10 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 1.
-        levelAttach.AddComponent<LevelOne>();
-        levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelOne>();
+        //levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
 
         ResetPlayerHealth();
 
@@ -324,10 +324,12 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 2.
-        levelAttach.AddComponent<LevelTwo>();
-        levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelTwo>();
+        //levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
+
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(2);
         ClearEnemies();
@@ -339,10 +341,12 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 3.
-        levelAttach.AddComponent<LevelThree>();
-        levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelThree>();
+        //levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
+
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(3);
         ClearEnemies();
@@ -354,10 +358,12 @@ public class GameManager : MonoBehaviour
         HideLevelNumAndName();
 
         // Level 4.
-        levelAttach.AddComponent<LevelFour>();
-        levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        //levelAttach.AddComponent<LevelFour>();
+        //levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
+        //levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
+        //yield return new WaitForSeconds(levelTime);
+
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(4);
         ClearEnemies();
