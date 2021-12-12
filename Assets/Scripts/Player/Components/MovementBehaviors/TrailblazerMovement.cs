@@ -118,7 +118,7 @@ public class TrailblazerMovement : MonoBehaviour
 
             if (Blink)
             {
-                transform.position = Vector3.Lerp(transform.position, endPos, 15f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, endPos, 30f * Time.deltaTime);
                 if (transform.position == endPos)
                 {
                     GetComponent<CircleCollider2D>().radius = OGradius;

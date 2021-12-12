@@ -181,14 +181,8 @@ public class InventoryBehavior : MonoBehaviour
             player.SetWeaponDamage(player.GetWeaponDamage() + item.dDamage);
 
             // Update the health/hitpoints accordingly.
-            if (item.isPowerUp)
-            {
-                player.GetHealthBar().AddHealth(item.dHP);
-            }
-            else
-            {
-                player.GetHealthBar().IncreaseHitPoints(item.dHP);
-            }
+            player.GetHealthBar().IncreaseHitPoints(item.dHP);
+            
         }
         else if (IsEpicItem(item))
         {
@@ -203,11 +197,6 @@ public class InventoryBehavior : MonoBehaviour
                 player.GetWeapon().FireDualStream(true);
             }
             else if (item.ID == 3)
-            {
-                // Shield.
-                // TODO: implement this!
-            }
-            else if (item.ID == 4)
             {
                 // Vampire Bullets: Health gained on hit
                 player.GetWeapon().SetVampire(true);

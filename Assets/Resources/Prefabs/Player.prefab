@@ -145,6 +145,7 @@ MonoBehaviour:
   speed: 3
   playerOne: 1
   alive: 1
+  comboMult: 0
 --- !u!1001 &148240135168287013
 PrefabInstance:
   m_ObjectHideFlags: 0

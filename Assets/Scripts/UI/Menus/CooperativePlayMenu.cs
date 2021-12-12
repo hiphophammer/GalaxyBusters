@@ -104,7 +104,6 @@ public class CooperativePlayMenu : MonoBehaviour
             // update buttons
             player1left.GetComponent<RectTransform>().localPosition = new Vector2(p1_initialPos_bL, player1left.GetComponent<RectTransform>().localPosition.y);
             player1right.GetComponent<RectTransform>().localPosition = new Vector2(p1_initialPos_bR, player1left.GetComponent<RectTransform>().localPosition.y);
-
         }
         else if (shipIndexOne == 1) // vanguard
         {
@@ -118,7 +117,6 @@ public class CooperativePlayMenu : MonoBehaviour
             // update buttons
             player1left.GetComponent<RectTransform>().localPosition = new Vector2(p1_initialPos_bL-vanguardOffset, player1left.GetComponent<RectTransform>().localPosition.y);
             player1right.GetComponent<RectTransform>().localPosition = new Vector2(p1_initialPos_bR + vanguardOffset, player1left.GetComponent<RectTransform>().localPosition.y);
-
         }
         else // trailblazer
         {
@@ -127,7 +125,7 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarOne.fillAmount = 0.66f;
             speedBarOne.fillAmount = 1.0f;
             damageBarOne.fillAmount = 0.33f;
-            basicDescriptionOne.SetText("Blinks in the dirction of the arrow key.");
+            basicDescriptionOne.SetText("Blinks in the direction of movement.");
             ultDescriptionOne.SetText("Becomes a ghost for a short period of time.");
             // update buttons
             player1left.GetComponent<RectTransform>().localPosition = new Vector2(p1_initialPos_bL - trailblazerOffset, player1left.GetComponent<RectTransform>().localPosition.y);
@@ -146,7 +144,6 @@ public class CooperativePlayMenu : MonoBehaviour
             ultDescriptionTwo.SetText("Sprays bullets in cone.");
             player2left.GetComponent<RectTransform>().localPosition = new Vector2(p2_initialPos_bL, player2left.GetComponent<RectTransform>().localPosition.y);
             player2right.GetComponent<RectTransform>().localPosition = new Vector2(p2_initialPos_bR, player2left.GetComponent<RectTransform>().localPosition.y);
-
         }
         else if (shipIndexTwo == 1) // vanguard
         {
@@ -160,7 +157,6 @@ public class CooperativePlayMenu : MonoBehaviour
             // update buttons
             player2left.GetComponent<RectTransform>().localPosition = new Vector2(p2_initialPos_bL - vanguardOffset, player2left.GetComponent<RectTransform>().localPosition.y);
             player2right.GetComponent<RectTransform>().localPosition = new Vector2(p2_initialPos_bR + vanguardOffset, player2left.GetComponent<RectTransform>().localPosition.y);
-
         }
         else // trailblazer
         {
@@ -169,7 +165,7 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarTwo.fillAmount = 0.66f;
             speedBarTwo.fillAmount = 1.0f;
             damageBarTwo.fillAmount = 0.33f;
-            basicDescriptionTwo.SetText("Blinks in the dirction of the arrow key.");
+            basicDescriptionTwo.SetText("Blinks in the direction of movement.");
             ultDescriptionTwo.SetText("Becomes a ghost for a short period of time.");
             // update buttons
             player2left.GetComponent<RectTransform>().localPosition = new Vector2(p2_initialPos_bL - trailblazerOffset, player2left.GetComponent<RectTransform>().localPosition.y);

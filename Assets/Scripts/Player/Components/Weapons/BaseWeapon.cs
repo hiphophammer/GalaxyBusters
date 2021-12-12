@@ -6,8 +6,6 @@ public class BaseWeapon : MonoBehaviour
 {
     // Constants.
     private const float PROJECTILE_Y_OFFSET = 0.4f;
-    private const float PROJECTILE_X_OFFSET = 0.1f;
-
     private const string BULLET_TYPE_PREFIX = "Prefabs/";
     private const string DEFAULT_BULLET = "Projectile";
     
@@ -27,6 +25,9 @@ public class BaseWeapon : MonoBehaviour
     private float nextFire;
     private bool shouldFire;
 
+    private float PROJECTILE_X_OFFSET = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,22 +46,7 @@ public class BaseWeapon : MonoBehaviour
 
         if (shouldFire == true)
         {
-            // Spawn the bullets.
-            if (dualStream)
-            {
-                // We need to shoot two streams of bullets.
-
-                // Spawn the left bullet.
-                shoot(-1.0f * PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
-
-                // And the right bullet.
-                shoot(PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
-            }
-            else
-            {
-                // We don't shoot the bullets in a cone.
-                shoot(0.0f, PROJECTILE_Y_OFFSET);
-            }            
+            shoot(); 
         }
         
     }
@@ -94,6 +80,14 @@ public class BaseWeapon : MonoBehaviour
 
     public void FireDualStream(bool dualStream)
     {
+        if (dualStream)
+        {
+            PROJECTILE_X_OFFSET = PROJECTILE_X_OFFSET + .1f;
+        }
+        else
+        {
+            PROJECTILE_X_OFFSET = 0;
+        }
         this.dualStream = dualStream;
     }
 
@@ -148,26 +142,44 @@ public class BaseWeapon : MonoBehaviour
 
     // Tells BaseWeapon to shoot projectiles.
     // Does what SpawnBullet did, but localized entirely within this script, without reliance on Cooldown Bar.
-    private void shoot(float xOffset, float yOffset)
+    private void shoot()
     {
         if (Time.time > nextFire && shouldFire)
         {
             //Debug.Log("Firing at " + Time.time);
             nextFire = Time.time + fireRate;
             // Define the start position.
-            Vector3 startPos = transform.position;
-            startPos.x += xOffset;
-            startPos.y += yOffset;
 
             // Instantiate the bullet.
-            GameObject bullet = Instantiate(Resources.Load(bulletType) as GameObject,
-                                        startPos,
+            if(!dualStream)
+            {
+                GameObject bullet = Instantiate(Resources.Load(bulletType) as GameObject,
+                                        transform.position,
                                         transform.rotation);
 
-            // Configure the component of the bullet.
-            ProjectileBehavior bulletBehavior = bullet.GetComponent<ProjectileBehavior>();
-            bulletBehavior.SetParent(parent);
-            bulletBehavior.SetDamage(damage);
+                // Configure the component of the bullet.
+                ProjectileBehavior bulletBehavior = bullet.GetComponent<ProjectileBehavior>();
+                bulletBehavior.SetParent(parent);
+                bulletBehavior.SetDamage(damage);
+            }
+            else
+            {
+                GameObject leftBullet = Instantiate(Resources.Load(bulletType),
+                                        new Vector3(transform.position.x + PROJECTILE_X_OFFSET, transform.position.y + PROJECTILE_Y_OFFSET, transform.position.z),
+                                        transform.rotation) as GameObject;
+                GameObject rightBullet = Instantiate(Resources.Load(bulletType),
+                                        new Vector3(transform.position.x - PROJECTILE_X_OFFSET, transform.position.y + PROJECTILE_Y_OFFSET, transform.position.z),
+                                        transform.rotation) as GameObject;
+
+                // Configure the component of the bullet.
+                ProjectileBehavior leftBulletBehavior = leftBullet.GetComponent<ProjectileBehavior>();
+                leftBulletBehavior.SetParent(parent);
+                leftBulletBehavior.SetDamage(damage);
+                ProjectileBehavior rightBulletBehavior = rightBullet.GetComponent<ProjectileBehavior>();
+                rightBulletBehavior.SetParent(parent);
+                rightBulletBehavior.SetDamage(damage);
+            }
+            
         }
     }
 }

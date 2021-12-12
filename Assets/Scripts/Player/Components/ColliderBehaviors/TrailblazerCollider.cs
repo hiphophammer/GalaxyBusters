@@ -24,11 +24,17 @@ public class TrailblazerCollider : MonoBehaviour
     {
         GameObject other = collision.gameObject;
         Debug.Log("Detected Player Collision");
+        
         TrailblazerMovement m = parent.GetComponent<TrailblazerMovement>();
+        TrailblazerUltimateAbility ult = parent.GetComponent<TrailblazerUltimateAbility>();
+        BaseWeapon weapon = parent.GetComponent<BaseWeapon>();
+
+        float baseDamage = parent.GetWeaponDamage();
+        float damageModifier = 1.0f;
 
         if (other.CompareTag("EnemyProjectile") && parent.IsAlive())
         {
-            if (!m.getBlinkStatus())
+            if (!m.getBlinkStatus() && !ult.getGhostStatus())
             {
                 // Update our health bar.
                 healthBar.RemoveHealth(10.0f);
@@ -38,12 +44,19 @@ public class TrailblazerCollider : MonoBehaviour
                 {
                     parent.alive = false;
                 }
+                Destroy(other);
             }
-            Destroy(other);
+            else if(ult.getGhostStatus())
+            {
+                damageModifier += .2f;
+                parent.SetWeaponDamage(baseDamage * damageModifier);
+                weapon.fireRate -= .01f;
+            }
+            
         }
         else if (other.CompareTag("Enemy") && parent.IsAlive())
         {
-            if (!m.getBlinkStatus())
+            if (!m.getBlinkStatus() && !ult.getGhostStatus())
             {
                 // Update our health bar.
                 healthBar.RemoveHealth(10.0f);
@@ -67,10 +80,14 @@ public class TrailblazerCollider : MonoBehaviour
             {
                 Item item = powerUpBehavior.item;
                 powerUpBehavior.SetPickedUp();
-
-                // DEBUG TODO: Add this to inventory.
-                //Debug.Log(item.type);
-                parent.GetInventory().AddItem(item);
+                if (item.isPowerUp && item.ID == 0)
+                {
+                    parent.GetHealthBar().AddHealth(item.dHP);
+                }
+                if (item.isPowerUp && item.ID == 1)
+                {
+                    parent.ultimateAbilityChargeBar.AddCharge(25.0f / 2.0f);
+                }
             }
         }
     }

@@ -90,7 +90,7 @@ public class SinglePlayerMenu : MonoBehaviour
             hpBar.fillAmount = 0.66f;
             speedBar.fillAmount = 1.0f;
             damageBar.fillAmount = 0.33f;
-            basicDescription.SetText("Blinks in the dirction of the arrow key.");
+            basicDescription.SetText("Blinks in the direction of movement.");
             ultDescription.SetText("Becomes a ghost for a short period of time.");
             PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bL - trailblazerOffset, PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition.y);
             PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bR + trailblazerOffset, PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition.y);
