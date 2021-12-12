@@ -120,7 +120,7 @@ public class ProjectileBehavior : MonoBehaviour
             if (parent.GetWeapon().GetVampire())
             {
                 HealthBar hp = parent.GetHealthBar();
-                hp.AddHealth(5);
+                hp.AddHealth(1);
             }
 
             // Checks for if Penetration Bullet is active and acts accordingly. 

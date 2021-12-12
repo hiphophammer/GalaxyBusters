@@ -109,9 +109,9 @@ public class VanguardUltimate : MonoBehaviour
             stateEntryTime = Time.time;
             Shield = true;
             cooldownBar.TriggerCooldown();
-            GetComponent<CircleCollider2D>().radius = OGradius * 2f;
+            GetComponent<CircleCollider2D>().radius = .4f;
             Debug.Log(GetComponent<CircleCollider2D>().radius);
-            parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, alpha, .25f);
+            parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, Color.red, .25f);
             // Trigger the reload.
             chargeBar.ResetCharge();
         }
@@ -120,6 +120,7 @@ public class VanguardUltimate : MonoBehaviour
     private void ServiceShieldState()
     {
         float dTime = Time.time - stateEntryTime;
+        Debug.Log(dTime);
         if (dTime >= SHIELD_TIME)
         {
             GetComponent<CircleCollider2D>().radius = OGradius;

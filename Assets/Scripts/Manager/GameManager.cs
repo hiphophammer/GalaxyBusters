@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     private bool ready;
     private bool singlePlayer;
+    private bool endless;
 
     public static bool showBothScores;
     public static float player1Score;
@@ -102,6 +103,13 @@ public class GameManager : MonoBehaviour
             GameObject p = GameObject.FindWithTag("Player");
             p.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         }
+
+        if (Input.GetKeyDown("h"))
+        {
+            endless = true;
+            
+        }
+        Debug.Log(endless);
     }
 
     // Public methods.
@@ -175,7 +183,7 @@ public class GameManager : MonoBehaviour
                     // Set stats.
                     playerBehavior.GetHealthBar().SetHitPoints(150.0f);
                     playerBehavior.SetWeaponDamage(25.0f);
-                    playerBehavior.SetSpeed(5.0f);
+                    playerBehavior.SetInitialSpeed(5.0f);
 
                     // Add appropriate components.
                     player.AddComponent<BaseMovement>();
@@ -202,7 +210,7 @@ public class GameManager : MonoBehaviour
 
                     playerBehavior.GetHealthBar().SetHitPoints(200.0f);
                     playerBehavior.SetWeaponDamage(20.0f);
-                    playerBehavior.SetSpeed(2.0f);
+                    playerBehavior.SetInitialSpeed(2.0f);
 
                     player.AddComponent<VanguardMovement>();
                     player.GetComponent<VanguardMovement>().SetParent(playerBehavior);
@@ -226,7 +234,7 @@ public class GameManager : MonoBehaviour
 
                     playerBehavior.GetHealthBar().SetHitPoints(100.0f);
                     playerBehavior.SetWeaponDamage(20.0f);
-                    playerBehavior.SetSpeed(7.0f);
+                    playerBehavior.SetInitialSpeed(7.0f);
 
                     // Add appropriate components
                     player.AddComponent<TrailblazerMovement>();
@@ -311,13 +319,13 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
-        // // Level 1.
-        // levelAttach.AddComponent<LevelOne>();
-        // levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
-        // levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
-        // yield return new WaitForSeconds(levelTime);
+        // Level 1.
+        levelAttach.AddComponent<LevelOne>();
+        levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
+        levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+        yield return new WaitForSeconds(levelTime);
 
-        // ResetPlayerHealth();
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(1);
         ClearEnemies();
@@ -328,13 +336,13 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
-        // // Level 2.
-        // levelAttach.AddComponent<LevelTwo>();
-        // levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
-        // levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
-        // yield return new WaitForSeconds(levelTime);
+        // Level 2.
+        levelAttach.AddComponent<LevelTwo>();
+        levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
+        levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
+        yield return new WaitForSeconds(levelTime);
 
-        // ResetPlayerHealth();
+        ResetPlayerHealth();
 
         itemSelection.PresentItems(2);
         ClearEnemies();
@@ -358,7 +366,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 4 - Set number and name.
-        SetLevelNumAndName(4, "Stupid Level Name (We're out of ideas)");
+        SetLevelNumAndName(4, "First Last Dance (I Swear There Were More Somewhere)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
@@ -381,12 +389,57 @@ public class GameManager : MonoBehaviour
 
         // TODO: Level 5 (Boss fight).
 
-        // Victory!
-        if (player1.IsAlive() || player2.IsAlive())
+
+        // Endless Mode
+        if (endless)
         {
+            int EndlessName = 0;
+            // By playing Endless Mode, the player is already a winner in my book. - Gary Yuen
             winLoss = true;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            while (player1.IsAlive() || player2.IsAlive())
+            {
+                string[] levelnames = new string[] {"You Asked For This", "Endless Space", 
+                                                    "Unlimited Ship Works", "Paradise Lost", 
+                                                    "Inferno", "Literary Allusion", 
+                                                    "Inherit the Stars", "No Longer Human", 
+                                                    "Childhood's End", "(Don't) Fear The Reaper"};
+                string lvlname = levelnames[EndlessName];
+                EndlessName++;
+                if (EndlessName == levelnames.Length - 1)
+                {
+                    EndlessName = 0;
+                }
+                // Level 4 - Set number and name.
+                SetLevelNumAndName(999, lvlname);
+                yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+                HideLevelNumAndName();
+
+                // Level ENDLESS.
+                levelAttach.AddComponent<LevelENDLESS>();
+                levelAttach.GetComponent<LevelENDLESS>().SetSpawner(spawner);
+                levelTime = levelAttach.GetComponent<LevelENDLESS>().GetLevelTime();
+                yield return new WaitForSeconds(levelTime);
+
+                ResetPlayerHealth();
+
+                int lvl = Random.Range(1, 3);
+                itemSelection.PresentItems(lvl);
+                ClearEnemies();
+                yield return new WaitUntil(() => itemSelection.DonePresenting());
+            }
         }
+        else
+        {
+            // Victory!
+            if (player1.IsAlive() || player2.IsAlive())
+            {
+                winLoss = true;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+        }
+        
+
+        
     }
 
     private void SetLevelNumAndName(int num, string name)

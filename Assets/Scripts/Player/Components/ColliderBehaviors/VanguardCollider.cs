@@ -7,10 +7,12 @@ public class VanguardCollider : MonoBehaviour
     // Private member variables.
     private PlayerBehavior parent;
     private HealthBar healthBar;
+    private ScoreManager score;
 
     // Start is called before the first frame update
     void Start()
     {
+        score = Camera.main.GetComponent<ScoreManager>();
         Debug.Log("Player Collision Detection Starting!");
         healthBar = parent.GetHealthBar();
     }
@@ -37,6 +39,7 @@ public class VanguardCollider : MonoBehaviour
                     healthBar.RemoveHealth(10.0f);
                     Debug.Log("Losing Health");
                     parent.comboMult = 1f;
+                    score.UpdateCombo(parent, parent.comboMult);
                 }
                 if (m.getRamStatus())
                 {
@@ -44,7 +47,10 @@ public class VanguardCollider : MonoBehaviour
                     Debug.Log("Losing Reduced Health");
                 }
             }
-
+            else
+            {
+                healthBar.AddHealth(2.5f);
+            }
             // Check if health is 0 or less (Death)
             if(healthBar.Health() <= 0.0f)
             {
@@ -62,6 +68,7 @@ public class VanguardCollider : MonoBehaviour
                     healthBar.RemoveHealth(10.0f);
                     Debug.Log("Losing Health");
                     parent.comboMult = 1f;
+                    score.UpdateCombo(parent, parent.comboMult);
                 }
                 if (m.getRamStatus())
                 {

@@ -44,6 +44,8 @@ public class PlayerBehavior : MonoBehaviour
     private string basicAbilityAxis;
     private string ultimateAbilityAxis;
 
+    private float baseSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -115,9 +117,24 @@ public class PlayerBehavior : MonoBehaviour
     }
 
     // Speed accessors/modifiers.
+    // Sets speed to parameter speed, while ensuring that speed never dips below base speed.
     public void SetSpeed(float speed)
     {
+        if (speed <= baseSpeed)
+        {
+            this.speed = baseSpeed;
+        }
+        else
+        {
+            this.speed = speed;
+        }
+    }
+
+    // Ensures that the original speed is stored.
+    public void SetInitialSpeed(float speed)
+    {
         this.speed = speed;
+        baseSpeed = speed;
     }
 
     public float GetSpeed()

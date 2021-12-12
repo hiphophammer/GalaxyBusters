@@ -67,7 +67,8 @@ public class ChaserBehavior : MonoBehaviour, EnemyBehavior
         }
         else
         {
-            Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation);
+            GameObject Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
+            Destroy(Explosion.gameObject, 1);
             Destroy(gameObject);
         }
         
