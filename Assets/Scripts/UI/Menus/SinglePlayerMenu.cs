@@ -11,6 +11,8 @@ public class SinglePlayerMenu : MonoBehaviour
     public Image hpBar, speedBar, damageBar;
     public TMPro.TMP_Text basicDescription, ultDescription;
     public TMPro.TMP_Text shipName;
+    public GameObject PlayerSelectionArrowLeft;
+    public GameObject PlayerSelectionArrowRight;
 
     private bool sceneLoaded = false;
     private int shipIndex = 0;
@@ -18,6 +20,11 @@ public class SinglePlayerMenu : MonoBehaviour
     private Sprite lancerSprite;
     private Sprite vanguardSprite;
     private Sprite trailblazerSprite;
+
+    private float initialPos_bL;
+    private float initialPos_bR;
+    private const float vanguardOffset = 18.0f;
+    private const float trailblazerOffset = 40.0f;
 
 
     // Start is called before the first frame update
@@ -34,6 +41,8 @@ public class SinglePlayerMenu : MonoBehaviour
         lancerSprite = Resources.Load<Sprite>("Textures/Ships/Player 1/Lancer");
         vanguardSprite = Resources.Load<Sprite>("Textures/Ships/Player 1/Vanguard");
         trailblazerSprite = Resources.Load<Sprite>("Textures/Ships/Player 1/Trailblazer");
+        initialPos_bL = PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition.x;
+        initialPos_bR = PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition.x;
     }
 
     // Update is called once per frame
@@ -42,77 +51,91 @@ public class SinglePlayerMenu : MonoBehaviour
         // check for any input
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            if(shipIndex == 0)
-            {
-                shipIndex++;
-            }
-            else if(shipIndex == 1)
-            {
-                shipIndex++;
-            }
-            else
-            {
-                shipIndex = 0;
-            }
+            RightArrow();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            if (shipIndex == 2)
-            {
-                shipIndex--;
-            }
-            else if (shipIndex == 1)
-            {
-                shipIndex--;
-            }
-            else
-            {
-                shipIndex = 2;
-            }
+            LeftArrow();
         }
 
         // update screen
         if (shipIndex == 0) // lancer
         {
             shipObject.GetComponent<Image>().sprite = lancerSprite;
-            shipName.SetText("< Lancer >");
+            shipName.SetText("Lancer");
             hpBar.fillAmount = 0.33f;
             speedBar.fillAmount = 0.66f;
             damageBar.fillAmount = 1.0f;
             basicDescription.SetText("Launches a missile, dealing a small AOE damage.");
             ultDescription.SetText("Sprays bullets in cone");
+            PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bL, PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition.y);
+            PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bR, PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition.y);
         }
         else if (shipIndex == 1) // vanguard
         {
             shipObject.GetComponent<Image>().sprite = vanguardSprite;
-            shipName.SetText("< Vanguard >");
+            shipName.SetText("Vanguard");
             hpBar.fillAmount = 1.0f;
             speedBar.fillAmount = 0.33f;
             damageBar.fillAmount = 0.66f;
             basicDescription.SetText("Gains small shield.");
             ultDescription.SetText("Takes reduced damage for a duration");
+            PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bL - vanguardOffset, PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition.y);
+            PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bR + vanguardOffset, PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition.y);
         }
         else // trailblazer
         {
             shipObject.GetComponent<Image>().sprite = trailblazerSprite;
-            shipName.SetText("< Trailblazer >");
+            shipName.SetText("Trailblazer");
             hpBar.fillAmount = 0.66f;
             speedBar.fillAmount = 1.0f;
             damageBar.fillAmount = 0.33f;
             basicDescription.SetText("Blinks in the dirction of the arrow key.");
             ultDescription.SetText("Becomes a ghost for a short period of time.");
+            PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bL - trailblazerOffset, PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition.y);
+            PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bR + trailblazerOffset, PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition.y);
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
             StartGame();
     }
 
-/*    private void StoreShipType()
+    /*    private void StoreShipType()
+        {
+            Debug.Log("Menu: Storing ship type");
+            MainMenu.player1Ship = player1Dropdown.options[player1Dropdown.value].text;
+            Debug.Log("Menu: Ship is: " + MainMenu.player1Ship);
+        }*/
+    public void RightArrow()
     {
-        Debug.Log("Menu: Storing ship type");
-        MainMenu.player1Ship = player1Dropdown.options[player1Dropdown.value].text;
-        Debug.Log("Menu: Ship is: " + MainMenu.player1Ship);
-    }*/
+        if (shipIndex == 0)
+        {
+            shipIndex++;
+        }
+        else if (shipIndex == 1)
+        {
+            shipIndex++;
+        }
+        else
+        {
+            shipIndex = 0;
+        }
+    }
+    public void LeftArrow()
+    {
+        if (shipIndex == 2)
+        {
+            shipIndex--;
+        }
+        else if (shipIndex == 1)
+        {
+            shipIndex--;
+        }
+        else
+        {
+            shipIndex = 2;
+        }
+    }
 
     public void StartGame()
     {
