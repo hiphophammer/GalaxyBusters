@@ -15,9 +15,9 @@ MonoBehaviour:
   isPowerUp: 0
   ID: 0
   type: 0
-  description: +5 HP
+  description: +10 HP
   icon: {fileID: 21300000, guid: 66bf8815d62ee66488fbba83b9ffa339, type: 3}
-  dHP: 5
+  dHP: 10
   dSpeed: 0
   dDamage: 0
   bulletName: 

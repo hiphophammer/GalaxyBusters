@@ -40,7 +40,7 @@ public class EnemyHealth : MonoBehaviour
             //10% to spawn powerup
             int chance = Random.Range(1, 11);
             int powerUpChoice = Random.Range(1, 11);
-            Debug.Log("Power Up Spawn = " + chance + "Power Up Choice = " + powerUpChoice);
+            //Debug.Log("Power Up Spawn = " + chance + "Power Up Choice = " + powerUpChoice);
             if(chance == 1)
             {
                 powerUp = Instantiate(Resources.Load<GameObject>("Prefabs/PowerUp")) as GameObject;
@@ -59,11 +59,11 @@ public class EnemyHealth : MonoBehaviour
             if(destroyerBehavior.IsPlayerOne())
             {
                 score.DestroyedEnemy(damageDealt, 0, totalHealth * destroyerBehavior.comboMult);
-                if(destroyerBehavior.comboMult <= 4f)
+                if(destroyerBehavior.comboMult < 4f)
                 {
                     destroyerBehavior.comboMult += totalHealth * .01f;
                 }
-                else if(destroyerBehavior.comboMult > 4f)
+                else if(destroyerBehavior.comboMult >= 4f)
                 {
                     destroyerBehavior.comboMult = 4f;
                 }
@@ -71,11 +71,11 @@ public class EnemyHealth : MonoBehaviour
             else
             {
                 score.DestroyedEnemy(damageDealt, 1, totalHealth * destroyerBehavior.comboMult);
-                if((destroyerBehavior.comboMult + totalHealth * .01f) <= 4f)
+                if((destroyerBehavior.comboMult + totalHealth * .01f) < 4f)
                 {
                     destroyerBehavior.comboMult += totalHealth * .01f;
                 }
-                else if((destroyerBehavior.comboMult + totalHealth * .01f) > 4f)
+                else if((destroyerBehavior.comboMult + totalHealth * .01f) >= 4f)
                 {
                     destroyerBehavior.comboMult = 4f;
                 }
@@ -109,6 +109,42 @@ public class EnemyHealth : MonoBehaviour
             damageDealt[1] = damageDealt[1] + (int)damageDealer.GetWeaponDamage();
             destroyerBehavior = damageDealer;
             health = health - (int)damageDealer.GetWeaponDamage();
+        }
+    }
+
+    // instantDeath is used by Vanguard's ram to instantly kill any enemy the player touches. It could also be used for babby mode.
+    public void instantDeath(PlayerBehavior damageDealer)
+    {
+        if(damageDealer.IsPlayerOne())
+        {
+            Debug.Log("Player 1 did damage.");
+            damageDealt[0] = damageDealt[0] + totalHealth;
+            destroyerBehavior = damageDealer;
+            health = health - totalHealth;
+        }
+        else
+        {
+            damageDealt[1] = damageDealt[1] + totalHealth;
+            destroyerBehavior = damageDealer;
+            health = health - totalHealth;
+        }
+    }
+
+    // missileImpact calculates any damage that occurs as a result of Lancer's missile.
+    public void missileImpact(float damage, PlayerBehavior damageDealer)
+    {
+        if(damageDealer.IsPlayerOne())
+        {
+            Debug.Log("Player 1 did damage.");
+            damageDealt[0] = damageDealt[0] + (int)damage;
+            destroyerBehavior = damageDealer;
+            health = health - (int)damage;
+        }
+        else
+        {
+            damageDealt[1] = damageDealt[1] + (int)damage;
+            destroyerBehavior = damageDealer;
+            health = health - (int)damage;
         }
     }
 }

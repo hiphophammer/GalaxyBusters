@@ -198,11 +198,6 @@ public class InventoryBehavior : MonoBehaviour
             }
             else if (item.ID == 3)
             {
-                // Shield.
-                // TODO: implement this!
-            }
-            else if (item.ID == 4)
-            {
                 // Vampire Bullets: Health gained on hit
                 player.GetWeapon().SetVampire(true);
             }

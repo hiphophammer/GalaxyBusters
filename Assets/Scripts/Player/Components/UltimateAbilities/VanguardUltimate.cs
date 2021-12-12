@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrailblazerUltimateAbility : MonoBehaviour
+public class VanguardUltimate : MonoBehaviour
 {
-    // Constants
-    private const float INTANGIBILITY_TIME = 5.0f; 
-
+    
     // Private member variables.
     private PlayerBehavior parent;
     private float parentSpeed;
@@ -14,27 +12,26 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     private float OGFireRate;
     private ChargeBarBehavior chargeBar;
     private CooldownBarBehavior cooldownBar;
-
-    private float weaponDamage;
-    
     private string axis;
-
     private Color baseColor, alpha;
     private SpriteRenderer renderer;
+    private bool Shield;
+
+    private float SHIELD_TIME = 5.0f; 
+    
+    private float OGradius;
 
     // FSM variables.
     private enum UltimateAbilityState
     {
-        intangible,
+        shielded,
         charge
     };
 
     private UltimateAbilityState state;
     private float stateEntryTime;
 
-    private bool ghost;
-    private bool retrivedAxis;
-
+    private bool retrievedAxis;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,24 +46,24 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         chargeBar = parent.GetUltimateAbilityChargeBar();
         cooldownBar = parent.GetWeaponCooldownBar();
 
-        // Get parent's weapon damage.
-        weaponDamage = parent.GetWeaponDamage();
-
         // Get parent's SpriteRenderer component.
         renderer = parent.GetComponent<SpriteRenderer>();
         baseColor = renderer.color;
-        alpha = renderer.color;
         // Start the FSM off in the charge state.
         state = UltimateAbilityState.charge;
 
-        retrivedAxis = false;
+        // Get collider to expand and contract as necessary.
+        CircleCollider2D col = GetComponent<CircleCollider2D>();
+        OGradius = col.radius;
+
+        retrievedAxis = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         RetrieveAxis();
-        if (retrivedAxis)
+        if (retrievedAxis)
         {
             UpdateFSM();
         }
@@ -80,12 +77,12 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     // Private helper methods.
     private void RetrieveAxis()
     {
-        if (!retrivedAxis)
+        if (!retrievedAxis)
         {
             axis = parent.GetUltimateAbilityAxis();
             if (axis != null && axis != "")
             {
-                retrivedAxis = true;
+                retrievedAxis = true;
             }
         }
     }
@@ -98,8 +95,8 @@ public class TrailblazerUltimateAbility : MonoBehaviour
             case UltimateAbilityState.charge:
                 ServiceChargeState();
                 break;
-            case UltimateAbilityState.intangible:
-                ServiceIntangibilityState();
+            case UltimateAbilityState.shielded:
+                ServiceShieldState();
                 break;
         }
     }
@@ -108,42 +105,39 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     {
         if ((Input.GetAxis(axis) == 1.0f) && chargeBar.Charged())
         {
-            state = UltimateAbilityState.intangible;
+            state = UltimateAbilityState.shielded;
             stateEntryTime = Time.time;
-            parentSpeed = parent.speed;
-            OGFireRate = weapon.fireRate;
-            parent.speed *= 1.1f;
-            weapon.fireRate /= 1.5f;
-            ghost = true;
+            Shield = true;
+            cooldownBar.TriggerCooldown();
+            GetComponent<CircleCollider2D>().radius = OGradius * 2f;
+            Debug.Log(GetComponent<CircleCollider2D>().radius);
+            parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, alpha, .25f);
             // Trigger the reload.
             chargeBar.ResetCharge();
         }
     }
 
-    private void ServiceIntangibilityState()
+    private void ServiceShieldState()
     {
-        alpha.a = 0.6f;
         float dTime = Time.time - stateEntryTime;
-        if (dTime >= INTANGIBILITY_TIME)
+        if (dTime >= SHIELD_TIME)
         {
-            parent.GetComponent<SpriteRenderer>().material.color = baseColor;
-            parent.speed = parentSpeed;
-            weapon.fireRate = OGFireRate;
-            parent.SetWeaponDamage(weaponDamage);
-            ghost = false;
+            GetComponent<CircleCollider2D>().radius = OGradius;
+            Debug.Log(GetComponent<CircleCollider2D>().radius);
+            Shield = false;
+            parent.GetComponent<SpriteRenderer>().color = baseColor;
             // The ultimate ability has ended.
             state = UltimateAbilityState.charge;
         }
-        else
-        {
-            parent.GetComponent<SpriteRenderer>().material.color = alpha;
-        }
     }
 
-    public bool getGhostStatus()
+    public bool getShieldStatus()
     {
-        return ghost;
+        return Shield;
     }
 
+    public void extendShieldTime()
+    {
+        SHIELD_TIME += 2;
+    }
 }
-

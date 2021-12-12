@@ -79,8 +79,8 @@ public class SinglePlayerMenu : MonoBehaviour
             hpBar.fillAmount = 0.33f;
             speedBar.fillAmount = 0.66f;
             damageBar.fillAmount = 1.0f;
-            basicDescription.SetText("Launches a missile, dealing a small AOE damage.");
-            ultDescription.SetText("Sprays bullets in cone");
+            basicDescription.SetText("Launches a missile, dealing a small amount of AOE damage.");
+            ultDescription.SetText("Sprays bullets in a cone.");
         }
         else if (shipIndex == 1) // vanguard
         {
@@ -89,8 +89,8 @@ public class SinglePlayerMenu : MonoBehaviour
             hpBar.fillAmount = 1.0f;
             speedBar.fillAmount = 0.33f;
             damageBar.fillAmount = 0.66f;
-            basicDescription.SetText("Gains small shield.");
-            ultDescription.SetText("Takes reduced damage for a duration");
+            basicDescription.SetText("For a short time, take less damage and destroy any enemy on contact.");
+            ultDescription.SetText("Shield. Gains health for each bullet absorbed.");
         }
         else // trailblazer
         {
@@ -99,7 +99,7 @@ public class SinglePlayerMenu : MonoBehaviour
             hpBar.fillAmount = 0.66f;
             speedBar.fillAmount = 1.0f;
             damageBar.fillAmount = 0.33f;
-            basicDescription.SetText("Blinks in the dirction of the arrow key.");
+            basicDescription.SetText("Blinks in the direction of movement.");
             ultDescription.SetText("Becomes a ghost for a short period of time.");
         }
 

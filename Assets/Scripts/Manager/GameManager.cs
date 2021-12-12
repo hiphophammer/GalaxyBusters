@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
                     // Set stats.
                     playerBehavior.GetHealthBar().SetHitPoints(150.0f);
                     playerBehavior.SetWeaponDamage(25.0f);
-                    playerBehavior.SetSpeed(7.0f);
+                    playerBehavior.SetSpeed(5.0f);
 
                     // Add appropriate components.
                     player.AddComponent<BaseMovement>();
@@ -198,16 +198,20 @@ public class GameManager : MonoBehaviour
                 else if (ship == "Vanguard")
                 {
                     renderer.sprite = playerOne ? player1VanguardSprite : player2VanguardSprite;
+                    player.transform.localScale = new Vector3(1.5f, 1.5f, 1);
 
                     playerBehavior.GetHealthBar().SetHitPoints(200.0f);
                     playerBehavior.SetWeaponDamage(20.0f);
-                    playerBehavior.SetSpeed(5.0f);
+                    playerBehavior.SetSpeed(2.0f);
 
                     player.AddComponent<VanguardMovement>();
                     player.GetComponent<VanguardMovement>().SetParent(playerBehavior);
 
                     player.AddComponent<VanguardCollider>();
                     player.GetComponent<VanguardCollider>().SetParent(playerBehavior);
+
+                    player.AddComponent<VanguardUltimate>();
+                    player.GetComponent<VanguardUltimate>().SetParent(playerBehavior);
 
                     player.AddComponent<BaseWeapon>();
                     player.GetComponent<BaseWeapon>().SetParent(playerBehavior);
@@ -218,10 +222,11 @@ public class GameManager : MonoBehaviour
                 {
                     // Otherwise, given the string is not null, it must be the trailblazer.
                     renderer.sprite = playerOne ? player1TrailblazerSprite : player2TrailblazerSprite;
+                    player.transform.localScale = new Vector3(.75f, .75f, 1);
 
                     playerBehavior.GetHealthBar().SetHitPoints(100.0f);
                     playerBehavior.SetWeaponDamage(20.0f);
-                    playerBehavior.SetSpeed(10.0f);
+                    playerBehavior.SetSpeed(7.0f);
 
                     // Add appropriate components
                     player.AddComponent<TrailblazerMovement>();
@@ -306,13 +311,13 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
-        // Level 1.
-        levelAttach.AddComponent<LevelOne>();
-        levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        // // Level 1.
+        // levelAttach.AddComponent<LevelOne>();
+        // levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
+        // levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+        // yield return new WaitForSeconds(levelTime);
 
-        ResetPlayerHealth();
+        // ResetPlayerHealth();
 
         itemSelection.PresentItems(1);
         ClearEnemies();
@@ -323,13 +328,13 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
 
-        // Level 2.
-        levelAttach.AddComponent<LevelTwo>();
-        levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        // // Level 2.
+        // levelAttach.AddComponent<LevelTwo>();
+        // levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
+        // levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
+        // yield return new WaitForSeconds(levelTime);
 
-        ResetPlayerHealth();
+        // ResetPlayerHealth();
 
         itemSelection.PresentItems(2);
         ClearEnemies();

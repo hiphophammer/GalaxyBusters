@@ -24,40 +24,61 @@ public class VanguardCollider : MonoBehaviour
     {
         GameObject other = collision.gameObject;
         Debug.Log("Detected Player Collision");
+        VanguardUltimate ult = parent.GetComponent<VanguardUltimate>();
         VanguardMovement m = parent.GetComponent<VanguardMovement>();
 
         if (other.CompareTag("EnemyProjectile") && parent.IsAlive())
         {
-            if (!m.getShieldStatus())
+            if (!ult.getShieldStatus())
             {
-                // Update our health bar.
-                healthBar.RemoveHealth(10.0f);
-                Debug.Log("Losing Health");
-                parent.comboMult = 1f;
-                if(healthBar.Health() <= 0.0f)
+                if (!m.getRamStatus())
                 {
-                    parent.alive = false;
+                    // Update our health bar.
+                    healthBar.RemoveHealth(10.0f);
+                    Debug.Log("Losing Health");
+                    parent.comboMult = 1f;
+                }
+                if (m.getRamStatus())
+                {
+                    healthBar.RemoveHealth(2.0f);
+                    Debug.Log("Losing Reduced Health");
                 }
             }
-            healthBar.AddHealth(1.0f);
+
+            // Check if health is 0 or less (Death)
+            if(healthBar.Health() <= 0.0f)
+            {
+                parent.alive = false;
+            }
             Destroy(other);
         }
         else if (other.CompareTag("Enemy") && parent.IsAlive())
         {
-            if (!m.getShieldStatus())
+            if (!ult.getShieldStatus())
             {
-                // Update our health bar.
-                healthBar.RemoveHealth(10.0f);
-                Debug.Log("Losing Health");
-                parent.comboMult = 1f;
-                if(healthBar.Health() <= 0.0f)
+                if (!m.getRamStatus())
                 {
-                    parent.alive = false;
-                    GameObject Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
-                    Destroy(Explosion.gameObject, 1);
+                    // Update our health bar.
+                    healthBar.RemoveHealth(10.0f);
+                    Debug.Log("Losing Health");
+                    parent.comboMult = 1f;
+                }
+                if (m.getRamStatus())
+                {
+                    healthBar.RemoveHealth(2.0f);
+                    // Check if the enemy is alive.
+                    EnemyBehavior enemyBehavior = collision.gameObject.GetComponent<EnemyBehavior>();
+                    EnemyHealth ehealth = collision.gameObject.GetComponent<EnemyHealth>();
+                    ehealth.instantDeath(parent);
+                    Debug.Log("Enemy Destroyed");
                 }
             }
             
+            // Check if health is 0 or less (Death)
+            if(healthBar.Health() <= 0.0f)
+            {
+                parent.alive = false;
+            }
         }
         else if (other.CompareTag("PowerUp"))
         {

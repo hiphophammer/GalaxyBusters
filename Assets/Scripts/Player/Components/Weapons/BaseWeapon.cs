@@ -34,7 +34,7 @@ public class BaseWeapon : MonoBehaviour
         // Set our defaults.
         UpdateDamage();
         SetBullet(DEFAULT_BULLET);
-        FireDualStream(true);
+        FireDualStream(false);
         nextFire = 0;
         shouldFire = true;
     }

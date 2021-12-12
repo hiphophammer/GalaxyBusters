@@ -128,8 +128,8 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarOne.fillAmount = 0.33f;
             speedBarOne.fillAmount = 0.66f;
             damageBarOne.fillAmount = 1.0f;
-            basicDescriptionOne.SetText("Launches a missile, dealing a small AOE damage.");
-            ultDescriptionOne.SetText("Sprays bullets in cone.");
+            basicDescriptionOne.SetText("Launches a missile, dealing a small amount of AOE damage.");
+            ultDescriptionOne.SetText("Sprays bullets in a conical pattern.");
         }
         else if (shipIndexOne == 1) // vanguard
         {
@@ -138,8 +138,8 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarOne.fillAmount = 1.0f;
             speedBarOne.fillAmount = 0.33f;
             damageBarOne.fillAmount = 0.66f;
-            basicDescriptionOne.SetText("Gains small shield.");
-            ultDescriptionOne.SetText("Takes reduced damage for a duration.");
+            basicDescriptionOne.SetText("For a short time, take less damage and destroy any enemy on contact.");
+            ultDescriptionOne.SetText("Shield. Gains health for each bullet absorbed.");
         }
         else // trailblazer
         {
@@ -148,7 +148,7 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarOne.fillAmount = 0.66f;
             speedBarOne.fillAmount = 1.0f;
             damageBarOne.fillAmount = 0.33f;
-            basicDescriptionOne.SetText("Blinks in the dirction of the arrow key.");
+            basicDescriptionOne.SetText("Blinks in the direction of movement.");
             ultDescriptionOne.SetText("Becomes a ghost for a short period of time.");
         }
         // for p2
@@ -159,8 +159,8 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarTwo.fillAmount = 0.33f;
             speedBarTwo.fillAmount = 0.66f;
             damageBarTwo.fillAmount = 1.0f;
-            basicDescriptionTwo.SetText("Launches a missile, dealing a small AOE damage.");
-            ultDescriptionTwo.SetText("Sprays bullets in cone.");
+            basicDescriptionTwo.SetText("Launches a missile, dealing a small amount of AOE damage.");
+            ultDescriptionTwo.SetText("Sprays bullets in a conical pattern.");
         }
         else if (shipIndexTwo == 1) // vanguard
         {
@@ -169,8 +169,8 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarTwo.fillAmount = 1.0f;
             speedBarTwo.fillAmount = 0.33f;
             damageBarTwo.fillAmount = 0.66f;
-            basicDescriptionTwo.SetText("Gains small shield.");
-            ultDescriptionTwo.SetText("Takes reduced damage for a duration.");
+            basicDescriptionTwo.SetText("For a short time, take less damage and destroy any enemy on contact.");
+            ultDescriptionTwo.SetText("Shield. Gains health for each bullet absorbed.");
         }
         else // trailblazer
         {
@@ -179,7 +179,7 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarTwo.fillAmount = 0.66f;
             speedBarTwo.fillAmount = 1.0f;
             damageBarTwo.fillAmount = 0.33f;
-            basicDescriptionTwo.SetText("Blinks in the dirction of the arrow key.");
+            basicDescriptionTwo.SetText("Blinks in the direction of movement.");
             ultDescriptionTwo.SetText("Becomes a ghost for a short period of time.");
         }
 
