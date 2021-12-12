@@ -285,7 +285,7 @@ public class GameManager : MonoBehaviour
     // Methods for gameplay/level management.
     private IEnumerator StartGame()
     {
-        /*// Level 1 - Set number and name.
+        // Level 1 - Set number and name.
         SetLevelNumAndName(1, "A Walk in the Park (Except the Park is an Endless Void)");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
         HideLevelNumAndName();
@@ -343,7 +343,7 @@ public class GameManager : MonoBehaviour
 
         itemSelection.PresentItems(4);
         ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());*/
+        yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 5 - Set number and name.
         SetLevelNumAndName(5, "Galaxy Buster");

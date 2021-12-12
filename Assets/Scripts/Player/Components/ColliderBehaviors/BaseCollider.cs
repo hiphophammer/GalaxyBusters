@@ -7,12 +7,14 @@ public class BaseCollider : MonoBehaviour
     // Private member variables.
     private PlayerBehavior parent;
     private HealthBar healthBar;
+    private Color baseColor;
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Player Collision Detection Starting!");
         healthBar = parent.GetHealthBar();
+        baseColor = GetComponent<Renderer>().material.color;
     }
 
     public void SetParent(PlayerBehavior parent)
@@ -27,6 +29,8 @@ public class BaseCollider : MonoBehaviour
 
         if (other.CompareTag("EnemyProjectile") && parent.IsAlive())
         {
+            StartCoroutine(parent.csx.Shake(0.1f, 0.1f));
+            StartCoroutine(DamageFlash());
             // Update our health bar.
             healthBar.RemoveHealth(10.0f);
             Debug.Log("Losing Health");
@@ -38,6 +42,8 @@ public class BaseCollider : MonoBehaviour
         }
         else if ((other.CompareTag("Enemy") || other.CompareTag("Boss")) && parent.IsAlive())
         {
+            StartCoroutine(parent.csx.Shake(0.1f, 0.1f));
+            StartCoroutine(DamageFlash());
             // Update our health bar.
             healthBar.RemoveHealth(10.0f);
             Debug.Log("Losing Health");
@@ -61,5 +67,22 @@ public class BaseCollider : MonoBehaviour
                 parent.GetInventory().AddItem(item);
             }
         }
+    }
+
+    IEnumerator DamageFlash()
+    {
+        GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(0f, 1f, 0f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(0f, 0f, 1f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(1f, 1f, 0f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(1f, 0f, 1f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(0f, 1f, 1f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = baseColor;
     }
 }
