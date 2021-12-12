@@ -7,10 +7,12 @@ public class BaseCollider : MonoBehaviour
     // Private member variables.
     private PlayerBehavior parent;
     private HealthBar healthBar;
+    private ScoreManager score;
 
     // Start is called before the first frame update
     void Start()
     {
+        score = Camera.main.GetComponent<ScoreManager>();
         Debug.Log("Player Collision Detection Starting!");
         healthBar = parent.GetHealthBar();
     }
@@ -31,6 +33,7 @@ public class BaseCollider : MonoBehaviour
             healthBar.RemoveHealth(10.0f);
             Debug.Log("Losing Health");
             parent.comboMult = 1f;
+            score.UpdateCombo(parent, parent.comboMult);
             if(healthBar.Health() <= 0.0f)
             {
                 parent.alive = false;
@@ -43,6 +46,7 @@ public class BaseCollider : MonoBehaviour
             healthBar.RemoveHealth(10.0f);
             Debug.Log("Losing Health");
             parent.comboMult = 1f;
+            score.UpdateCombo(parent, parent.comboMult);
             if(healthBar.Health() <= 0.0f)
             {
                 parent.alive = false;
