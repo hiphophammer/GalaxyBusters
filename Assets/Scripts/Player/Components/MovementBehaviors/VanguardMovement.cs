@@ -10,15 +10,18 @@ public class VanguardMovement : MonoBehaviour
 
     private string[] movementAxes;
     private float speed;
+    private float OGspeed;
     private string axis;
     private Vector3 startPos;
     private Vector3 endPos;
 
     private Color baseColor, alpha;
-    private bool Shield;
-    private float ShieldTime, ActivateTime;
+    private bool Ram;
+    private float RamTime, ActivateTime;
+    private GameObject ramGraphic;
 
     private float OGradius;
+    private GameObject hitbox;
 
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
@@ -34,13 +37,14 @@ public class VanguardMovement : MonoBehaviour
         cooldownBar = parent.GetBasicAbilityCooldownBar();
         
         baseColor = parent.GetComponent<SpriteRenderer>().color;
-        alpha = Color.red;
+        alpha = Color.white;
 
         // Get collider to expand and contract as necessary.
         CircleCollider2D col = GetComponent<CircleCollider2D>();
+        col.radius = .2f;
         OGradius = col.radius;
 
-        ShieldTime = 0.0f;
+        RamTime = 0.0f;
 
         retrievedAxes = false;
     }
@@ -68,25 +72,33 @@ public class VanguardMovement : MonoBehaviour
             {
                 if (cooldownBar.ReadyToFire())
                 {
-                    // Activate Shield
-                    Shield = true;
+                    // Activate Ram
+                    Ram = true;
                     ActivateTime = Time.time;
                     cooldownBar.TriggerCooldown();
-                    GetComponent<CircleCollider2D>().radius = OGradius * 3f;
+                    OGspeed = speed;
+                    parent.SetSpeed(speed * 2);
+                    
+                    ramGraphic = Instantiate(Resources.Load("Prefabs/SHIELD") as GameObject, new Vector3(transform.position.x, transform.position.y, transform.position.z - .1f), transform.rotation);
+                    ramGraphic.transform.parent = parent.transform;
+                    float ramSize = GetComponent<CircleCollider2D>().radius * 2;
+                    ramGraphic.transform.localScale = new Vector3(ramSize, ramSize, 1);
+
+                    ramGraphic.GetComponent<SpriteRenderer>().color = new Color32(255, 155, 55, 85);
                 }
             }
-
-            if (Shield)
+            // Ram reduces damage and destroys enemies on contact.
+            if (Ram)
             {
-                ShieldTime = Time.time - ActivateTime;
-                parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, alpha, .25f);
+                RamTime = Time.time - ActivateTime;
             }
 
-            if (ShieldTime > 2.5f)
+            if (RamTime > 1.5f)
             {
-                GetComponent<CircleCollider2D>().radius = OGradius;
-                Shield = false;
-                parent.GetComponent<SpriteRenderer>().color = baseColor;
+                Ram = false;
+                parent.SetSpeed(OGspeed);
+                
+                Destroy(ramGraphic);
             }
             
              Vector3 pos = transform.position;
@@ -140,6 +152,7 @@ public class VanguardMovement : MonoBehaviour
     private void UpdateSpeed()
     {
         speed = parent.GetSpeed();
+
     }
 
     private float Clip(float min, float max, float val)
@@ -158,8 +171,8 @@ public class VanguardMovement : MonoBehaviour
         }
     }
 
-    public bool getShieldStatus()
+    public bool getRamStatus()
     {
-        return Shield;
+        return Ram;
     }
 }

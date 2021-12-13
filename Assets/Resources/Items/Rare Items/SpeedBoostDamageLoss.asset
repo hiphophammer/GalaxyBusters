@@ -15,10 +15,10 @@ MonoBehaviour:
   isPowerUp: 0
   ID: 0
   type: 1
-  description: +7 Speed, -3 Damage
+  description: +5 Speed, -10 Damage
   icon: {fileID: 21300000, guid: 5e10e02925ed7884f8270a6d95d6de95, type: 3}
   dHP: 0
-  dSpeed: 7
-  dDamage: -3
+  dSpeed: 5
+  dDamage: -10
   bulletName: 
   ship: 

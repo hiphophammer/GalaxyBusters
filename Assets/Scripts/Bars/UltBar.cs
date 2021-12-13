@@ -40,6 +40,7 @@ public class UltBar : MonoBehaviour
         if(player != null && player.GetShipName() == barType)
         {
             float percentage = player.ultimateAbilityChargeBar.percentage;
+            Debug.Log("Updating bar..." + percentage.ToString());
             if (percentage > 1.0f)
             {
                 percentage = 1.0f;

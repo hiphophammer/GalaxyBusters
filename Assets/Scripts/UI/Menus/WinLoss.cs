@@ -18,7 +18,8 @@ public class WinLoss : MonoBehaviour
     // Public member variables.
     public TMPro.TextMeshProUGUI condition;
     public TMPro.TextMeshProUGUI message;
-    
+    public TMPro.TextMeshProUGUI score;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +33,16 @@ public class WinLoss : MonoBehaviour
         {
             condition.text = CONDITION_LOSS;
             message.text = CONDITION_LOSS_MSG;
+        }
+
+        if (GameManager.showBothScores)
+        {
+            score.text = "SCORE: " + GameManager.player1Score;
+        }
+        else
+        {
+            score.text = "PLAYER 1 SCORE: " + GameManager.player1Score + "\n"
+                            + "PLAYER 2 SCORE: " + GameManager.player2Score;
         }
     }
 

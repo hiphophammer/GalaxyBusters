@@ -26,6 +26,7 @@ public class PlayerBehavior : MonoBehaviour
     public bool playerOne = true;
     public bool alive = true;
     public CameraShake csx;
+    public float comboMult;
 
     // Private member variables.
     private CameraSupport cameraSupport;
@@ -44,6 +45,8 @@ public class PlayerBehavior : MonoBehaviour
     private string basicAbilityAxis;
     private string ultimateAbilityAxis;
 
+    private float baseSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +62,8 @@ public class PlayerBehavior : MonoBehaviour
         Debug.Assert(weapon != null);
 
         Debug.Assert(inventory != null);
+
+        comboMult = 1;
 
         SetupPlayer();
 
@@ -98,6 +103,11 @@ public class PlayerBehavior : MonoBehaviour
         specialItemEnabled = false;
     }
 
+    public bool GetSpecialItemStatus()
+    {
+        return specialItemEnabled;
+    }
+
     // Weapon damage accessors/modifiers.
     public void SetWeaponDamage(float damage)
     {
@@ -115,9 +125,24 @@ public class PlayerBehavior : MonoBehaviour
     }
 
     // Speed accessors/modifiers.
+    // Sets speed to parameter speed, while ensuring that speed never dips below base speed.
     public void SetSpeed(float speed)
     {
+        if (speed <= baseSpeed)
+        {
+            this.speed = baseSpeed;
+        }
+        else
+        {
+            this.speed = speed;
+        }
+    }
+
+    // Ensures that the original speed is stored.
+    public void SetInitialSpeed(float speed)
+    {
         this.speed = speed;
+        baseSpeed = speed;
     }
 
     public float GetSpeed()
@@ -175,8 +200,9 @@ public class PlayerBehavior : MonoBehaviour
 
     public void DestroyedEnemy(int enemyHealth)
     {
-        // Add some charge to the ultimate ability charge bar.
-        ultimateAbilityChargeBar.AddCharge((enemyHealth + 10) / 2.0f);
+        // Add 30% of enemyHealth multiplied by the combo multiplier to the ultimate ability charge bar.
+        ultimateAbilityChargeBar.AddCharge(((enemyHealth * .3f) / 2.0f) * comboMult);
+        Debug.Log("Ult Charged by " + ((enemyHealth * .3f) / 2.0f) * comboMult);
     }
 
     public string GetStatus()

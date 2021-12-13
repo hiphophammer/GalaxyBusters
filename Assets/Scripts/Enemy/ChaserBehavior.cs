@@ -29,7 +29,7 @@ public class ChaserBehavior : MonoBehaviour, EnemyBehavior
         maxYPos -= (transform.localScale.y / 2.0f);
 
         health = GetComponent<EnemyHealth>();
-        health.setHealth(1);
+        health.setHealth(20);
         
         speed = new Vector3(0, 2.5f, 0);
         speed = speed * Time.fixedDeltaTime;
@@ -67,7 +67,8 @@ public class ChaserBehavior : MonoBehaviour, EnemyBehavior
         }
         else
         {
-            Instantiate(Resources.Load("Prefabs/SelfDestruct"), transform.position, transform.rotation);
+            GameObject Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
+            Destroy(Explosion.gameObject, 1);
             Destroy(gameObject);
         }
         

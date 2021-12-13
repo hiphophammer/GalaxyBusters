@@ -6,35 +6,38 @@ public class BaseWeapon : MonoBehaviour
 {
     // Constants.
     private const float PROJECTILE_Y_OFFSET = 0.4f;
-    private const float PROJECTILE_X_OFFSET = 0.1f;
-
     private const string BULLET_TYPE_PREFIX = "Prefabs/";
     private const string DEFAULT_BULLET = "Projectile";
+    
+    // Public member variables.
+    public float fireRate;
 
     // Private member variables.
     private PlayerBehavior parent;
-    private CooldownBarBehavior cooldownBar;
     private string bulletType;
     private float damage;
 
     private bool vampire;
     private bool penetrate;
+    private bool specialItemActive;
 
     private bool dualStream;
 
+    private float nextFire;
     private bool shouldFire;
+
+    private float PROJECTILE_X_OFFSET = 0;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        // Retrieve a reference to the cooldown bar.
-        cooldownBar = parent.GetWeaponCooldownBar();
-
         // Set our defaults.
         UpdateDamage();
         SetBullet(DEFAULT_BULLET);
         FireDualStream(false);
-        StartFiring();
+        nextFire = 0;
+        shouldFire = true;
     }
 
     // Update is called once per frame
@@ -42,30 +45,19 @@ public class BaseWeapon : MonoBehaviour
     {
         UpdateDamage();
 
-        // Check if enough time has passed to fire another round.
-        if (cooldownBar.ReadyToFire() && shouldFire)
+        if (shouldFire == true)
         {
-            // Spawn the bullets.
-            if (dualStream)
-            {
-                // We need to shoot two streams of bullets.
-
-                // Spawn the left bullet.
-                SpawnBullet(-1.0f * PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
-
-                // And the right bullet.
-                SpawnBullet(PROJECTILE_X_OFFSET, PROJECTILE_Y_OFFSET);
-            }
-            else
-            {
-                // We don't shoot the bullets in a cone.
-                SpawnBullet(0.0f, PROJECTILE_Y_OFFSET);
-            }            
-
-            // Trigger the reload.
-            cooldownBar.TriggerCooldown();
+            shoot(); 
         }
+
+        if (parent.GetSpecialItemStatus() && parent.GetShipName() == "Lancer" && !specialItemActive)
+        {
+            SetBullet("LancerMissile");
+            specialItemActive = true;
+        }
+        
     }
+
 
     // Modifiers.
     public void SetParent(PlayerBehavior parent)
@@ -95,6 +87,14 @@ public class BaseWeapon : MonoBehaviour
 
     public void FireDualStream(bool dualStream)
     {
+        if (dualStream)
+        {
+            PROJECTILE_X_OFFSET = PROJECTILE_X_OFFSET + .1f;
+        }
+        else
+        {
+            PROJECTILE_X_OFFSET = 0;
+        }
         this.dualStream = dualStream;
     }
 
@@ -118,6 +118,10 @@ public class BaseWeapon : MonoBehaviour
         return this.vampire;
     }
     
+    public void SetFireRate(float fireRate)
+    {
+        this.fireRate = fireRate;
+    }
 
     // Private helpers.
     private void UpdateDamage()
@@ -142,4 +146,81 @@ public class BaseWeapon : MonoBehaviour
         bulletBehavior.SetParent(parent);
         bulletBehavior.SetDamage(damage);
     }
+
+    // Tells BaseWeapon to shoot projectiles.
+    // Does what SpawnBullet did, but localized entirely within this script, without reliance on Cooldown Bar.
+    private void shoot()
+    {
+        if (Time.time > nextFire && shouldFire)
+        {
+            //Debug.Log("Firing at " + Time.time);
+            nextFire = Time.time + fireRate;
+            // Define the start position.
+
+            if(!specialItemActive)
+            {
+                // Instantiate the bullet.
+                if(!dualStream)
+                {
+                    GameObject bullet = Instantiate(Resources.Load(bulletType) as GameObject,
+                                            transform.position,
+                                            transform.rotation);
+
+                    // Configure the component of the bullet.
+                    ProjectileBehavior bulletBehavior = bullet.GetComponent<ProjectileBehavior>();
+                    bulletBehavior.SetParent(parent);
+                    bulletBehavior.SetDamage(damage);
+                }
+                else
+                {
+                    GameObject leftBullet = Instantiate(Resources.Load(bulletType),
+                                            new Vector3(transform.position.x + PROJECTILE_X_OFFSET, transform.position.y + PROJECTILE_Y_OFFSET, transform.position.z),
+                                            transform.rotation) as GameObject;
+                    GameObject rightBullet = Instantiate(Resources.Load(bulletType),
+                                            new Vector3(transform.position.x - PROJECTILE_X_OFFSET, transform.position.y + PROJECTILE_Y_OFFSET, transform.position.z),
+                                            transform.rotation) as GameObject;
+
+                    // Configure the component of the bullet.
+                    ProjectileBehavior leftBulletBehavior = leftBullet.GetComponent<ProjectileBehavior>();
+                    leftBulletBehavior.SetParent(parent);
+                    leftBulletBehavior.SetDamage(damage);
+                    ProjectileBehavior rightBulletBehavior = rightBullet.GetComponent<ProjectileBehavior>();
+                    rightBulletBehavior.SetParent(parent);
+                    rightBulletBehavior.SetDamage(damage);
+                }
+            }
+            else
+            {
+                // Instantiate the bullet.
+                if(!dualStream)
+                {
+                    GameObject bullet = Instantiate(Resources.Load(bulletType) as GameObject,
+                                            transform.position,
+                                            transform.rotation);
+
+                    // Configure the component of the bullet.
+                    LancerMissileBehavior bulletBehavior = bullet.GetComponent<LancerMissileBehavior>();
+                    bulletBehavior.SetParent(parent);
+                }
+                else
+                {
+                    GameObject leftBullet = Instantiate(Resources.Load(bulletType),
+                                            new Vector3(transform.position.x + PROJECTILE_X_OFFSET, transform.position.y + PROJECTILE_Y_OFFSET, transform.position.z),
+                                            transform.rotation) as GameObject;
+                    GameObject rightBullet = Instantiate(Resources.Load(bulletType),
+                                            new Vector3(transform.position.x - PROJECTILE_X_OFFSET, transform.position.y + PROJECTILE_Y_OFFSET, transform.position.z),
+                                            transform.rotation) as GameObject;
+
+                    // Configure the component of the bullet.
+                    LancerMissileBehavior leftBulletBehavior = leftBullet.GetComponent<LancerMissileBehavior>();
+                    leftBulletBehavior.SetParent(parent);
+                    LancerMissileBehavior rightBulletBehavior = rightBullet.GetComponent<LancerMissileBehavior>();
+                    rightBulletBehavior.SetParent(parent);
+                }
+            }
+            
+            
+        }
+    }
 }
+

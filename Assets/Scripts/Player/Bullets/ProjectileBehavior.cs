@@ -116,20 +116,11 @@ public class ProjectileBehavior : MonoBehaviour
 
         if (other.CompareTag("Enemy") || other.CompareTag("Boss"))
         {
-            // Check if the enemy is alive.
-            EnemyBehavior enemyBehavior =
-                                collision.gameObject.GetComponent<EnemyBehavior>();
-
-            if (enemyBehavior != null && enemyBehavior.IsAlive() && alive)
-            {
-                alive = false;
-            }
-
             // Checks for if Vampire Bullet is active and acts accordingly.
             if (parent.GetWeapon().GetVampire())
             {
                 HealthBar hp = parent.GetHealthBar();
-                hp.AddHealth(5);
+                hp.AddHealth(1);
             }
 
             // Checks for if Penetration Bullet is active and acts accordingly. 

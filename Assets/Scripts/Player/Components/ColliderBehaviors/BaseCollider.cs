@@ -8,10 +8,12 @@ public class BaseCollider : MonoBehaviour
     private PlayerBehavior parent;
     private HealthBar healthBar;
     private Color baseColor;
+    private ScoreManager score;
 
     // Start is called before the first frame update
     void Start()
     {
+        score = Camera.main.GetComponent<ScoreManager>();
         Debug.Log("Player Collision Detection Starting!");
         healthBar = parent.GetHealthBar();
         baseColor = GetComponent<Renderer>().material.color;
@@ -34,6 +36,8 @@ public class BaseCollider : MonoBehaviour
             // Update our health bar.
             healthBar.RemoveHealth(10.0f);
             Debug.Log("Losing Health");
+            parent.comboMult = 1f;
+            score.UpdateCombo(parent, parent.comboMult);
             if(healthBar.Health() <= 0.0f)
             {
                 parent.alive = false;
@@ -47,6 +51,8 @@ public class BaseCollider : MonoBehaviour
             // Update our health bar.
             healthBar.RemoveHealth(10.0f);
             Debug.Log("Losing Health");
+            parent.comboMult = 1f;
+            score.UpdateCombo(parent, parent.comboMult);
             if(healthBar.Health() <= 0.0f)
             {
                 parent.alive = false;
@@ -61,10 +67,14 @@ public class BaseCollider : MonoBehaviour
             {
                 Item item = powerUpBehavior.item;
                 powerUpBehavior.SetPickedUp();
-
-                // DEBUG TODO: Add this to inventory.
-                //Debug.Log(item.type);
-                parent.GetInventory().AddItem(item);
+                if (item.isPowerUp && item.ID == 0)
+                {
+                    parent.GetHealthBar().AddHealth(item.dHP);
+                }
+                if (item.isPowerUp && item.ID == 1)
+                {
+                    parent.ultimateAbilityChargeBar.AddCharge(25.0f / 2.0f);
+                }
             }
         }
     }

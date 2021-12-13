@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da8575b38c3c6fc40a5539685790ee6f, type: 3}
-  m_Name: Shield
+  m_Name: Ultimate Charge
   m_EditorClassIdentifier: 
-  isPowerUp: 0
-  ID: 3
-  type: 2
-  description: Gives a small amount of temporary HP at the beginning of each level.
-  icon: {fileID: 21300000, guid: 4468f05203fcfd7478163604fb1fff9b, type: 3}
+  isPowerUp: 1
+  ID: 1
+  type: 0
+  description: Charges Ultimate Ability bar by 25%.
+  icon: {fileID: 21300000, guid: f3f6a07af35e4d54a8aabff70f6b15aa, type: 3}
   dHP: 0
   dSpeed: 0
   dDamage: 0

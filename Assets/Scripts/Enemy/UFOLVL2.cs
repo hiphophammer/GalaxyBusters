@@ -27,7 +27,7 @@ public class UFOLVL2 : MonoBehaviour
         maxYPos -= (transform.localScale.y / 2.0f);
         
         health = GetComponent<EnemyHealth>();
-        health.setHealth(8);
+        health.setHealth(160);
         
         speed = new Vector3(0, -3f, 0);
         speed = speed * Time.fixedDeltaTime;

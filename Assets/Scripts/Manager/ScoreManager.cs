@@ -12,6 +12,9 @@ public class ScoreManager : MonoBehaviour
     private float player1Score;
     private float player2Score;
 
+    private float player1Combo;
+    private float player2Combo;
+
     private bool determinedMode;
     private bool singlePlayer;
 
@@ -20,6 +23,9 @@ public class ScoreManager : MonoBehaviour
     {
         Debug.Assert(player1ScoreDisplay != null);
         Debug.Assert(player2ScoreDisplay != null);
+
+        player1ScoreDisplay.Show();
+        player2ScoreDisplay.Show();
 
         player1Score = 0.0f;
         player2Score = 0.0f;
@@ -32,6 +38,16 @@ public class ScoreManager : MonoBehaviour
     {
         DetermineMode();
         UpdateDisplays();
+    }
+
+    public float GetPlayer1Score()
+    {
+        return player1Score;
+    }
+
+    public float GetPlayer2Score()
+    {
+        return player2Score;
     }
 
     private void DetermineMode()
@@ -73,6 +89,24 @@ public class ScoreManager : MonoBehaviour
         if (!singlePlayer)
         {
             player2ScoreDisplay.SetScore((int)player2Score);
+        }
+        else
+        {
+            player2ScoreDisplay.Hide();
+        }
+    }
+
+    public void UpdateCombo(PlayerBehavior player, float combo)
+    {
+        if (player.IsPlayerOne())
+        {
+            // Player 1 destroyed the enemy.
+            player1ScoreDisplay.SetCombo(combo);
+        }
+        else
+        {
+            // Player 2 destroyed the enemy.
+            player2ScoreDisplay.SetCombo(combo);
         }
     }
 }

@@ -11,9 +11,7 @@ public class LancerMissileBehavior : MonoBehaviour
 
     private const float POST_MORTEM_PERIOD = 0.5f;
 
-    private const float DAMAGE = 0.25f;        // The amount of damage dealt to the enemy
-                                               // we make a head-on collision with.
-    private const float AOE_RADIUS = 4.5f;
+    private const float AOE_RADIUS = 2f;
 
     // Private member variables.
     private PlayerBehavior parent;              // A reference to the behavior of our
@@ -21,6 +19,9 @@ public class LancerMissileBehavior : MonoBehaviour
     private float curSpeed;
     private bool alive;                         // This tells us whether the projectile
                                                 // is set to be terminated.
+
+    private float DAMAGE = 40f;                 // The amount of damage dealt to the enemy
+                                                // we make a head-on collision with.   
     private float timeOfDeath;
 
     // Start is called before the first frame update
@@ -28,6 +29,8 @@ public class LancerMissileBehavior : MonoBehaviour
     {
         alive = true;
         curSpeed = 1.0f;
+        // Missile will always do twice parent's damage on collision.
+        DAMAGE = parent.GetWeaponDamage() * 2;
     }
 
     // Update is called once per frame
@@ -91,6 +94,7 @@ public class LancerMissileBehavior : MonoBehaviour
                 if (alive)
                 {
                     alive = false;
+                    GetComponent<SpriteRenderer>().enabled = false;
                     timeOfDeath = Time.time;
                 }
             }
@@ -119,27 +123,27 @@ public class LancerMissileBehavior : MonoBehaviour
 
         if (other.CompareTag("Enemy"))
         {
+            curSpeed = 0f;
             // Check if the enemy is alive.
-            EnemyBehavior enemyBehavior =
-                                collision.gameObject.GetComponent<EnemyBehavior>();
+            EnemyHealth eHealth = collision.gameObject.GetComponent<EnemyHealth>();
 
-            if (enemyBehavior != null && enemyBehavior.IsAlive() && alive)
+            if (eHealth.health > 0)
             {
+                GetComponent<SpriteRenderer>().enabled = false;
                 alive = false;
                 timeOfDeath = Time.time;
 
                 // Deal damage to the enemy we directly collided with.
-                enemyBehavior.TakeDamage(DAMAGE, parent);
+                eHealth.missileImpact(DAMAGE, parent);
 
                 // Deal damage to any enemy within the AOE radius.
                 GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
                 for (int i = 0; i < enemies.Length; i++)
                 {
                     GameObject enemy = enemies[i];
-                    EnemyBehavior curEnemy = enemy.GetComponent<EnemyBehavior>();
 
                     // Make sure this is not the enemy we collided with.
-                    if (curEnemy != enemyBehavior)
+                    if (enemy.name != this.name)
                     {
                         // Compute the distance between us and it.
                         float dst = Vector3.Distance(enemy.transform.position,
@@ -148,7 +152,7 @@ public class LancerMissileBehavior : MonoBehaviour
                         if (dst <= AOE_RADIUS)
                         {
                             float damage = (dst / AOE_RADIUS) * DAMAGE;
-                            curEnemy.TakeDamage(damage, parent);
+                            enemy.GetComponent<EnemyHealth>().missileImpact(damage, parent);
                         }
                     }
                 }
