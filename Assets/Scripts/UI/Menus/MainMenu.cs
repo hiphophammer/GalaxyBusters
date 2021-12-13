@@ -9,6 +9,8 @@ public class MainMenu : MonoBehaviour
     public GameObject mainMenu;
     public GameObject singlePlayerMenu;
     public GameObject cooperativePlayMenu;
+    public GameObject controlsMenu;
+    public GameObject creditsMenu;
 
     public static string player1Ship;
     public static string player2Ship;
@@ -23,6 +25,8 @@ public class MainMenu : MonoBehaviour
 
         singlePlayerMenu.SetActive(false);
         cooperativePlayMenu.SetActive(false);
+        controlsMenu.SetActive(false);
+        creditsMenu.SetActive(false);
         mainMenu.SetActive(true);
     }
 
