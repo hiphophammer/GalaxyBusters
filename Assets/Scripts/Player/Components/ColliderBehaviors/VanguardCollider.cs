@@ -7,6 +7,7 @@ public class VanguardCollider : MonoBehaviour
     // Private member variables.
     private PlayerBehavior parent;
     private HealthBar healthBar;
+    private ChargeBarBehavior chargeBar;
     private ScoreManager score;
 
     // Start is called before the first frame update
@@ -28,6 +29,7 @@ public class VanguardCollider : MonoBehaviour
         Debug.Log("Detected Player Collision");
         VanguardUltimate ult = parent.GetComponent<VanguardUltimate>();
         VanguardMovement m = parent.GetComponent<VanguardMovement>();
+        chargeBar = parent.GetUltimateAbilityChargeBar();
 
         if (other.CompareTag("EnemyProjectile") && parent.IsAlive())
         {
@@ -40,11 +42,13 @@ public class VanguardCollider : MonoBehaviour
                     Debug.Log("Losing Health");
                     parent.comboMult = 1f;
                     score.UpdateCombo(parent, parent.comboMult);
+                    chargeBar.AddCharge(5f / 2.0f);
                 }
                 if (m.getRamStatus())
                 {
                     healthBar.RemoveHealth(2.0f);
                     Debug.Log("Losing Reduced Health");
+                    chargeBar.AddCharge(5f / 2.0f);
                 }
             }
             else
@@ -73,6 +77,17 @@ public class VanguardCollider : MonoBehaviour
                 if (m.getRamStatus())
                 {
                     healthBar.RemoveHealth(2.0f);
+                    // Check if the enemy is alive.
+                    EnemyBehavior enemyBehavior = collision.gameObject.GetComponent<EnemyBehavior>();
+                    EnemyHealth ehealth = collision.gameObject.GetComponent<EnemyHealth>();
+                    ehealth.instantDeath(parent);
+                    Debug.Log("Enemy Destroyed");
+                }
+            }
+            else
+            {
+                if (m.getRamStatus())
+                {
                     // Check if the enemy is alive.
                     EnemyBehavior enemyBehavior = collision.gameObject.GetComponent<EnemyBehavior>();
                     EnemyHealth ehealth = collision.gameObject.GetComponent<EnemyHealth>();

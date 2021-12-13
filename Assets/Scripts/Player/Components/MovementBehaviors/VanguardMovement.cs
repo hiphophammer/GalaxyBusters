@@ -18,6 +18,7 @@ public class VanguardMovement : MonoBehaviour
     private Color baseColor, alpha;
     private bool Ram;
     private float RamTime, ActivateTime;
+    private GameObject ramGraphic;
 
     private float OGradius;
     private GameObject hitbox;
@@ -77,20 +78,27 @@ public class VanguardMovement : MonoBehaviour
                     cooldownBar.TriggerCooldown();
                     OGspeed = speed;
                     parent.SetSpeed(speed * 2);
+                    
+                    ramGraphic = Instantiate(Resources.Load("Prefabs/SHIELD") as GameObject, new Vector3(transform.position.x, transform.position.y, transform.position.z - .1f), transform.rotation);
+                    ramGraphic.transform.parent = parent.transform;
+                    float ramSize = GetComponent<CircleCollider2D>().radius * 2;
+                    ramGraphic.transform.localScale = new Vector3(ramSize, ramSize, 1);
+
+                    ramGraphic.GetComponent<SpriteRenderer>().color = new Color32(255, 155, 55, 85);
                 }
             }
             // Ram reduces damage and destroys enemies on contact.
             if (Ram)
             {
                 RamTime = Time.time - ActivateTime;
-                parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, alpha, .25f);
             }
 
             if (RamTime > 1.5f)
             {
                 Ram = false;
-                parent.GetComponent<SpriteRenderer>().color = baseColor;
                 parent.SetSpeed(OGspeed);
+                
+                Destroy(ramGraphic);
             }
             
              Vector3 pos = transform.position;

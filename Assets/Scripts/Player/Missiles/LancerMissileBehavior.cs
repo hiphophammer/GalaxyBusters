@@ -11,9 +11,7 @@ public class LancerMissileBehavior : MonoBehaviour
 
     private const float POST_MORTEM_PERIOD = 0.5f;
 
-    private const float DAMAGE = 40f;        // The amount of damage dealt to the enemy
-                                               // we make a head-on collision with.
-    private const float AOE_RADIUS = 4.5f;
+    private const float AOE_RADIUS = 2f;
 
     // Private member variables.
     private PlayerBehavior parent;              // A reference to the behavior of our
@@ -21,6 +19,9 @@ public class LancerMissileBehavior : MonoBehaviour
     private float curSpeed;
     private bool alive;                         // This tells us whether the projectile
                                                 // is set to be terminated.
+
+    private float DAMAGE = 40f;                 // The amount of damage dealt to the enemy
+                                                // we make a head-on collision with.   
     private float timeOfDeath;
 
     // Start is called before the first frame update
@@ -28,6 +29,8 @@ public class LancerMissileBehavior : MonoBehaviour
     {
         alive = true;
         curSpeed = 1.0f;
+        // Missile will always do twice parent's damage on collision.
+        DAMAGE = parent.GetWeaponDamage() * 2;
     }
 
     // Update is called once per frame

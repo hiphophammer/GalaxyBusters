@@ -17,10 +17,14 @@ public class VanguardUltimate : MonoBehaviour
     private SpriteRenderer renderer;
     private bool Shield;
 
+    private bool specialItemActive;
+
     private float SHIELD_TIME = 5.0f; 
     
     private float OGradius;
 
+    private GameObject shield;
+    
     // FSM variables.
     private enum UltimateAbilityState
     {
@@ -67,6 +71,11 @@ public class VanguardUltimate : MonoBehaviour
         {
             UpdateFSM();
         }
+        if (parent.GetSpecialItemStatus() && !specialItemActive)
+        {
+            extendShieldTime();
+            specialItemActive = true;
+        }
     }
 
     public void SetParent(PlayerBehavior parent)
@@ -111,7 +120,12 @@ public class VanguardUltimate : MonoBehaviour
             cooldownBar.TriggerCooldown();
             GetComponent<CircleCollider2D>().radius = .4f;
             Debug.Log(GetComponent<CircleCollider2D>().radius);
-            parent.GetComponent<SpriteRenderer>().color = Color.Lerp(baseColor, Color.red, .25f);
+            
+            shield = Instantiate(Resources.Load("Prefabs/SHIELD") as GameObject, new Vector3(transform.position.x, transform.position.y, transform.position.z - .1f), transform.rotation);
+            shield.transform.parent = parent.transform;
+            float shieldsize = GetComponent<CircleCollider2D>().radius * 2;
+            shield.transform.localScale = new Vector3(shieldsize, shieldsize, 1);
+
             // Trigger the reload.
             chargeBar.ResetCharge();
         }
@@ -120,13 +134,13 @@ public class VanguardUltimate : MonoBehaviour
     private void ServiceShieldState()
     {
         float dTime = Time.time - stateEntryTime;
-        Debug.Log(dTime);
         if (dTime >= SHIELD_TIME)
         {
             GetComponent<CircleCollider2D>().radius = OGradius;
             Debug.Log(GetComponent<CircleCollider2D>().radius);
             Shield = false;
-            parent.GetComponent<SpriteRenderer>().color = baseColor;
+            Debug.Log(dTime);
+            Destroy(shield);
             // The ultimate ability has ended.
             state = UltimateAbilityState.charge;
         }
@@ -139,6 +153,6 @@ public class VanguardUltimate : MonoBehaviour
 
     public void extendShieldTime()
     {
-        SHIELD_TIME += 2;
+        SHIELD_TIME = 10f;
     }
 }

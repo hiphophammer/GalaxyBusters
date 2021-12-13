@@ -92,7 +92,6 @@ public class LancerUltimateAbility : MonoBehaviour
 
     private void UpdateBulletInfo()
     {
-        bulletType = weapon.GetBullet();
         damage = parent.GetWeaponDamage();
     }
 
@@ -171,7 +170,7 @@ public class LancerUltimateAbility : MonoBehaviour
 
                     // Now we spawn the projectile.
                     Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-                    GameObject bullet = Instantiate(Resources.Load(bulletType) as GameObject,
+                    GameObject bullet = Instantiate(Resources.Load("Prefabs/Projectile") as GameObject,
                                                     startPos,
                                                     rotation);
                     bullet.transform.up = direction;

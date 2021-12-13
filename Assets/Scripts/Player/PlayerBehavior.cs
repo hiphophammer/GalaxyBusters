@@ -100,6 +100,11 @@ public class PlayerBehavior : MonoBehaviour
         specialItemEnabled = false;
     }
 
+    public bool GetSpecialItemStatus()
+    {
+        return specialItemEnabled;
+    }
+
     // Weapon damage accessors/modifiers.
     public void SetWeaponDamage(float damage)
     {
