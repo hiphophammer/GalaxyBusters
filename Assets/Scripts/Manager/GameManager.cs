@@ -314,56 +314,56 @@ public class GameManager : MonoBehaviour
     // Methods for gameplay/level management.
     private IEnumerator StartGame()
     {
-        // Level 1 - Set number and name.
-        SetLevelNumAndName(1, "A Walk in the Park (Except the Park is an Endless Void)");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
+        // // Level 1 - Set number and name.
+        // SetLevelNumAndName(1, "A Walk in the Park (Except the Park is an Endless Void)");
+        // yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        // HideLevelNumAndName();
 
-        // Level 1.
-        levelAttach.AddComponent<LevelOne>();
-        levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        // // Level 1.
+        // levelAttach.AddComponent<LevelOne>();
+        // levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
+        // levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+        // yield return new WaitForSeconds(levelTime);
 
-        ResetPlayerHealth();
+        // ResetPlayerHealth();
 
-        itemSelection.PresentItems(1);
-        ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
+        // itemSelection.PresentItems(1);
+        // ClearEnemies();
+        // yield return new WaitUntil(() => itemSelection.DonePresenting());
 
-        // Level 2 - Set number and name.
-        SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What We Have Written Down)");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
+        // // Level 2 - Set number and name.
+        // SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What We Have Written Down)");
+        // yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        // HideLevelNumAndName();
 
-        // Level 2.
-        levelAttach.AddComponent<LevelTwo>();
-        levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        // // Level 2.
+        // levelAttach.AddComponent<LevelTwo>();
+        // levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
+        // levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
+        // yield return new WaitForSeconds(levelTime);
 
-        ResetPlayerHealth();
+        // ResetPlayerHealth();
 
-        itemSelection.PresentItems(2);
-        ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
+        // itemSelection.PresentItems(2);
+        // ClearEnemies();
+        // yield return new WaitUntil(() => itemSelection.DonePresenting());
 
-        // Level 3 - Set number and name.
-        SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
+        // // Level 3 - Set number and name.
+        // SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
+        // yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        // HideLevelNumAndName();
 
-        // Level 3.
-        levelAttach.AddComponent<LevelThree>();
-        levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
+        // // Level 3.
+        // levelAttach.AddComponent<LevelThree>();
+        // levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
+        // levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
+        // yield return new WaitForSeconds(levelTime);
 
-        ResetPlayerHealth();
+        // ResetPlayerHealth();
 
-        itemSelection.PresentItems(3);
-        ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
+        // itemSelection.PresentItems(3);
+        // ClearEnemies();
+        // yield return new WaitUntil(() => itemSelection.DonePresenting());
 
         // Level 4 - Set number and name.
         SetLevelNumAndName(4, "First Last Dance (I Swear There Were More Somewhere)");

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TrailblazerUltimateAbility : MonoBehaviour
 {
-    // Constants
-    private const float INTANGIBILITY_TIME = 5.0f; 
+
 
     // Private member variables.
     private PlayerBehavior parent;
@@ -14,6 +13,8 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     private float OGFireRate;
     private ChargeBarBehavior chargeBar;
     private CooldownBarBehavior cooldownBar;
+
+    private float INTANGIBILITY_TIME = 5.0f; 
 
     private float weaponDamage;
     
@@ -32,6 +33,7 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     private UltimateAbilityState state;
     private float stateEntryTime;
 
+    private bool specialItemActive;
     private bool ghost;
     private bool retrivedAxis;
 
@@ -69,6 +71,12 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         if (retrivedAxis)
         {
             UpdateFSM();
+        }
+        if (parent.GetSpecialItemStatus() && !specialItemActive)
+        {
+            increaseGhostTime();
+            specialItemActive = true;
+            GetComponent<TrailblazerCollider>().UpdateSpecialItemStatus(specialItemActive);
         }
     }
 
@@ -143,6 +151,11 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     public bool getGhostStatus()
     {
         return ghost;
+    }
+
+    public void increaseGhostTime()
+    {
+        INTANGIBILITY_TIME = 10f;
     }
 
 }

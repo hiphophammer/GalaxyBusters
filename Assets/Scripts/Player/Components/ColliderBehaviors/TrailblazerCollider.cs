@@ -8,6 +8,7 @@ public class TrailblazerCollider : MonoBehaviour
     private PlayerBehavior parent;
     private HealthBar healthBar;
     private ScoreManager score;
+    private bool specialItemActive;
 
     // Start is called before the first frame update
     void Start()
@@ -15,11 +16,17 @@ public class TrailblazerCollider : MonoBehaviour
         score = Camera.main.GetComponent<ScoreManager>();
         Debug.Log("Player Collision Detection Starting!");
         healthBar = parent.GetHealthBar();
+        specialItemActive = false;
     }
 
     public void SetParent(PlayerBehavior parent)
     {
         this.parent = parent;
+    }
+
+    public void UpdateSpecialItemStatus(bool status)
+    {
+        specialItemActive = status;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -51,9 +58,18 @@ public class TrailblazerCollider : MonoBehaviour
             }
             else if(ult.getGhostStatus())
             {
-                damageModifier += .2f;
-                parent.SetWeaponDamage(baseDamage * damageModifier);
-                weapon.fireRate -= .01f;
+                if(!specialItemActive)
+                {
+                    damageModifier += .2f;
+                    parent.SetWeaponDamage(baseDamage * damageModifier);
+                    weapon.fireRate -= .01f;
+                }
+                else
+                {
+                    damageModifier += .4f;
+                    parent.SetWeaponDamage(baseDamage * damageModifier);
+                    weapon.fireRate -= .02f;
+                }
             }
             
         }
