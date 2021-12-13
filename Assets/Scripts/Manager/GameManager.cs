@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     private bool ready;
     private bool singlePlayer;
+    private bool bossAlive;
     private bool endless;
 
     public static bool showBothScores;
@@ -174,7 +175,7 @@ public class GameManager : MonoBehaviour
                     player2 = playerBehavior;
                 }
 
-                // Set the sprite and add appropriate components.
+                // Set the sprite, camera shake, and add appropriate components.
                 SpriteRenderer renderer = player.GetComponent<SpriteRenderer>();
                 if (ship == "Lancer")
                 {
@@ -382,12 +383,17 @@ public class GameManager : MonoBehaviour
         ClearEnemies();
         yield return new WaitUntil(() => itemSelection.DonePresenting());
 
-        // TODO: Level 5 - Set number and name.
-        /*SetLevelNumAndName(5, "Galaxy Buster");
+        // Level 5 - Set number and name.
+        SetLevelNumAndName(5, "Galaxy Buster");
         yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();*/
+        HideLevelNumAndName();
 
-        // TODO: Level 5 (Boss fight).
+        // Level 5 (Boss fight).
+        levelAttach.AddComponent<LevelFive>();
+        levelAttach.GetComponent<LevelFive>().SetSpawner(spawner);
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+        while (bossAlive) yield return null;
+        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
 
 
         // Endless Mode
@@ -467,6 +473,11 @@ public class GameManager : MonoBehaviour
             player2Score = GetComponent<ScoreManager>().GetPlayer2Score();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
+
+        if(GameObject.FindWithTag("Boss"))
+        {
+            bossAlive = true;
+        } else bossAlive = false;
     }
 
     // Meant to be called at the end of every level.

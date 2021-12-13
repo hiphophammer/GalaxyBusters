@@ -52,4 +52,9 @@ public class EnemySpawnControl : MonoBehaviour
         Instantiate(Resources.Load("Prefabs/Square"), new Vector3(-2f, 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
         Instantiate(Resources.Load("Prefabs/Square"), new Vector3(2f, 5.5f, 0), Quaternion.Euler(new Vector3(0,0,180))); 
     }
+
+    public void SpawnBoss()
+    {
+        Instantiate(Resources.Load("Prefabs/BossBody"), new Vector3(0f, 5.5f, 0), Quaternion.Euler(new Vector3(0, 0, 0))); 
+    }
 }

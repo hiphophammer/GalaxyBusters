@@ -25,6 +25,7 @@ public class PlayerBehavior : MonoBehaviour
     public float speed = 3.0f;
     public bool playerOne = true;
     public bool alive = true;
+    public CameraShake csx;
     public float comboMult;
 
     // Private member variables.
@@ -65,6 +66,8 @@ public class PlayerBehavior : MonoBehaviour
         comboMult = 1;
 
         SetupPlayer();
+
+        csx = Camera.main.GetComponent<CameraShake>();
     }
 
     // Ship name accessors/modifiers.

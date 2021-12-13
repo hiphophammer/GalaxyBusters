@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyFighterLVL2 : MonoBehaviour
 {
-     public EnemyHealth health;
+    public EnemyHealth health;
 
     private Vector3 speed;
     
