@@ -69,6 +69,7 @@ public class LevelTwo : MonoBehaviour
         spawner.SpawnFighter2();
         spawner.SpawnFighter2();
         yield return new WaitForSeconds(5f);
+        LevelEnd();
     }
     
     private void LevelEnd()

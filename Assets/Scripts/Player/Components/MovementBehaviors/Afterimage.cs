@@ -13,7 +13,6 @@ public class Afterimage : MonoBehaviour
     IEnumerator Lifetime(float time)
     {
         yield return new WaitForSeconds(time);
-        this.gameObject.SetActive(false);
-        Destroy(this);
+        Destroy(this.gameObject);
     }
 }

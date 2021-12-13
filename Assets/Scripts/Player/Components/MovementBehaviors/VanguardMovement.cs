@@ -21,7 +21,9 @@ public class VanguardMovement : MonoBehaviour
     private GameObject ramGraphic;
 
     private float OGradius;
+
     private GameObject hitbox;
+    private bool active;
 
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
@@ -43,8 +45,13 @@ public class VanguardMovement : MonoBehaviour
         CircleCollider2D col = GetComponent<CircleCollider2D>();
         col.radius = .2f;
         OGradius = col.radius;
-
         RamTime = 0.0f;
+        hitbox = Instantiate(Resources.Load("Prefabs/Hitbox") as GameObject, new Vector3(transform.position.x, transform.position.y, transform.position.z - .1f), transform.rotation);
+        float hitboxSize = GetComponent<CircleCollider2D>().radius * 2;
+        hitbox.transform.parent = parent.transform;
+        hitbox.transform.localScale = new Vector3(hitboxSize, hitboxSize, 1);
+        hitbox.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        active = true;
 
         retrievedAxes = false;
     }
@@ -83,7 +90,7 @@ public class VanguardMovement : MonoBehaviour
                     ramGraphic.transform.parent = parent.transform;
                     float ramSize = GetComponent<CircleCollider2D>().radius * 2;
                     ramGraphic.transform.localScale = new Vector3(ramSize, ramSize, 1);
-
+                    ramGraphic.GetComponent<SpriteRenderer>().sortingOrder = 1;
                     ramGraphic.GetComponent<SpriteRenderer>().color = new Color32(255, 155, 55, 85);
                 }
             }
@@ -122,7 +129,14 @@ public class VanguardMovement : MonoBehaviour
     
             // Translate the player by the computed amount.
             transform.Translate(leftRight, upDown, 0.0f);   
+            
+            if (Input.GetKeyDown("h"))
+            {
+                active = !active;
+                hitbox.SetActive(active);
+            }
         }
+        
     }
 
     public void SetParent(PlayerBehavior parent)

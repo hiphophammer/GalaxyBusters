@@ -67,6 +67,7 @@ public class LevelFour : MonoBehaviour
         yield return new WaitForSeconds(10f);
         spawner.SpawnUFO2();
         yield return new WaitForSeconds(5f);
+        LevelEnd();
     }
     
     private void LevelEnd()

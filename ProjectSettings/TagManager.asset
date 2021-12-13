@@ -12,6 +12,7 @@ TagManager:
   - GameCanvas
   - PowerUp
   - Boss
+  - BossPart
   layers:
   - Default
   - TransparentFX

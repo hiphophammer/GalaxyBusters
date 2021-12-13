@@ -9,6 +9,7 @@ public class VanguardCollider : MonoBehaviour
     private HealthBar healthBar;
     private ChargeBarBehavior chargeBar;
     private ScoreManager score;
+    private Color baseColor;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class VanguardCollider : MonoBehaviour
         score = Camera.main.GetComponent<ScoreManager>();
         Debug.Log("Player Collision Detection Starting!");
         healthBar = parent.GetHealthBar();
+        baseColor = GetComponent<Renderer>().material.color;
     }
 
     public void SetParent(PlayerBehavior parent)
@@ -37,6 +39,8 @@ public class VanguardCollider : MonoBehaviour
             {
                 if (!m.getRamStatus())
                 {
+                    StartCoroutine(parent.csx.Shake(0.1f, 0.1f));
+                    StartCoroutine(DamageFlash());
                     // Update our health bar.
                     healthBar.RemoveHealth(10.0f);
                     Debug.Log("Losing Health");
@@ -55,11 +59,6 @@ public class VanguardCollider : MonoBehaviour
             {
                 healthBar.AddHealth(2.5f);
             }
-            // Check if health is 0 or less (Death)
-            if(healthBar.Health() <= 0.0f)
-            {
-                parent.alive = false;
-            }
             Destroy(other);
         }
         else if (other.CompareTag("Enemy") && parent.IsAlive())
@@ -68,6 +67,8 @@ public class VanguardCollider : MonoBehaviour
             {
                 if (!m.getRamStatus())
                 {
+                    StartCoroutine(parent.csx.Shake(0.1f, 0.1f));
+                    StartCoroutine(DamageFlash());
                     // Update our health bar.
                     healthBar.RemoveHealth(10.0f);
                     Debug.Log("Losing Health");
@@ -95,11 +96,39 @@ public class VanguardCollider : MonoBehaviour
                     Debug.Log("Enemy Destroyed");
                 }
             }
-            
-            // Check if health is 0 or less (Death)
-            if(healthBar.Health() <= 0.0f)
+        }
+        else if (other.CompareTag("Boss") || other.CompareTag("BossPart") && parent.IsAlive())
+        {
+            if (!ult.getShieldStatus())
             {
-                parent.alive = false;
+                if (!m.getRamStatus())
+                {
+                    StartCoroutine(parent.csx.Shake(0.1f, 0.1f));
+                    StartCoroutine(DamageFlash());
+                    // Update our health bar.
+                    healthBar.RemoveHealth(10.0f);
+                    Debug.Log("Losing Health");
+                    parent.comboMult = 1f;
+                    score.UpdateCombo(parent, parent.comboMult);
+                }
+                if (m.getRamStatus())
+                {
+                    healthBar.RemoveHealth(5.0f);
+                    // Check if the enemy is alive.
+                    EnemyHealth ehealth = collision.gameObject.GetComponent<EnemyHealth>();
+                    ehealth.decreaseHealth(parent);
+                    Debug.Log("Enemy Destroyed");
+                }
+            }
+            else
+            {
+                if (m.getRamStatus())
+                {
+                    // Check if the enemy is alive.
+                    EnemyHealth ehealth = collision.gameObject.GetComponent<EnemyHealth>();
+                    ehealth.decreaseHealth(parent);
+                    Debug.Log("Enemy Destroyed");
+                }
             }
         }
         else if (other.CompareTag("PowerUp"))
@@ -121,5 +150,27 @@ public class VanguardCollider : MonoBehaviour
                 }
             }
         }
+        // Check if health is 0 or less (Death)
+            if(healthBar.Health() <= 0.0f)
+            {
+                parent.alive = false;
+            }
+    }
+
+    IEnumerator DamageFlash()
+    {
+        GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(0f, 1f, 0f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(0f, 0f, 1f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(1f, 1f, 0f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(1f, 0f, 1f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = new Color(0f, 1f, 1f);
+        yield return new WaitForSeconds(0.016f);
+        GetComponent<Renderer>().material.color = baseColor;
     }
 }

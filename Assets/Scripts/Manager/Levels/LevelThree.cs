@@ -64,6 +64,7 @@ public class LevelThree : MonoBehaviour
         spawner.SpawnChaser();
         spawner.SpawnChaser();
         yield return new WaitForSeconds(5f);
+        LevelEnd();
     }
     
     private void LevelEnd()

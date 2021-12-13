@@ -13,6 +13,8 @@ public class EnemyHealth : MonoBehaviour
 
     PlayerBehavior destroyerBehavior;
 
+    private bool destroyed;
+
     Camera cam;
     ScoreManager score;
     // Start is called before the first frame update
@@ -23,7 +25,7 @@ public class EnemyHealth : MonoBehaviour
         damageDealt = new float[2];
         damageDealt[0] = 0;
         damageDealt[1] = 0;
-
+        destroyed = false;
     }
 
     // Update is called once per frame
@@ -31,58 +33,64 @@ public class EnemyHealth : MonoBehaviour
     {
         if(health <= 0)
         {
-            
-            destroyerBehavior.DestroyedEnemy(totalHealth);
-            Destroy(gameObject);
-            Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
-            Destroy(Explosion.gameObject, 1);
-            
-            //10% to spawn powerup
-            int chance = Random.Range(1, 11);
-            int powerUpChoice = Random.Range(1, 11);
-            //Debug.Log("Power Up Spawn = " + chance + "Power Up Choice = " + powerUpChoice);
-            if(chance == 1)
+            if(!destroyed)
             {
-                powerUp = Instantiate(Resources.Load<GameObject>("Prefabs/PowerUp")) as GameObject;
-                powerUp.transform.position = transform.position;
-                PowerUpBehavior powerBehavior = powerUp.GetComponent<PowerUpBehavior>();
-                if (powerUpChoice <= 7 )
+                destroyerBehavior.DestroyedEnemy(totalHealth);
+                if (!this.CompareTag("Boss") && !this.CompareTag("BossPart"))
                 {
-                    powerBehavior.item = Resources.Load<Item>("PowerUps/Health Pack") as Item;
+                    Destroy(gameObject);
                 }
-                else 
+                Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
+                Destroy(Explosion.gameObject, 1);
+                //10% to spawn powerup
+                int chance = Random.Range(1, 11);
+                int powerUpChoice = Random.Range(1, 11);
+                //Debug.Log("Power Up Spawn = " + chance + "Power Up Choice = " + powerUpChoice);
+                if(chance == 1)
                 {
-                    powerBehavior.item = Resources.Load<Item>("PowerUps/Ultimate Charge") as Item;
+                    powerUp = Instantiate(Resources.Load<GameObject>("Prefabs/PowerUp")) as GameObject;
+                    powerUp.transform.position = transform.position;
+                    PowerUpBehavior powerBehavior = powerUp.GetComponent<PowerUpBehavior>();
+                    // 70% to get Health.
+                    if (powerUpChoice <= 7 )
+                    {
+                        powerBehavior.item = Resources.Load<Item>("PowerUps/Health Pack") as Item;
+                    }
+                    else 
+                    {
+                        powerBehavior.item = Resources.Load<Item>("PowerUps/Ultimate Charge") as Item;
+                    }
                 }
-            }
 
-            if(destroyerBehavior.IsPlayerOne())
-            {
-                score.DestroyedEnemy(damageDealt, 0, totalHealth * destroyerBehavior.comboMult);
-                if((destroyerBehavior.comboMult + (totalHealth * .01f)) <= 4f)
+                if(destroyerBehavior.IsPlayerOne())
                 {
-                    destroyerBehavior.comboMult += totalHealth * .01f;
-                    score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
+                    score.DestroyedEnemy(damageDealt, 0, totalHealth * destroyerBehavior.comboMult);
+                    if((destroyerBehavior.comboMult + (totalHealth * .01f)) <= 4f)
+                    {
+                        destroyerBehavior.comboMult += totalHealth * .01f;
+                        score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
+                    }
+                    else if((destroyerBehavior.comboMult + (totalHealth * .01f)) > 4f)
+                    {
+                        destroyerBehavior.comboMult = 4f;
+                        score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
+                    }
                 }
-                else if((destroyerBehavior.comboMult + (totalHealth * .01f)) > 4f)
+                else
                 {
-                    destroyerBehavior.comboMult = 4f;
-                    score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
+                    score.DestroyedEnemy(damageDealt, 1, totalHealth * destroyerBehavior.comboMult);
+                    if((destroyerBehavior.comboMult + (totalHealth * .01f)) <= 4f)
+                    {
+                        destroyerBehavior.comboMult += totalHealth * .01f;
+                        score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
+                    }
+                    else if((destroyerBehavior.comboMult + (totalHealth * .01f)) > 4f)
+                    {
+                        destroyerBehavior.comboMult = 4f;
+                        score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
+                    }
                 }
-            }
-            else
-            {
-                score.DestroyedEnemy(damageDealt, 1, totalHealth * destroyerBehavior.comboMult);
-                if((destroyerBehavior.comboMult + (totalHealth * .01f)) <= 4f)
-                {
-                    destroyerBehavior.comboMult += totalHealth * .01f;
-                    score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
-                }
-                else if((destroyerBehavior.comboMult + (totalHealth * .01f)) > 4f)
-                {
-                    destroyerBehavior.comboMult = 4f;
-                    score.UpdateCombo(destroyerBehavior, destroyerBehavior.comboMult);
-                }
+                destroyed = true;
             }
         }
     }

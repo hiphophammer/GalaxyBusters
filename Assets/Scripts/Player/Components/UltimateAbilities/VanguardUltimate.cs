@@ -125,6 +125,7 @@ public class VanguardUltimate : MonoBehaviour
             shield.transform.parent = parent.transform;
             float shieldsize = GetComponent<CircleCollider2D>().radius * 2;
             shield.transform.localScale = new Vector3(shieldsize, shieldsize, 1);
+            shield.GetComponent<SpriteRenderer>().sortingOrder = 2;
 
             // Trigger the reload.
             chargeBar.ResetCharge();

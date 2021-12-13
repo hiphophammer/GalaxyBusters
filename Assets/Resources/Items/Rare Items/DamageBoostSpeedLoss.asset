@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 0
   type: 1
   description: +20 Damage, -3 Speed
-  icon: {fileID: 21300000, guid: a50d03dd8c6fcd347aad21204952ac36, type: 3}
+  icon: {fileID: 21300000, guid: 76c5a852d7506154492be2ad77a78f08, type: 3}
   dHP: 0
   dSpeed: -3
   dDamage: 20

@@ -158,5 +158,21 @@ public class LancerMissileBehavior : MonoBehaviour
                 }
             }
         }
+        if (other.CompareTag("Boss") || other.CompareTag("BossPart"))
+        {
+            curSpeed = 0f;
+            // Check if the enemy is alive.
+            EnemyHealth eHealth = collision.gameObject.GetComponent<EnemyHealth>();
+
+            if (eHealth.health > 0)
+            {
+                GetComponent<SpriteRenderer>().enabled = false;
+                alive = false;
+                timeOfDeath = Time.time;
+
+                // Deal damage to the enemy we directly collided with.
+                eHealth.missileImpact(DAMAGE, parent);
+            }
+        }
     }
 }

@@ -24,6 +24,13 @@ public class TrailblazerMovement : MonoBehaviour
 
     private bool retrievedAxes;
 
+    private GameObject hitbox;
+    private bool active;
+
+    private int count;
+    private float elapsedTime;
+    private const float TIME_BETWEEN_SPAWNS = 0.05f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,9 +57,17 @@ public class TrailblazerMovement : MonoBehaviour
         col.radius = .1f;
         OGradius = col.radius;
 
-        
+        hitbox = Instantiate(Resources.Load("Prefabs/Hitbox") as GameObject, new Vector3(transform.position.x, transform.position.y, transform.position.z - .1f), transform.rotation);
+        float hitboxSize = GetComponent<CircleCollider2D>().radius * 2;
+        hitbox.transform.parent = parent.transform;
+        hitbox.transform.localScale = new Vector3(hitboxSize, hitboxSize, 1);
+        hitbox.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        active = true;
 
         retrievedAxes = false;
+
+        count = 1;
+        elapsedTime = 0.0f;
         
     }
 
@@ -60,6 +75,8 @@ public class TrailblazerMovement : MonoBehaviour
     void Update()
     {
         RetrieveAxes();
+
+        elapsedTime += Time.deltaTime;
         
         if (retrievedAxes)
         {
@@ -118,7 +135,17 @@ public class TrailblazerMovement : MonoBehaviour
 
             if (Blink)
             {
-                transform.position = Vector3.Lerp(transform.position, endPos, 30f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, endPos, 12.5f * Time.deltaTime);
+                if (elapsedTime > TIME_BETWEEN_SPAWNS)
+                {
+                    elapsedTime = 0;
+                    GameObject afterimage = Instantiate(Resources.Load("Prefabs/PlayerGhost") as GameObject, transform.position, transform.rotation);
+                    SpriteRenderer renderer = afterimage.GetComponent<SpriteRenderer>();
+                    renderer.sortingOrder = count++;
+                    afterimage.GetComponent<Renderer>().material.color = new Color32(255,114,114,125);
+                    renderer.sprite = GetComponent<SpriteRenderer>().sprite;
+                }
+
                 if (transform.position == endPos)
                 {
                     GetComponent<CircleCollider2D>().radius = OGradius;
@@ -130,6 +157,12 @@ public class TrailblazerMovement : MonoBehaviour
             {
                 // Translate the player by the computed amount.
                 transform.Translate(leftRight, upDown, 0.0f);
+            }
+            
+            if (Input.GetKeyDown("h"))
+            {
+                active = !active;
+                hitbox.SetActive(active);
             }
         } 
     }

@@ -13,7 +13,8 @@ public class BossBody : MonoBehaviour
 
     private Vector3 speed;
 
-    public int health;
+    private EnemyHealth health;
+
     int totalHealth;
     float[] damageDealt;
 
@@ -24,7 +25,6 @@ public class BossBody : MonoBehaviour
 
     Camera cam;
     CameraShake csx;
-    ScoreManager score;
 
     private float timeSinceSpawn, timeAtSpawn, timeSinceAttack;
 
@@ -51,15 +51,11 @@ public class BossBody : MonoBehaviour
         speed = new Vector3(0, -1f, 0);
         speed = speed * Time.fixedDeltaTime;
 
-        health = 10;
-        totalHealth = 10;
+        health = GetComponent<EnemyHealth>();
+        health.setHealth(1600);
 
         cam = Camera.main;
         csx = Camera.main.GetComponent<CameraShake>();
-        score = cam.GetComponent<ScoreManager>();
-        damageDealt = new float[2];
-        damageDealt[0] = 0;
-        damageDealt[1] = 0;
 
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
@@ -84,7 +80,7 @@ public class BossBody : MonoBehaviour
             }
         }
 
-        if(health <= 0)
+        if(health.GetHealth() <= 800 && isVulnerable)
         {
             StartCoroutine(EndSequence());
         }
@@ -101,11 +97,6 @@ public class BossBody : MonoBehaviour
         }
     }
 
-    public int GetHealth()
-    {
-        return health;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject other = collision.gameObject;
@@ -117,31 +108,14 @@ public class BossBody : MonoBehaviour
                 // As a HeroProjectile, other must have a ProjectileBehavior script attached.
                 ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
                 Debug.Log(damageDealer.GetParent());
-                decreaseHealth(damageDealer.GetParent());
+                health.decreaseHealth(damageDealer.GetParent());
             }
-        }
-    }
-
-    public void decreaseHealth(PlayerBehavior damageDealer)
-    {
-        if(damageDealer.IsPlayerOne())
-        {
-            Debug.Log("Player 1 did damage.");
-            damageDealt[0]++;
-            destroyerBehavior = damageDealer;
-            health--;
-        }
-        else
-        {
-            damageDealt[1]++;
-            destroyerBehavior = damageDealer;
-            health--;
         }
     }
 
     IEnumerator StartSequence()
     {
-        while(true)
+        while(health.GetHealth() > 0)
         {
                 int random = Random.Range(1, 4);
                 if(random == 1){
@@ -166,7 +140,7 @@ public class BossBody : MonoBehaviour
                     int count = 0;
                     while(count < 10)
                     {
-                        random = Random.Range(1, 5);
+                        random = Random.Range(0, 4);
                         GameObject x = null;
 
                         if(!allWeapons[random].GetComponent<BossWeapon>().destroyed || isVulnerable)
@@ -181,11 +155,11 @@ public class BossBody : MonoBehaviour
                 }
                 else
                 {
-                    random = Random.Range(1, 5);
-                    int random1 = Random.Range(1, 5);
+                    random = Random.Range(0, 4);
+                    int random1 = Random.Range(1, 4);
                     while(random == random1)
                     {
-                        random1 = Random.Range(1, 5);
+                        random1 = Random.Range(1, 4);
                     }
                     if(!allWeapons[random].GetComponent<BossWeapon>().destroyed || isVulnerable)
                     {
@@ -240,11 +214,11 @@ public class BossBody : MonoBehaviour
 
     IEnumerator PatternThreeDelay(float time)
     {
-        int random = Random.Range(1, 5);
-        int random1 = Random.Range(1, 5);
+        int random = Random.Range(0, 4);
+        int random1 = Random.Range(1, 4);
         while(random == random1)
         {
-            random1 = Random.Range(1, 5);
+            random1 = Random.Range(1, 4);
         }
         if(!allWeapons[random].GetComponent<BossWeapon>().destroyed || isVulnerable)
         {
@@ -267,39 +241,31 @@ public class BossBody : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         // LAZERS OF DOOOOOOM
-        StartCoroutine(csx.Shake(5f, 0.2f));
-        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(csx.Shake(1.5f, 0.2f));
+        yield return new WaitForSeconds(5f);
     }
 
     IEnumerator EndSequence(){
-                //charging!
-                for(int i = 0; i < allWeapons.Length; i++){
-                    allWeapons[i].GetComponent<BossWeapon>().PatternFour(4.0f);
-                }
-
-                yield return new WaitForSeconds(4.0f);
-
-                // LAZERS OF DOOOOOOM
-                StartCoroutine(csx.Shake(5f, 0.2f));
-                yield return new WaitForSeconds(1.5f);
-                Destroy(gameObject);
-                explosion = Instantiate(Resources.Load("Prefabs/explosion"), transform.position, transform.rotation) as GameObject;
+        //charging!
+        for(int i = 0; i < allWeapons.Length; i++){
+            allWeapons[i].GetComponent<BossWeapon>().PatternFour(10.0f);
+        }
+        
+        if(health.GetHealth() <= 0)
+        {
+            for(int i = 0; i < allWeapons.Length; i++)
+            {
+                Destroy(allWeapons[i]);
+                explosion = Instantiate(Resources.Load("Prefabs/Explosion"), allWeapons[i].transform.position, allWeapons[i].transform.rotation) as GameObject;
                 Destroy(explosion.gameObject, 1);
+            }
+            Destroy(gameObject);
+            explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
+            Destroy(explosion.gameObject, 1);
+        }
+        // LAZERS OF DOOOOOOM
+        StartCoroutine(csx.Shake(1f, 0.5f));
+        yield return new WaitForSeconds(5f);
 
-                for(int i = 0; i < allWeapons.Length; i++)
-                {
-                    Destroy(allWeapons[i]);
-                    explosion = Instantiate(Resources.Load("Prefabs/explosion"), allWeapons[i].transform.position, allWeapons[i].transform.rotation) as GameObject;
-                    Destroy(explosion.gameObject, 1);
-                }
-
-                if(destroyerBehavior.IsPlayerOne())
-                {
-                    score.DestroyedEnemy(damageDealt, 0, totalHealth);
-                }
-                else
-                {
-                    score.DestroyedEnemy(damageDealt, 1, totalHealth);
-                }
     }
 }
