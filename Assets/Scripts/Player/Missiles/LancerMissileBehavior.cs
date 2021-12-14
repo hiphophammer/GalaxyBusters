@@ -157,6 +157,7 @@ public class LancerMissileBehavior : MonoBehaviour
                     }
                 }
             }
+            Destroy(transform.gameObject);
         }
         if (other.CompareTag("Boss") || other.CompareTag("BossPart"))
         {
@@ -173,6 +174,7 @@ public class LancerMissileBehavior : MonoBehaviour
                 // Deal damage to the enemy we directly collided with.
                 eHealth.missileImpact(DAMAGE, parent);
             }
+            Destroy(transform.gameObject);
         }
     }
 }
