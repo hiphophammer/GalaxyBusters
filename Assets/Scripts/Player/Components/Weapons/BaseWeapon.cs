@@ -19,6 +19,8 @@ public class BaseWeapon : MonoBehaviour
 
     private bool vampire;
     private bool penetrate;
+    private bool cancellation;
+
     private bool specialItemActive;
 
     private bool dualStream;
@@ -116,6 +118,16 @@ public class BaseWeapon : MonoBehaviour
     public bool GetVampire()
     {
         return this.vampire;
+    }
+
+    public void SetCancellation(bool cancel)
+    {
+        this.cancellation = cancel;
+    }
+
+    public bool GetCancellation()
+    {
+        return this.cancellation;
     }
     
     public void SetFireRate(float fireRate)

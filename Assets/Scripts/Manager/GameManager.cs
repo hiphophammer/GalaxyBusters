@@ -94,18 +94,18 @@ public class GameManager : MonoBehaviour
         DetectCondition();
 
         // Pseudo-invulnerability key
-        if (Input.GetKeyDown("x"))
+        if (Input.GetKeyDown("p"))
         {
             GameObject p = GameObject.FindWithTag("Player");
             p.transform.position = new Vector3(0.0f, -999.0f, 0.0f);
         }
-        if (Input.GetKeyUp("x"))
+        if (Input.GetKeyUp("p"))
         {
             GameObject p = GameObject.FindWithTag("Player");
             p.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         }
 
-        if (Input.GetKeyDown("h"))
+        if (Input.GetKeyDown("j"))
         {
             endless = true;
             
@@ -302,149 +302,266 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ResetPlayerHealth()
-    {
-        player1.GetHealthBar().AddHealth(player1.GetHealthBar().GetHitPoints());
-
-        if (player2 != null)
-        {
-            player2.GetHealthBar().AddHealth(player2.GetHealthBar().GetHitPoints());
-        }
-    }
 
     // Methods for gameplay/level management.
     private IEnumerator StartGame()
     {
-        // Level 1 - Set number and name.
-        SetLevelNumAndName(1, "A Walk in the Park (Except the Park is an Endless Void)");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
-
-        // Level 1.
-        levelAttach.AddComponent<LevelOne>();
-        levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
-
-        ResetPlayerHealth();
-
-        itemSelection.PresentItems(1);
-        ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
-
-        // Level 2 - Set number and name.
-        SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What We Have Written Down)");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
-
-        // Level 2.
-        levelAttach.AddComponent<LevelTwo>();
-        levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
-
-        ResetPlayerHealth();
-
-        itemSelection.PresentItems(2);
-        ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
-
-        // Level 3 - Set number and name.
-        SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
-
-        // Level 3.
-        levelAttach.AddComponent<LevelThree>();
-        levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
-
-        ResetPlayerHealth();
-
-        itemSelection.PresentItems(3);
-        ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
-
-        // Level 4 - Set number and name.
-        SetLevelNumAndName(4, "First Last Dance (I Swear There Were More Somewhere)");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
-
-        // Level 4.
-        levelAttach.AddComponent<LevelFour>();
-        levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
-        levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
-        yield return new WaitForSeconds(levelTime);
-
-        ResetPlayerHealth();
-
-        itemSelection.PresentItems(4);
-        ClearEnemies();
-        yield return new WaitUntil(() => itemSelection.DonePresenting());
-
-        // Level 5 - Set number and name.
-        SetLevelNumAndName(5, "Galaxy Buster");
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        HideLevelNumAndName();
-
-        // Level 5 (Boss fight).
-        levelAttach.AddComponent<LevelFive>();
-        levelAttach.GetComponent<LevelFive>().SetSpawner(spawner);
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-        while (bossAlive) yield return null;
-        yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
-
-
-        // Endless Mode
-        if (endless)
+        if(SinglePlayer())
         {
-            int EndlessName = 0;
-            // By playing Endless Mode, the player is already a winner in my book. - Gary Yuen
-            winLoss = true;
-            while (player1.IsAlive() || player2.IsAlive())
+            // Level 1 - Set number and name.
+            SetLevelNumAndName(1, "A Walk in the Park (Except the Park is an Endless Void)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 1.
+            levelAttach.AddComponent<LevelOne>();
+            levelAttach.GetComponent<LevelOne>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelOne>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+
+            itemSelection.PresentItems(1);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Level 2 - Set number and name.
+            SetLevelNumAndName(2, "Slightly More Enemies (This is Actually What We Have Written Down)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 2.
+            levelAttach.AddComponent<LevelTwo>();
+            levelAttach.GetComponent<LevelTwo>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelTwo>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+
+            itemSelection.PresentItems(2);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Level 3 - Set number and name.
+            SetLevelNumAndName(3, "Revenge of the Ship (Wait, what?)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 3.
+            levelAttach.AddComponent<LevelThree>();
+            levelAttach.GetComponent<LevelThree>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelThree>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+
+            itemSelection.PresentItems(3);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Level 4 - Set number and name.
+            SetLevelNumAndName(4, "First Last Dance (I Swear There Were More Somewhere)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 4.
+            levelAttach.AddComponent<LevelFour>();
+            levelAttach.GetComponent<LevelFour>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelFour>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+
+            itemSelection.PresentItems(4);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Endless Mode
+            if (endless)
             {
-                string[] levelnames = new string[] {"You Asked For This", "Endless Space", 
-                                                    "Unlimited Ship Works", "Paradise Lost", 
-                                                    "Inferno", "Literary Allusion", 
-                                                    "Inherit the Stars", "No Longer Human", 
-                                                    "Childhood's End", "(Don't) Fear The Reaper"};
-                string lvlname = levelnames[EndlessName];
-                EndlessName++;
-                if (EndlessName == levelnames.Length - 1)
+                int EndlessName = 0;
+                // By playing Endless Mode, the player is already a winner in my book. - Gary Yuen
+                winLoss = true;
+                while (player1.IsAlive())
                 {
-                    EndlessName = 0;
+                    string[] levelnames = new string[] {"You Asked For This", "Endless Space", 
+                                                        "Unlimited Ship Works", "Paradise Lost", 
+                                                        "Inferno", "Literary Allusion", 
+                                                        "Inherit the Stars", "No Longer Human", 
+                                                        "Childhood's End", "(Don't Fear) The Reaper",
+                                                        "Something About A Windmill", "Apocalypse",
+                                                        "Back To The Beginning"};
+                    string lvlname = levelnames[EndlessName];
+                    EndlessName++;
+                    if (EndlessName == levelnames.Length)
+                    {
+                        EndlessName = 0;
+                    }
+                    // Level 4 - Set number and name.
+                    SetLevelNumAndName(999, lvlname);
+                    yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+                    HideLevelNumAndName();
+
+                    // Level ENDLESS.
+                    levelAttach.AddComponent<LevelENDLESS>();
+                    levelAttach.GetComponent<LevelENDLESS>().SetSpawner(spawner);
+                    levelTime = levelAttach.GetComponent<LevelENDLESS>().GetLevelTime();
+                    yield return new WaitForSeconds(levelTime);
+
+                    ClearEnemies();
                 }
-                // Level 4 - Set number and name.
-                SetLevelNumAndName(999, lvlname);
+            }
+            else
+            {
+                // Level 5 - Set number and name.
+                SetLevelNumAndName(5, "Galaxy Buster");
                 yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
                 HideLevelNumAndName();
 
-                // Level ENDLESS.
-                levelAttach.AddComponent<LevelENDLESS>();
-                levelAttach.GetComponent<LevelENDLESS>().SetSpawner(spawner);
-                levelTime = levelAttach.GetComponent<LevelENDLESS>().GetLevelTime();
-                yield return new WaitForSeconds(levelTime);
+                // Level 5 (Boss fight).
+                levelAttach.AddComponent<LevelFive>();
+                levelAttach.GetComponent<LevelFive>().SetSpawner(spawner);
+                yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+                while (bossAlive) yield return null;
+                yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
 
-                ResetPlayerHealth();
-
-                int lvl = Random.Range(1, 3);
-                itemSelection.PresentItems(lvl);
-                ClearEnemies();
-                yield return new WaitUntil(() => itemSelection.DonePresenting());
+                // Victory!
+                if (player1.IsAlive())
+                {
+                    winLoss = true;
+                    showBothScores = singlePlayer;
+                    player1Score = GetComponent<ScoreManager>().GetPlayer1Score();
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                }
             }
         }
-        else
+        // 2 Player Mode
+        else 
         {
-            // Victory!
-            if (player1.IsAlive() || player2.IsAlive())
+            // Level 1 - Set number and name.
+            SetLevelNumAndName(1, "A Walk in the Park (Now With Extra Friendship!)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 1.
+            levelAttach.AddComponent<LevelOne2P>();
+            levelAttach.GetComponent<LevelOne2P>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelOne2P>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+            itemSelection.PresentItems(1);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Level 2 - Set number and name.
+            SetLevelNumAndName(2, "Slightly More Enemies (Great, Now There Are Two Of Them.)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 2.
+            levelAttach.AddComponent<LevelTwo2P>();
+            levelAttach.GetComponent<LevelTwo2P>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelTwo2P>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+
+            itemSelection.PresentItems(2);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Level 3 - Set number and name.
+            SetLevelNumAndName(3, "Revenge of the Ship (Or Would It Be Ships?)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 3.
+            levelAttach.AddComponent<LevelThree2P>();
+            levelAttach.GetComponent<LevelThree2P>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelThree2P>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+
+            itemSelection.PresentItems(3);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Level 4 - Set number and name.
+            SetLevelNumAndName(4, "Last First Dance (Technically.)");
+            yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+            HideLevelNumAndName();
+
+            // Level 4.
+            levelAttach.AddComponent<LevelFour2P>();
+            levelAttach.GetComponent<LevelFour2P>().SetSpawner(spawner);
+            levelTime = levelAttach.GetComponent<LevelFour2P>().GetLevelTime();
+            yield return new WaitForSeconds(levelTime);
+
+
+            itemSelection.PresentItems(4);
+            ClearEnemies();
+            yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            // Endless Mode
+            if (endless)
             {
+                int EndlessName = 0;
+                // By playing Endless Mode, the player is already a winner in my book. - Gary Yuen
                 winLoss = true;
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                while (player1.IsAlive() || player2.IsAlive())
+                {
+                    string[] levelnames = new string[] {"You Asked For This", "Endless Space", 
+                                                        "Unlimited Ship Works", "Inherit the Stars", 
+                                                        "Paradise", "Literary Allusion", 
+                                                        "The Dirty Pair", "You're Pretty Good", 
+                                                        "How Have You Gotten This Far?", "Good Vibes",
+                                                        "Yeah, Space Is Cool.", "But Friendship Is Cooler.",
+                                                        "Back To The Beginning."};
+                    string lvlname = levelnames[EndlessName];
+                    EndlessName++;
+                    if (EndlessName == levelnames.Length - 1)
+                    {
+                        EndlessName = 0;
+                    }
+                    // Level 4 - Set number and name.
+                    SetLevelNumAndName(999, lvlname);
+                    yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+                    HideLevelNumAndName();
+
+                    // Level ENDLESS.
+                    levelAttach.AddComponent<LevelENDLESS>();
+                    levelAttach.GetComponent<LevelENDLESS>().SetSpawner(spawner);
+                    levelTime = levelAttach.GetComponent<LevelENDLESS>().GetLevelTime();
+                    yield return new WaitForSeconds(levelTime);
+
+                    int lvl = Random.Range(1, 3);
+                    itemSelection.PresentItems(lvl);
+                    ClearEnemies();
+                    yield return new WaitUntil(() => itemSelection.DonePresenting());
+                }
+            }
+            else
+            {
+                // Level 5 - Set number and name.
+                SetLevelNumAndName(5, "Galaxy Busters");
+                yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+                HideLevelNumAndName();
+
+                // Level 5 (Boss fight).
+                levelAttach.AddComponent<LevelFive>();
+                levelAttach.GetComponent<LevelFive>().SetSpawner(spawner);
+                yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+                while (bossAlive) yield return null;
+                yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
+
+                // Victory!
+                if (player1.IsAlive() || (!singlePlayer && player2.IsAlive()))
+                {
+                    winLoss = true;
+                    showBothScores = singlePlayer;
+                    player1Score = GetComponent<ScoreManager>().GetPlayer1Score();
+                    player2Score = GetComponent<ScoreManager>().GetPlayer2Score();
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                }
             }
         }
         
-
+        
         
     }
 

@@ -37,6 +37,10 @@ public class TrailblazerUltimateAbility : MonoBehaviour
     private bool ghost;
     private bool retrivedAxis;
 
+    private int count;
+    private float elapsedTime;
+    private const float TIME_BETWEEN_SPAWNS = 0.05f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,12 +66,17 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         state = UltimateAbilityState.charge;
 
         retrivedAxis = false;
+
+        count = 1;
+        elapsedTime = 0.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
         RetrieveAxis();
+        elapsedTime += Time.deltaTime;
+
         if (retrivedAxis)
         {
             UpdateFSM();
@@ -145,6 +154,15 @@ public class TrailblazerUltimateAbility : MonoBehaviour
         else
         {
             parent.GetComponent<SpriteRenderer>().material.color = alpha;
+            if (elapsedTime > TIME_BETWEEN_SPAWNS)
+            {
+                elapsedTime = 0;
+                GameObject afterimage = Instantiate(Resources.Load("Prefabs/PlayerGhost") as GameObject, transform.position, transform.rotation);
+                SpriteRenderer renderer = afterimage.GetComponent<SpriteRenderer>();
+                renderer.sortingOrder = count++;
+                afterimage.GetComponent<Renderer>().material.color = new Color32(255,114,114,125);
+                renderer.sprite = GetComponent<SpriteRenderer>().sprite;
+            }
         }
     }
 

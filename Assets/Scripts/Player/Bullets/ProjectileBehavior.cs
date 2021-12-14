@@ -50,7 +50,7 @@ public class ProjectileBehavior : MonoBehaviour
         else
         {
             // Destroy ourselves.
-            Destroy(transform.gameObject);
+            Destroy(this.gameObject);
         }
     }
 
@@ -113,8 +113,9 @@ public class ProjectileBehavior : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject other = collision.gameObject;
+        ChargeBarBehavior ult = parent.GetUltimateAbilityChargeBar();
 
-        if (other.CompareTag("Enemy") || other.CompareTag("Boss"))
+        if (other.CompareTag("Enemy"))
         {
             // Checks for if Vampire Bullet is active and acts accordingly.
             if (parent.GetWeapon().GetVampire())
@@ -130,6 +131,30 @@ public class ProjectileBehavior : MonoBehaviour
             if (!parent.GetWeapon().GetPenetrate())
             {
                 Destroy(gameObject);
+            }
+        }
+        if (other.CompareTag("Boss") || other.CompareTag("BossPart"))
+        {
+            ult.AddCharge(2f/2f);
+            // Checks for if Vampire Bullet is active and acts accordingly.
+            if (parent.GetWeapon().GetVampire())
+            {
+                HealthBar hp = parent.GetHealthBar();
+                hp.AddHealth(1);
+            }
+
+            // Checks for if Penetration Bullet is active and acts accordingly. 
+            // Set true for testing purposes, set to false to destroy bullet on impact with enemy.
+            if (!parent.GetWeapon().GetPenetrate())
+            {
+                Destroy(gameObject);
+            }
+        }
+        if (other.CompareTag("EnemyProjectile"))
+        {
+            if (parent.GetWeapon().GetCancellation())
+            {
+                Destroy(other);
             }
         }
     }

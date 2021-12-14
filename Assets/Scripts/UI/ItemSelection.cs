@@ -121,19 +121,31 @@ public class ItemSelection : MonoBehaviour
         else if (levelNum == 2)
         {
             // End of level 2.
-            Item[] rareItems = itemCatalog.GetEpicItem(3);
-            item1 = rareItems[0];
-            item2 = rareItems[1];
-            item3 = rareItems[2];
+            int chances = Random.Range(0, 11);
+            if (chances >= 6)
+            {
+                Item[] rareItems = itemCatalog.GetRareItem(2);
+                item1 = rareItems[0];
+                item2 = rareItems[1];
+                item3 = itemCatalog.GetEpicItem(1)[0];
+            }
+            else
+            {
+                Item[] rareItems = itemCatalog.GetRareItem(3);
+                item1 = rareItems[0];
+                item2 = rareItems[1];
+                item3 = rareItems[2];
+            }
         }
         else if (levelNum == 3)
         {
             // End of level 3.
-            Item[] rareItems = itemCatalog.GetRareItem(2);
-            item1 = rareItems[0];
-            item2 = rareItems[1];
+           
+            item1 = itemCatalog.GetRareItem(1)[0];
 
-            item3 = itemCatalog.GetEpicItem(1)[0];
+            Item[] epicItems = itemCatalog.GetEpicItem(2);
+            item2 = epicItems[0];
+            item3 = epicItems[1];
         }
         else
         {

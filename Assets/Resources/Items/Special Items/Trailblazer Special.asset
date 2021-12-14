@@ -22,4 +22,4 @@ MonoBehaviour:
   dSpeed: 0
   dDamage: 0
   bulletName: 
-  ship: 
+  ship: Trailblazer

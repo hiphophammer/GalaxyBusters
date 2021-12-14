@@ -15,12 +15,10 @@ public class BaseMovement : MonoBehaviour
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
 
+    private GameObject hitbox;
+    private bool active;
+
     private bool retrievedAxes;
-
-    private int count;
-
-    private float elapsedTime;
-    private const float TIME_BETWEEN_SPAWNS = 0.05f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,30 +32,25 @@ public class BaseMovement : MonoBehaviour
         maxXPos -= (parent.transform.localScale.x / 2.0f);
         maxYPos -= (parent.transform.localScale.y / 2.0f);
 
+        hitbox = Instantiate(Resources.Load("Prefabs/Hitbox") as GameObject, new Vector3(transform.position.x, transform.position.y, transform.position.z - .1f), transform.rotation);
+        float hitboxSize = GetComponent<CircleCollider2D>().radius * 2;
+        hitbox.transform.parent = parent.transform;
+        hitbox.transform.localScale = new Vector3(hitboxSize, hitboxSize, 1);
+        hitbox.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        active = true;
+
         retrievedAxes = false;
 
-        count = 1;
-        elapsedTime = 0.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        elapsedTime += Time.deltaTime;
 
         RetrieveAxes();
         
         if (retrievedAxes)
         {
-            if (elapsedTime > TIME_BETWEEN_SPAWNS)
-            {
-                elapsedTime = 0;
-                GameObject afterimage = Instantiate(Resources.Load("Prefabs/PlayerGhost") as GameObject, transform.position, transform.rotation);
-                SpriteRenderer renderer = afterimage.GetComponent<SpriteRenderer>();
-                renderer.sortingOrder = count++;
-                afterimage.GetComponent<Renderer>().material.color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
-                renderer.sprite = GetComponent<SpriteRenderer>().sprite;
-            }
             
             UpdateSpeed();
 
@@ -89,6 +82,12 @@ public class BaseMovement : MonoBehaviour
 
             // Translate the player by the computed amount.
             transform.Translate(leftRight, upDown, 0.0f);
+
+            if (Input.GetKeyDown("h"))
+            {
+                active = !active;
+                hitbox.SetActive(active);
+            }
         }
         
     }

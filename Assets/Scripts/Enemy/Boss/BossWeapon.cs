@@ -4,42 +4,34 @@ using UnityEngine;
 
 public class BossWeapon : MonoBehaviour
 {
-    private GameObject bullet = null;
-    private GameObject orb = null;
-    private GameObject beam = null;
-    private GameObject ring = null;
+    private GameObject powerUp;
+
+    private EnemyHealth health;
 
     PlayerBehavior destroyerBehavior;
 
-    public int health;
-    int totalHealth;
-    float[] damageDealt;
-
     public bool destroyed;
+
+    ScoreManager score;
     
     // Start is called before the first frame update
     void Start()
     {
-        bullet = Resources.Load<GameObject>("Prefabs/Bullet") as GameObject;
-        orb = Resources.Load<GameObject>("Prefabs/BossBullet") as GameObject;
-        beam = Resources.Load<GameObject>("Prefabs/BossBeam") as GameObject;
-        ring = Resources.Load<GameObject>("Prefabs/ChargeRing") as GameObject;
+        health = GetComponent<EnemyHealth>();
+        health.setHealth(1000);
 
-        health = 10;
-        totalHealth = health;
-        damageDealt = new float[2];
-        damageDealt[0] = 0;
-        damageDealt[1] = 0;
+        score = Camera.main.GetComponent<ScoreManager>();
 
         destroyed = false;
     }
 
     void Update()
     {
-        if(health <= 0)
+        if(health.GetHealth() <= 0 && !destroyed)
         {
-            destroyerBehavior.DestroyedEnemy(totalHealth);
             GetComponent<Renderer>().material.color = new Color(0.5f, 0f, 0f);
+            GameObject Explosion = Instantiate(Resources.Load("Prefabs/Explosion"), transform.position, transform.rotation) as GameObject;
+            Destroy(Explosion.gameObject, 1);
             destroyed = true;
         }
     }
@@ -47,7 +39,7 @@ public class BossWeapon : MonoBehaviour
     public void PatternOne()
     {
         Debug.Log("Firing 1");
-        GameObject b = GameObject.Instantiate(bullet) as GameObject;
+        GameObject b = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
         b.transform.position = new Vector3(Random.Range(-3.335962f, 3.335962f), 2.44681f, this.transform.position.z);
         b.transform.rotation = Quaternion.Euler(new Vector3(0,0,180));
     }
@@ -57,7 +49,7 @@ public class BossWeapon : MonoBehaviour
         Debug.Log("Firing 2");
         int random = Random.Range(-5, 6);
         for(int i = 110 + random; i <= 250 + random; i+=10){
-            GameObject b = GameObject.Instantiate(bullet) as GameObject;
+            GameObject b = Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation) as GameObject;
             b.transform.position = new Vector3(this.transform.position.x, 2.44681f, this.transform.position.z);
             b.transform.rotation = Quaternion.Euler(new Vector3(0,0,i));
         }
@@ -75,14 +67,14 @@ public class BossWeapon : MonoBehaviour
         {
             for(int i = 110; i <= 250; i+=10)
             {
-                GameObject b = GameObject.Instantiate(orb) as GameObject;
+                GameObject b = Instantiate(Resources.Load("Prefabs/BossBullet"), transform.position, transform.rotation) as GameObject;
                 b.transform.position = new Vector3(this.transform.position.x, 2.44681f, this.transform.position.z);
                 b.transform.rotation = Quaternion.Euler(new Vector3(0,0,i));
                 yield return new WaitForSeconds(time);
             }
             for(int i = 250; i >= 110; i-=10)
             {
-                GameObject b = GameObject.Instantiate(orb) as GameObject;
+                GameObject b = Instantiate(Resources.Load("Prefabs/BossBullet"), transform.position, transform.rotation) as GameObject;
                 b.transform.position = new Vector3(this.transform.position.x, 2.44681f, this.transform.position.z);
                 b.transform.rotation = Quaternion.Euler(new Vector3(0,0,i));
                 yield return new WaitForSeconds(time);
@@ -98,10 +90,10 @@ public class BossWeapon : MonoBehaviour
 
     IEnumerator PatternFourDelay(float time)
     {
-        GameObject b = GameObject.Instantiate(ring) as GameObject;
+        GameObject b = Instantiate(Resources.Load("Prefabs/ChargeRing"), transform.position, transform.rotation) as GameObject;
         b.transform.position = new Vector3(this.transform.position.x, 2.44681f, this.transform.position.z);
         yield return new WaitForSeconds(time);
-        GameObject c = GameObject.Instantiate(beam) as GameObject;
+        GameObject c =  Instantiate(Resources.Load("Prefabs/BossBeam"), transform.position, transform.rotation) as GameObject;
         c.transform.position = new Vector3(this.transform.position.x, -4.32f, this.transform.position.z);
     }
 
@@ -114,24 +106,7 @@ public class BossWeapon : MonoBehaviour
             // As a HeroProjectile, other must have a ProjectileBehavior script attached.
             ProjectileBehavior damageDealer = other.GetComponent<ProjectileBehavior>();
             Debug.Log(damageDealer.GetParent());
-            decreaseHealth(damageDealer.GetParent());
-        }
-    }
-
-    public void decreaseHealth(PlayerBehavior damageDealer)
-    {
-        if(damageDealer.IsPlayerOne())
-        {
-            Debug.Log("Player 1 did damage.");
-            damageDealt[0]++;
-            destroyerBehavior = damageDealer;
-            health--;
-        }
-        else
-        {
-            damageDealt[1]++;
-            destroyerBehavior = damageDealer;
-            health--;
+            health.decreaseHealth(damageDealer.GetParent());
         }
     }
 }

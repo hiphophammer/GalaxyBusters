@@ -186,6 +186,11 @@ public class InventoryBehavior : MonoBehaviour
         }
         else if (IsEpicItem(item))
         {
+            if (item.ID == 0)
+            {
+                // Destroy enemy bullets.
+                player.GetWeapon().SetCancellation(true);
+            }
             if (item.ID == 1)
             {
                 // Bullet upgrade.
