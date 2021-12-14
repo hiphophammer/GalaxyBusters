@@ -66,8 +66,8 @@ public class VanguardMovement : MonoBehaviour
             UpdateSpeed();
 
             // Retrieve the values from our axes.
-            float upDown = Input.GetAxis(movementAxes[0]);
-            float leftRight = Input.GetAxis(movementAxes[1]);
+            float upDown = Input.GetAxisRaw(movementAxes[0]);
+            float leftRight = Input.GetAxisRaw(movementAxes[1]);
 
             // Scale the values appropriately.
             upDown *= (speed * Time.deltaTime);
@@ -100,7 +100,7 @@ public class VanguardMovement : MonoBehaviour
                 RamTime = Time.time - ActivateTime;
             }
 
-            if (RamTime > 1.5f)
+            if (RamTime > 2.5f)
             {
                 Ram = false;
                 parent.SetSpeed(OGspeed);

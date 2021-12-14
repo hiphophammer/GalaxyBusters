@@ -156,6 +156,7 @@ public class LancerMissileBehavior : MonoBehaviour
                         }
                     }
                 }
+                Destroy(transform.gameObject);
             }
             Destroy(transform.gameObject);
         }

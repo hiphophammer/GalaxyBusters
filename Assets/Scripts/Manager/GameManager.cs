@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
     private const float LEVEL_INFO_FLASH_TIME = 3.0f;
 
     // Public member variables.
+    public static bool showBothScores;
+    public static float player1Score;
+    public static float player2Score;
+
     // Stuff for the players.
     public Sprite player1LancerSprite;
     public Sprite player1VanguardSprite;
@@ -51,9 +55,8 @@ public class GameManager : MonoBehaviour
     private bool bossAlive;
     private bool endless;
 
-    public static bool showBothScores;
-    public static float player1Score;
-    public static float player2Score;
+    private int levelNumber;
+    private float TimeBetweenSpawns;
 
     private float levelTime;
 
@@ -86,6 +89,12 @@ public class GameManager : MonoBehaviour
         ready = true;
 
         winLoss = false;
+
+        endless = false;
+
+        TimeBetweenSpawns = 3f;
+
+        levelNumber = 1;
     }
 
     // Update is called once per frame
@@ -96,21 +105,26 @@ public class GameManager : MonoBehaviour
         // Pseudo-invulnerability key
         if (Input.GetKeyDown("p"))
         {
-            GameObject p = GameObject.FindWithTag("Player");
-            p.transform.position = new Vector3(0.0f, -999.0f, 0.0f);
+            GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
+            foreach(GameObject p in pl)
+            {
+                p.transform.position = new Vector3(0.0f, -999.0f, 0.0f);
+            }
         }
         if (Input.GetKeyUp("p"))
         {
-            GameObject p = GameObject.FindWithTag("Player");
-            p.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+            GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
+            foreach(GameObject p in pl)
+            {
+                p.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+            }
         }
 
-        if (Input.GetKeyDown("j"))
+        if (Input.GetKeyDown("j") && levelNumber <= 4)
         {
-            endless = true;
-            
+            endless = !endless;  
+            Debug.Log(endless);
         }
-        Debug.Log(endless);
     }
 
     // Public methods.
@@ -211,7 +225,7 @@ public class GameManager : MonoBehaviour
 
                     playerBehavior.GetHealthBar().SetHitPoints(200.0f);
                     playerBehavior.SetWeaponDamage(20.0f);
-                    playerBehavior.SetInitialSpeed(2.0f);
+                    playerBehavior.SetInitialSpeed(3.0f);
 
                     player.AddComponent<VanguardMovement>();
                     player.GetComponent<VanguardMovement>().SetParent(playerBehavior);
@@ -356,6 +370,8 @@ public class GameManager : MonoBehaviour
             ClearEnemies();
             yield return new WaitUntil(() => itemSelection.DonePresenting());
 
+            levelNumber = 4;
+
             // Level 4 - Set number and name.
             SetLevelNumAndName(4, "First Last Dance (I Swear There Were More Somewhere)");
             yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
@@ -372,6 +388,7 @@ public class GameManager : MonoBehaviour
             ClearEnemies();
             yield return new WaitUntil(() => itemSelection.DonePresenting());
 
+            levelNumber++;
             // Endless Mode
             if (endless)
             {
@@ -393,18 +410,22 @@ public class GameManager : MonoBehaviour
                     {
                         EndlessName = 0;
                     }
-                    // Level 4 - Set number and name.
-                    SetLevelNumAndName(999, lvlname);
+                    // Level Endless - Set number and name.
+                    SetLevelNumAndName(levelNumber, lvlname);
                     yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
                     HideLevelNumAndName();
-
+                    levelNumber++;
                     // Level ENDLESS.
                     levelAttach.AddComponent<LevelENDLESS>();
                     levelAttach.GetComponent<LevelENDLESS>().SetSpawner(spawner);
+                    levelAttach.GetComponent<LevelENDLESS>().SetTimeBetweenSpawns(TimeBetweenSpawns);
+                    if (TimeBetweenSpawns > 1)
+                    {
+                        TimeBetweenSpawns -= .1f;
+                        Debug.Log(TimeBetweenSpawns);
+                    }
                     levelTime = levelAttach.GetComponent<LevelENDLESS>().GetLevelTime();
                     yield return new WaitForSeconds(levelTime);
-
-                    ClearEnemies();
                 }
             }
             else
@@ -486,6 +507,8 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
             HideLevelNumAndName();
 
+            levelNumber = 4;
+
             // Level 4.
             levelAttach.AddComponent<LevelFour2P>();
             levelAttach.GetComponent<LevelFour2P>().SetSpawner(spawner);
@@ -496,6 +519,8 @@ public class GameManager : MonoBehaviour
             itemSelection.PresentItems(4);
             ClearEnemies();
             yield return new WaitUntil(() => itemSelection.DonePresenting());
+
+            levelNumber++;
 
             // Endless Mode
             if (endless)
@@ -514,25 +539,26 @@ public class GameManager : MonoBehaviour
                                                         "Back To The Beginning."};
                     string lvlname = levelnames[EndlessName];
                     EndlessName++;
-                    if (EndlessName == levelnames.Length - 1)
+                    if (EndlessName == levelnames.Length)
                     {
                         EndlessName = 0;
                     }
-                    // Level 4 - Set number and name.
-                    SetLevelNumAndName(999, lvlname);
+                    // Level Endless - Set number and name.
+                    SetLevelNumAndName(levelNumber, lvlname);
                     yield return new WaitForSeconds(LEVEL_INFO_FLASH_TIME);
                     HideLevelNumAndName();
-
+                    levelNumber++;
                     // Level ENDLESS.
                     levelAttach.AddComponent<LevelENDLESS>();
                     levelAttach.GetComponent<LevelENDLESS>().SetSpawner(spawner);
+                    levelAttach.GetComponent<LevelENDLESS>().SetTimeBetweenSpawns(TimeBetweenSpawns);
+                    if (TimeBetweenSpawns > 1)
+                    {
+                        TimeBetweenSpawns -= .1f;
+                    }
                     levelTime = levelAttach.GetComponent<LevelENDLESS>().GetLevelTime();
                     yield return new WaitForSeconds(levelTime);
 
-                    int lvl = Random.Range(1, 3);
-                    itemSelection.PresentItems(lvl);
-                    ClearEnemies();
-                    yield return new WaitUntil(() => itemSelection.DonePresenting());
                 }
             }
             else
