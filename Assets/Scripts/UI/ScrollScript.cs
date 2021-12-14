@@ -15,10 +15,10 @@ public class ScrollScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("k"))
-        {
-            scroll = !scroll;
-        }
+        // if (Input.GetKeyDown("k"))
+        // {
+        //     scroll = !scroll;
+        // }
 
         if (scroll)
         {
