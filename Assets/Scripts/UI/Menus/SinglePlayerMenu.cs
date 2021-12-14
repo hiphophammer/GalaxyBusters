@@ -78,8 +78,8 @@ public class SinglePlayerMenu : MonoBehaviour
             hpBar.fillAmount = 1.0f;
             speedBar.fillAmount = 0.33f;
             damageBar.fillAmount = 0.66f;
-            basicDescription.SetText("Gains small shield.");
-            ultDescription.SetText("Takes reduced damage for a duration");
+            basicDescription.SetText("Ram. Reduces damage taken.");
+            ultDescription.SetText("Shield. Absorbs damage taken.");
             PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bL - vanguardOffset, PlayerSelectionArrowLeft.GetComponent<RectTransform>().localPosition.y);
             PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition = new Vector2(initialPos_bR + vanguardOffset, PlayerSelectionArrowRight.GetComponent<RectTransform>().localPosition.y);
         }
