@@ -112,8 +112,8 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarOne.fillAmount = 1.0f;
             speedBarOne.fillAmount = 0.33f;
             damageBarOne.fillAmount = 0.66f;
-            basicDescriptionOne.SetText("Gains small shield.");
-            ultDescriptionOne.SetText("Takes reduced damage for a duration.");
+            basicDescriptionOne.SetText("Ram. Reduces damage taken.");
+            ultDescriptionOne.SetText("Shield. Absorbs damage taken.");
             // update buttons
             player1left.GetComponent<RectTransform>().localPosition = new Vector2(p1_initialPos_bL-vanguardOffset, player1left.GetComponent<RectTransform>().localPosition.y);
             player1right.GetComponent<RectTransform>().localPosition = new Vector2(p1_initialPos_bR + vanguardOffset, player1left.GetComponent<RectTransform>().localPosition.y);
@@ -152,8 +152,8 @@ public class CooperativePlayMenu : MonoBehaviour
             hpBarTwo.fillAmount = 1.0f;
             speedBarTwo.fillAmount = 0.33f;
             damageBarTwo.fillAmount = 0.66f;
-            basicDescriptionTwo.SetText("Gains small shield.");
-            ultDescriptionTwo.SetText("Takes reduced damage for a duration.");
+            basicDescriptionTwo.SetText("Ram. Reduces damage taken.");
+            ultDescriptionTwo.SetText("Shield. Absorbs damage taken.");
             // update buttons
             player2left.GetComponent<RectTransform>().localPosition = new Vector2(p2_initialPos_bL - vanguardOffset, player2left.GetComponent<RectTransform>().localPosition.y);
             player2right.GetComponent<RectTransform>().localPosition = new Vector2(p2_initialPos_bR + vanguardOffset, player2left.GetComponent<RectTransform>().localPosition.y);
