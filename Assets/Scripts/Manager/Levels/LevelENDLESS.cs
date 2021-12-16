@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class LevelENDLESS : MonoBehaviour
 {
-    // Constants.
-    private const float LEVEL_TIME = 45.0f;
-    private const float TIME_BETWEEN_SPAWNS = 3f;
-
+    // Constants
+    private float LEVEL_TIME = 45.0f;
+    
     // Private member variables.
     private float timeSinceStart;
     private float timeAtStart;
     private float timeUntilEnd;
     private float elapsedTime;
+
+    private float TIME_BETWEEN_SPAWNS = 3f;
+
 
     public EnemySpawnControl spawner;
     
@@ -22,14 +24,12 @@ public class LevelENDLESS : MonoBehaviour
         Debug.Log("LevelOne: Waking up!");
         timeSinceStart = 0.0f;
         timeAtStart = Time.time;
-        timeUntilEnd = LEVEL_TIME;
     }
     
     // Update is called once per frame
     void Update()
     {
         elapsedTime += Time.deltaTime;
-        timeUntilEnd = timeUntilEnd - elapsedTime;
         if (timeSinceStart >= LEVEL_TIME)
         {
             LevelEnd();
@@ -91,5 +91,10 @@ public class LevelENDLESS : MonoBehaviour
     {
         Debug.Log("End of endless level. Repeating.");
         Destroy(this);
+    }
+
+    public void SetTimeBetweenSpawns(float time)
+    {
+        TIME_BETWEEN_SPAWNS = time;
     }
 }
