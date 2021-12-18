@@ -160,7 +160,8 @@ public class TrailblazerUltimateAbility : MonoBehaviour
                 GameObject afterimage = Instantiate(Resources.Load("Prefabs/PlayerGhost") as GameObject, transform.position, transform.rotation);
                 SpriteRenderer renderer = afterimage.GetComponent<SpriteRenderer>();
                 renderer.sortingOrder = count++;
-                afterimage.GetComponent<Renderer>().material.color = new Color32(255,114,114,125);
+                //afterimage.GetComponent<Renderer>().material.color = new Color32(255,114,114,125);
+                afterimage.GetComponent<Renderer>().material.color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), 0.5f);
                 renderer.sprite = GetComponent<SpriteRenderer>().sprite;
             }
         }
