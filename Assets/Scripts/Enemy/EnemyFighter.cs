@@ -16,7 +16,7 @@ public class EnemyFighter : MonoBehaviour
     private float maxXPos = (20.0f / 3.0f) / 2.0f;
     private float maxYPos = 5.0f;
 
-    private float timeSinceSpawn, timeAtSpawn;
+    private float timeSinceSpawn, timeAtSpawn, randWait, randGo;
 
     void Start()
     {
@@ -32,18 +32,26 @@ public class EnemyFighter : MonoBehaviour
         cameraSupport = Camera.main.GetComponent<CameraSupport>();
         Debug.Assert(cameraSupport != null);
 
-        fireRate = 150.0f;
+        fireRate = 2f;
         nextFire = 0f;
 
         timeSinceSpawn = 0;
         timeAtSpawn = Time.time;
 
+        randWait = Random.Range(0.5f, 2f);
+        randGo = Random.Range(3f, 5f);
+
+        shoot();
     }
 
     void FixedUpdate()
     {
-        transform.Translate(speed);
         shoot();
+
+        if (timeSinceSpawn < randWait || timeSinceSpawn > randGo)
+        {
+            transform.Translate(speed);
+        }
         
         if (transform.position.y <= (-1.0f * (maxYPos + .75f)))
         {

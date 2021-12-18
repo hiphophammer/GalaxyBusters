@@ -27,7 +27,7 @@ public class EnemyBullet : MonoBehaviour
     {
         Vector3 pos = transform.position;
         
-        if (transform.position.y <= (-1.0f * (maxYPos + .25f)) || transform.position.y >= (maxYPos + 1f))
+        if (transform.position.y <= (-1.0f * (maxYPos + .25f)))
         {
             Destroy(gameObject);
         }
