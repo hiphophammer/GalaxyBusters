@@ -47,15 +47,11 @@ public class UFOBehavior : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(timeSinceSpawn > 1f && timeSinceSpawn < 10f)
-        {
-            transform.Rotate(Vector3.forward * spin(turnSpd) * Time.fixedDeltaTime);
-            shoot();
-        }
-        else
+        transform.Rotate(Vector3.forward * spin(turnSpd) * Time.fixedDeltaTime);
+        shoot();
+        if (timeSinceSpawn < 1f || timeSinceSpawn > 10f)
         {
             transform.Translate(speed, Space.World);
-            
         }
         
         if (transform.position.y <= (-1.0f * (maxYPos + .75f)))
