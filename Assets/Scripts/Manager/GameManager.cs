@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     public TMPro.TextMeshProUGUI levelNum;
     public TMPro.TextMeshProUGUI levelName;
+    public TMPro.TextMeshProUGUI pausedText;
 
     public static bool winLoss;
 
@@ -54,11 +55,14 @@ public class GameManager : MonoBehaviour
     private bool singlePlayer;
     private bool bossAlive;
     private bool endless;
+    private bool paused;
 
     private int levelNumber;
     private float TimeBetweenSpawns;
 
     private float levelTime;
+
+    private string[] levelNames;
 
     // Start is called before the first frame update
     void Start()
@@ -92,9 +96,21 @@ public class GameManager : MonoBehaviour
 
         endless = false;
 
+        paused = false;
+
         TimeBetweenSpawns = 3f;
 
         levelNumber = 1;
+
+        levelNames = new string[] {"You Asked For This", "Endless Space", 
+                                    "Unlimited Ship Works", "Paradise Lost", 
+                                    "Inferno", "Literary Allusion", 
+                                    "Inherit the Stars", "No Longer Human", 
+                                    "Childhood's End", "(Don't Fear) The Reaper",
+                                    "Something About A Windmill", "Apocalypse",
+                                    "Back To The Beginning", "Endless Mode (Wait did we use that already)",
+                                    "Star War", "%&@!*($", "Infinite Cosmos",
+                                    "Nebulaic Formula", "Black Horizon", "C-C-Combo!"};
     }
 
     // Update is called once per frame
@@ -103,7 +119,7 @@ public class GameManager : MonoBehaviour
         DetectCondition();
 
         // Pseudo-invulnerability key
-        if (Input.GetKeyDown("p"))
+        if (Input.GetKeyDown("n"))
         {
             GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
             foreach(GameObject p in pl)
@@ -111,7 +127,7 @@ public class GameManager : MonoBehaviour
                 p.transform.position = new Vector3(0.0f, -999.0f, 0.0f);
             }
         }
-        if (Input.GetKeyUp("p"))
+        if (Input.GetKeyUp("n"))
         {
             GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
             foreach(GameObject p in pl)
@@ -124,6 +140,34 @@ public class GameManager : MonoBehaviour
         {
             endless = !endless;  
             Debug.Log(endless);
+        }
+
+        if (Input.GetKeyDown("p"))
+        {
+            if (paused == false)
+            {
+                pausedText.enabled = true;
+                PauseGame();
+                Debug.Log("Paused");
+                paused = true;
+            }
+            else
+            {
+                pausedText.enabled = false;
+                ResumeGame();
+                Debug.Log("Unpausing");
+                paused = false;
+            }
+        }
+
+        if (Input.GetKeyDown("k"))
+        {
+            Debug.Log("PLAYER DIED");
+            winLoss = false;
+            showBothScores = singlePlayer;
+            player1Score = GetComponent<ScoreManager>().GetPlayer1Score();
+            player2Score = GetComponent<ScoreManager>().GetPlayer2Score();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
@@ -397,16 +441,9 @@ public class GameManager : MonoBehaviour
                 winLoss = true;
                 while (player1.IsAlive())
                 {
-                    string[] levelnames = new string[] {"You Asked For This", "Endless Space", 
-                                                        "Unlimited Ship Works", "Paradise Lost", 
-                                                        "Inferno", "Literary Allusion", 
-                                                        "Inherit the Stars", "No Longer Human", 
-                                                        "Childhood's End", "(Don't Fear) The Reaper",
-                                                        "Something About A Windmill", "Apocalypse",
-                                                        "Back To The Beginning"};
-                    string lvlname = levelnames[EndlessName];
+                    string lvlname = levelNames[EndlessName];
                     EndlessName++;
-                    if (EndlessName == levelnames.Length)
+                    if (EndlessName == levelNames.Length)
                     {
                         EndlessName = 0;
                     }
@@ -530,16 +567,9 @@ public class GameManager : MonoBehaviour
                 winLoss = true;
                 while (player1.IsAlive() || player2.IsAlive())
                 {
-                    string[] levelnames = new string[] {"You Asked For This", "Endless Space", 
-                                                        "Unlimited Ship Works", "Inherit the Stars", 
-                                                        "Paradise", "Literary Allusion", 
-                                                        "The Dirty Pair", "You're Pretty Good", 
-                                                        "How Have You Gotten This Far?", "Good Vibes",
-                                                        "Yeah, Space Is Cool.", "But Friendship Is Cooler.",
-                                                        "Back To The Beginning."};
-                    string lvlname = levelnames[EndlessName];
+                    string lvlname = levelNames[EndlessName];
                     EndlessName++;
-                    if (EndlessName == levelnames.Length)
+                    if (EndlessName == levelNames.Length)
                     {
                         EndlessName = 0;
                     }
@@ -637,5 +667,15 @@ public class GameManager : MonoBehaviour
         {
             Destroy(bullet);
         }
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    private void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }

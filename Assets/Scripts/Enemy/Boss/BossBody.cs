@@ -84,6 +84,22 @@ public class BossBody : MonoBehaviour
         {
             StartCoroutine(EndSequence());
         }
+
+        if(Input.GetKeyUp("1")){
+            StartCoroutine(PatternOneDelay(0.25f));
+        }
+        if (Input.GetKeyUp("2"))
+        {
+            StartCoroutine(PatternTwoDelay(0.5f));
+        }
+        if (Input.GetKeyUp("3"))
+        {
+            StartCoroutine(PatternThreeDelay(0.15f));
+        }
+        if (Input.GetKeyUp("4"))
+        {
+            StartCoroutine(EndSequence());
+        }
         
         timeSinceSpawn = Time.time - timeAtSpawn;
     }
@@ -117,60 +133,57 @@ public class BossBody : MonoBehaviour
     {
         while(health.GetHealth() > 0)
         {
-                int random = Random.Range(1, 4);
-                if(random == 1){
-                    int count = 0;
-                    while(count < 20)
-                    {
-                        for(int i = 0; i < allWeapons.Length; i++)
-                        {
-                            if(!allWeapons[i].GetComponent<BossWeapon>().destroyed || isVulnerable)
-                            {
-                                allWeapons[i].GetComponent<BossWeapon>().PatternOne();
-                            }
-                        }
-            
-                        yield return new WaitForSeconds(0.25f);
-                        count++;
-                    }
-                    yield return new WaitForSeconds(1.5f);
-                }
-                else if (random == 2)
+            int random = Random.Range(1, 4);
+            if(random == 1){
+                int count = 0;
+                while(count < 20)
                 {
-                    int count = 0;
-                    while(count < 10)
+                    for(int i = 0; i < allWeapons.Length; i++)
                     {
-                        random = Random.Range(0, 4);
-                        GameObject x = null;
-
-                        if(!allWeapons[random].GetComponent<BossWeapon>().destroyed || isVulnerable)
+                        if(!allWeapons[i].GetComponent<BossWeapon>().destroyed || isVulnerable)
                         {
-                            allWeapons[random].GetComponent<BossWeapon>().PatternTwo();
+                            allWeapons[i].GetComponent<BossWeapon>().PatternOne();
                         }
-
-                        yield return new WaitForSeconds(0.5f);
-                        count++;
                     }
-                    yield return new WaitForSeconds(1.5f);
+                             yield return new WaitForSeconds(0.25f);
+                    count++;
                 }
-                else
+                yield return new WaitForSeconds(1.5f);
+            }
+            else if (random == 2)
+            {
+                int count = 0;
+                while(count < 10)
                 {
                     random = Random.Range(0, 4);
-                    int random1 = Random.Range(1, 4);
-                    while(random == random1)
+                    GameObject x = null;
+                 if(!allWeapons[random].GetComponent<BossWeapon>().destroyed || isVulnerable)
                     {
-                        random1 = Random.Range(1, 4);
+                        allWeapons[random].GetComponent<BossWeapon>().PatternTwo();
                     }
-                    if(!allWeapons[random].GetComponent<BossWeapon>().destroyed || isVulnerable)
-                    {
-                        allWeapons[random].GetComponent<BossWeapon>().PatternThree(0.15f);
-                    }
-                    if(!allWeapons[random1].GetComponent<BossWeapon>().destroyed || isVulnerable)
-                    {
-                        allWeapons[random1].GetComponent<BossWeapon>().PatternThree(0.15f);
-                    }
-                    yield return new WaitForSeconds(1.5f);
+                 yield return new WaitForSeconds(0.5f);
+                    count++;
                 }
+                yield return new WaitForSeconds(1.5f);
+            }
+            else
+            {
+                random = Random.Range(0, 4);
+                int random1 = Random.Range(1, 4);
+                while(random == random1)
+                {
+                    random1 = Random.Range(1, 4);
+                }
+                if(!allWeapons[random].GetComponent<BossWeapon>().destroyed || isVulnerable)
+                {
+                    allWeapons[random].GetComponent<BossWeapon>().PatternThree(0.15f);
+                }
+                if(!allWeapons[random1].GetComponent<BossWeapon>().destroyed || isVulnerable)
+                {
+                    allWeapons[random1].GetComponent<BossWeapon>().PatternThree(0.15f);
+                }
+                yield return new WaitForSeconds(1.5f);
+            }
         }
     }
 

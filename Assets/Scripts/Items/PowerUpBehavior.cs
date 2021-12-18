@@ -26,7 +26,7 @@ public class PowerUpBehavior : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.down * .001f, Space.World);
+        transform.Translate(Vector3.down * .008f, Space.World);
         if (pickedUp)
         {
             Destroy(transform.gameObject);
